@@ -37,7 +37,17 @@
             {{ with .Description }}{{ . | truncate 130 }}{{ else }}{{ .Summary | plainify | truncate 130 }}{{ end }}
           </p>
           <div class="post-card-meta">
+            {{- $showCardReadingTime := true -}}
+            {{- if isset .Params "showreadingtime" -}}
+              {{- $showCardReadingTime = .Params.showreadingtime -}}
+            {{- else if isset .Params "readingtime" -}}
+              {{- $showCardReadingTime = .Params.readingtime -}}
+            {{- else if isset site.Params "showreadingtime" -}}
+              {{- $showCardReadingTime = site.Params.showreadingtime -}}
+            {{- end -}}
+            {{- if and (ne $showCardReadingTime false) (ne $showCardReadingTime "false") -}}
             <span>⏱️ {{ i18n "read_time" .ReadingTime }}</span>
+            {{- end -}}
             {{ with .Params.tags }}
             <div class="post-tags">
               {{ range first 2 . }}

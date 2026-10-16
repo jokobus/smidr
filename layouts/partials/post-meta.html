@@ -1,22 +1,54 @@
+{{- $showReadingTime := true -}}
+{{- if isset .Params "showreadingtime" -}}
+  {{- $showReadingTime = .Params.showreadingtime -}}
+{{- else if isset .Params "readingtime" -}}
+  {{- $showReadingTime = .Params.readingtime -}}
+{{- else if isset .Params "show_reading_time" -}}
+  {{- $showReadingTime = index .Params "show_reading_time" -}}
+{{- else if isset site.Params "showreadingtime" -}}
+  {{- $showReadingTime = site.Params.showreadingtime -}}
+{{- end -}}
+{{- if or (eq $showReadingTime false) (eq $showReadingTime "false") -}}
+  {{- $showReadingTime = false -}}
+{{- end -}}
+
+{{- $showDate := true -}}
+{{- if isset .Params "showdate" -}}
+  {{- $showDate = .Params.showdate -}}
+{{- else if isset .Params "date" -}}
+  {{- if eq .Params.date false -}}
+    {{- $showDate = false -}}
+  {{- end -}}
+{{- end -}}
+{{- if or .Date.IsZero (eq $showDate false) (eq $showDate "false") -}}
+  {{- $showDate = false -}}
+{{- end -}}
+
+{{- $hasTags := and .Params.tags (gt (len .Params.tags) 0) -}}
+
+{{- if or $showDate $showReadingTime $hasTags -}}
 <div class="article-meta-bar">
-  {{ with .Date }}
+  {{- if $showDate -}}
   <span class="meta-item">
     <span>📅</span>
-    <time datetime="{{ .Format "2006-01-02T15:04:05Z07:00" }}">{{ .Format "02. Jan 2006" }}</time>
+    <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "02. Jan 2006" }}</time>
   </span>
-  {{ end }}
+  {{- end -}}
 
+  {{- if $showReadingTime -}}
   <span class="meta-item">
     <span>⏱️</span>
     <span>{{ i18n "read_time" .ReadingTime }}</span>
     <span class="meta-words">{{ i18n "word_count" .WordCount }}</span>
   </span>
+  {{- end -}}
 
-  {{ with .Params.tags }}
+  {{- if $hasTags -}}
   <span class="meta-item post-tags">
-    {{ range . }}
+    {{ range .Params.tags }}
     <a href="{{ "tags/" | relLangURL }}{{ . | urlize }}" class="tag-badge">#{{ . }}</a>
     {{ end }}
   </span>
-  {{ end }}
+  {{- end -}}
 </div>
+{{- end -}}

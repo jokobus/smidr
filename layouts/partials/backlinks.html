@@ -31,7 +31,17 @@
         {{ with .Description }}{{ . | truncate 110 }}{{ else }}{{ .Summary | plainify | truncate 110 }}{{ end }}
       </p>
       <div class="backlink-meta">
+        {{- $showBacklinkReadingTime := true -}}
+        {{- if isset .Params "showreadingtime" -}}
+          {{- $showBacklinkReadingTime = .Params.showreadingtime -}}
+        {{- else if isset .Params "readingtime" -}}
+          {{- $showBacklinkReadingTime = .Params.readingtime -}}
+        {{- else if isset site.Params "showreadingtime" -}}
+          {{- $showBacklinkReadingTime = site.Params.showreadingtime -}}
+        {{- end -}}
+        {{- if and (ne $showBacklinkReadingTime false) (ne $showBacklinkReadingTime "false") -}}
         <span>⏱️ {{ i18n "read_time" .ReadingTime }}</span>
+        {{- end -}}
         <span class="backlink-arrow">&rarr;</span>
       </div>
     </a>

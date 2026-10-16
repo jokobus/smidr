@@ -1,11 +1,13 @@
 {{ define "main" }}
 <div class="container">
   <article class="article-container" itemscope itemtype="http://schema.org/BlogPosting">
+    {{- if and (ne .Params.head false) (ne .Params.head "false") -}}
     <header class="article-header">
       <h1 class="article-title" itemprop="headline">{{ .Title }}</h1>
       {{ partial "post-meta.html" . }}
       {{ partial "ai-transparency.html" . }}
     </header>
+    {{- end -}}
 
     {{ partial "post-image.html" . }}
 

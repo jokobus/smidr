@@ -105,7 +105,7 @@ This renders an automatic provenance banner at the top of the article.
 
 Display your public key, fingerprint, and verification instructions with `pgp-card`:
 
-{{< pgp-card name="Jakob / Jokobus" email="jokobus@example.com" keyId="A1B2C3D4E5F67890" fingerprint="ABCD 1234 EF56 7890 ABCD  1234 EF56 7890 ABCD 1234" algo="RSA 4096 / Ed25519" keyUrl="/openpgp/key.asc" >}}
+{{< pgp-card name="Smidr Engineer" email="engineer@example.org" keyId="A1B2C3D4E5F67890" fingerprint="ABCD 1234 EF56 7890 ABCD  1234 EF56 7890 ABCD 1234" algo="RSA 4096 / Ed25519" keyUrl="/openpgp/key.asc" >}}
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: OpenPGP.js v5.1.0
 

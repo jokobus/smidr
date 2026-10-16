@@ -57,7 +57,7 @@ hugo version
 ### 2. Add Smidr to Your Hugo Site
 ```bash
 # In your Hugo site root:
-git submodule add https://github.com/jokobus/smidr.git themes/smidr
+git submodule add https://github.com/smidr-theme/smidr.git themes/smidr
 ```
 
 ### 3. Configure `hugo.yaml`
@@ -200,25 +200,25 @@ Passcode: {{</* secret hint="Hover to reveal" */>}}NEON-MATRIX-2026{{</* /secret
 
 ## 🛡️ Privacy & Dual Deployment Architecture
 
-### Anonymous GitHub Pages vs. Real-Name Server Builds
-If you publish your blog under a pseudonym on **GitHub Pages** (`https://jokobus.github.io`) and under your real name on a **personal server** (`https://jakob.harthaus.net`), you can use Hugo **Environments** without maintaining separate Git branches:
+### Anonymous Static Pages vs. Real-Name Server Builds
+If you publish your blog under a pseudonym on **public git pages** (`https://username.github.io`) and under your real name on a **private server** (`https://your-domain.net`), you can use Hugo **Environments** without maintaining separate Git branches:
 
 ```text
 config/
 ├── _default/
 │   ├── hugo.yaml           # Common settings
-│   └── params.yaml         # Pseudonym defaults (author: "jokobus")
-└── rpi/
+│   └── params.yaml         # Pseudonym defaults (author: "Anonymous")
+└── production/
     └── params.yaml         # Overrides for personal server (real name & imprint)
 ```
 
-- **GitHub Actions (GitHub Pages):**
+- **Public Static Pages (e.g. GitHub Pages):**
   ```bash
-  hugo --minify -b "https://jokobus.github.io"
+  hugo --minify -b "https://username.github.io"
   ```
-- **Raspberry Pi (Caddy Server):**
+- **Self-Hosted Server (e.g. Caddy Server):**
   ```bash
-  hugo --environment rpi --minify -b "https://jakob.harthaus.net"
+  hugo --environment production --minify -b "https://your-domain.net"
   ```
 
 ### Zero-Server-Load Guarantee

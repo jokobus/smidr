@@ -3,6 +3,9 @@ public/
 resources/_gen/
 .hugo_build.lock
 *.log
+exampleSite/public/
+exampleSite/resources/
+exampleSite/.hugo_build.lock
 
 # OS generated files
 .DS_Store

@@ -1,5 +1,4 @@
-{{- /* Alias for code-file to maintain 100% backward compatibility with website/jokobus */ -}}
-{{- partial "shortcodes/code-file-logic.html" . | default "" -}}
+{{- /* Alias for code-file shortcode */ -}}
 {{- $source := .Get "source" | default (.Get "file") | default (.Get 0) -}}
 {{- $lang := .Get "lang" | default (.Get "language") -}}
 {{- $options := .Get "options" | default "" -}}

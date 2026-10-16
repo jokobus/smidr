@@ -37,8 +37,21 @@
     <nav class="site-nav desktop-nav" aria-label="Main Navigation">
       <ul class="nav-menu">
         {{- range .Site.Menus.main -}}
+        {{- $menuURL := .URL | relLangURL -}}
+        {{- $isActive := false -}}
+        {{- if or (eq .URL "/") (eq .Identifier "home") -}}
+          {{- if $.IsHome -}}{{- $isActive = true -}}{{- end -}}
+        {{- else if or (eq .Identifier "posts") (eq .URL "/posts/") -}}
+          {{- if or (eq $.Section "posts") (eq $.Section "post") (hasPrefix $.RelPermalink "/posts/") (hasPrefix $.RelPermalink "/de/posts/") (eq $.RelPermalink $menuURL) -}}
+            {{- $isActive = true -}}
+          {{- end -}}
+        {{- else -}}
+          {{- if or (eq $.RelPermalink $menuURL) (and (ne $menuURL "/") (hasPrefix $.RelPermalink $menuURL)) (and (ne $.Section "") (eq $.Section .Identifier)) -}}
+            {{- $isActive = true -}}
+          {{- end -}}
+        {{- end -}}
         <li>
-          <a class="nav-link{{ if or (eq $.RelPermalink .URL) (eq $.Section .Identifier) }} active{{ end }}" href="{{ .URL | relLangURL }}">
+          <a class="nav-link{{ if $isActive }} active{{ end }}" href="{{ $menuURL }}">
             {{ .Name }}
           </a>
         </li>
@@ -90,8 +103,21 @@
     <div class="container">
       <ul class="mobile-menu-list">
         {{- range .Site.Menus.main -}}
+        {{- $menuURL := .URL | relLangURL -}}
+        {{- $isActive := false -}}
+        {{- if or (eq .URL "/") (eq .Identifier "home") -}}
+          {{- if $.IsHome -}}{{- $isActive = true -}}{{- end -}}
+        {{- else if or (eq .Identifier "posts") (eq .URL "/posts/") -}}
+          {{- if or (eq $.Section "posts") (eq $.Section "post") (hasPrefix $.RelPermalink "/posts/") (hasPrefix $.RelPermalink "/de/posts/") (eq $.RelPermalink $menuURL) -}}
+            {{- $isActive = true -}}
+          {{- end -}}
+        {{- else -}}
+          {{- if or (eq $.RelPermalink $menuURL) (and (ne $menuURL "/") (hasPrefix $.RelPermalink $menuURL)) (and (ne $.Section "") (eq $.Section .Identifier)) -}}
+            {{- $isActive = true -}}
+          {{- end -}}
+        {{- end -}}
         <li>
-          <a class="mobile-nav-link{{ if or (eq $.RelPermalink .URL) (eq $.Section .Identifier) }} active{{ end }}" href="{{ .URL | relLangURL }}">
+          <a class="mobile-nav-link{{ if $isActive }} active{{ end }}" href="{{ $menuURL }}">
             {{ .Name }}
           </a>
         </li>

@@ -16,11 +16,19 @@
   {{ $hasTags := gt (len .Site.Taxonomies.tags) 0 }}
 
   <div class="blog-layout">
+    <!-- Symmetric spacer on large screens to keep main content centered -->
+    <div class="blog-layout-spacer" aria-hidden="true"></div>
+
     <!-- Main Content Area: Posts Grid -->
     <main class="blog-main">
-      <div class="posts-grid">
+      <div class="posts-grid" id="blog-posts-grid">
         {{ range .Pages }}
-        <article class="post-card">
+        <article class="post-card"
+                 data-title="{{ .Title | lower }}"
+                 data-date="{{ .Date.Unix }}"
+                 data-reading-time="{{ .ReadingTime }}"
+                 data-categories="{{ with .Params.categories }}{{ delimit . "," | lower }}{{ end }}"
+                 data-tags="{{ with .Params.tags }}{{ delimit . "," | lower }}{{ end }}">
           <div class="post-card-date">{{ .Date.Format "02. Jan 2006" }}</div>
           <h3 class="post-card-title">
             <a href="{{ .RelPermalink }}" style="color: inherit; text-decoration: none;">{{ .Title }}</a>
@@ -41,13 +49,21 @@
         </article>
         {{ end }}
       </div>
+
+      <!-- Empty State when filtering yields 0 matches -->
+      <div id="posts-empty-state" class="posts-empty-state" style="display: none;">
+        <div class="empty-icon">🔍</div>
+        <h3>No matching posts</h3>
+        <p>No articles match your selected categories and tags.</p>
+        <button type="button" id="empty-clear-btn" class="btn-primary-sm">Reset Active Filters</button>
+      </div>
     </main>
 
     <!-- Sidebar / Collapsible Accordion: Categories & Tags -->
     {{ if or $hasCats $hasTags }}
     <aside class="blog-sidebar">
       <details class="taxonomies-accordion" open>
-        <summary class="taxonomies-accordion-summary">
+        <summary class="taxonomies-accordion-summary" title="Click to hide/show categories and tags">
           <span class="taxonomies-summary-title">
             <span>🏷️</span>
             <span>{{ i18n "categories" | default "Categories" }} &amp; {{ i18n "tags" | default "Tags" }}</span>
@@ -60,27 +76,67 @@
         </summary>
         
         <div class="taxonomies-accordion-content">
+          <!-- Filter Logic Mode & Reset Controls -->
+          <div class="tax-sidebar-card filter-settings-card">
+            <div class="filter-controls-row">
+              <div class="filter-mode-wrap">
+                <span class="control-label">Match:</span>
+                <button type="button" id="filter-mode-btn" class="filter-mode-btn mode-and" title="Toggle between matching ALL selected tags (AND) or ANY selected tag (OR)">
+                  <span class="mode-text">AND</span>
+                </button>
+              </div>
+              <button type="button" id="filter-clear-btn" class="filter-clear-btn" style="display: none;" title="Deselect all filters">
+                Clear All
+              </button>
+            </div>
+            <div id="filter-count-label" class="active-count-label" style="display: none;"></div>
+          </div>
+
+          <!-- Sort Order Control -->
+          <div class="tax-sidebar-card sort-card">
+            <h3 class="tax-sidebar-heading">
+              <span>🔀</span>
+              <span>Sort Order</span>
+            </h3>
+            <div class="sort-select-wrapper">
+              <select id="posts-sort-select" class="posts-sort-select" aria-label="Sort posts by">
+                <option value="date-desc">Date: Newest First</option>
+                <option value="date-asc">Date: Oldest First</option>
+                <option value="title-asc">Title: A → Z</option>
+                <option value="title-desc">Title: Z → A</option>
+                <option value="time-asc">Read Time: Shortest</option>
+                <option value="time-desc">Read Time: Longest</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Categories List -->
           {{ if $hasCats }}
           <div class="tax-sidebar-card">
             <h3 class="tax-sidebar-heading">📂 {{ i18n "categories" | default "Categories" }}</h3>
-            <div class="tax-pill-list">
+            <div class="tax-checkbox-list">
               {{ range .Site.Taxonomies.categories }}
-              <a href="{{ .Page.RelPermalink }}" class="tax-pill{{ if eq $.Title .Page.Title }} active{{ end }}">
-                {{ .Page.Title }} <span class="tax-count">{{ .Count }}</span>
-              </a>
+              <button type="button" class="tax-checkbox-btn" data-type="category" data-value="{{ .Page.Title | lower }}" role="checkbox" aria-checked="false">
+                <span class="custom-checkbox"><span class="check-mark">✓</span></span>
+                <span class="tax-title">{{ .Page.Title }}</span>
+                <span class="tax-count">{{ .Count }}</span>
+              </button>
               {{ end }}
             </div>
           </div>
           {{ end }}
 
+          <!-- Tags List -->
           {{ if $hasTags }}
           <div class="tax-sidebar-card">
             <h3 class="tax-sidebar-heading">🏷️ {{ i18n "tags" | default "Tags" }}</h3>
-            <div class="tax-pill-list">
+            <div class="tax-checkbox-list">
               {{ range .Site.Taxonomies.tags }}
-              <a href="{{ .Page.RelPermalink }}" class="tax-pill{{ if eq $.Title .Page.Title }} active{{ end }}">
-                #{{ .Page.Title }} <span class="tax-count">{{ .Count }}</span>
-              </a>
+              <button type="button" class="tax-checkbox-btn" data-type="tag" data-value="{{ .Page.Title | lower }}" role="checkbox" aria-checked="false">
+                <span class="custom-checkbox"><span class="check-mark">✓</span></span>
+                <span class="tax-title">#{{ .Page.Title }}</span>
+                <span class="tax-count">{{ .Count }}</span>
+              </button>
               {{ end }}
             </div>
           </div>
@@ -93,15 +149,176 @@
 </div>
 
 <script>
-  // On smaller screens, collapse accordion by default unless on a term page
   document.addEventListener('DOMContentLoaded', () => {
-    const acc = document.querySelector('.taxonomies-accordion');
-    if (acc && window.innerWidth < 1024) {
-      const isTerm = {{ if eq .Kind "term" }}true{{ else }}false{{ end }};
-      if (!isTerm) {
-        acc.removeAttribute('open');
+    const grid = document.getElementById('blog-posts-grid');
+    if (!grid) return;
+
+    const cards = Array.from(grid.querySelectorAll('.post-card'));
+    const filterBtns = Array.from(document.querySelectorAll('.tax-checkbox-btn'));
+    const modeBtn = document.getElementById('filter-mode-btn');
+    const clearBtn = document.getElementById('filter-clear-btn');
+    const sortSelect = document.getElementById('posts-sort-select');
+    const emptyState = document.getElementById('posts-empty-state');
+    const emptyClearBtn = document.getElementById('empty-clear-btn');
+    const countLabel = document.getElementById('filter-count-label');
+
+    const selectedCategories = new Set();
+    const selectedTags = new Set();
+    let matchMode = 'AND'; // 'AND' or 'OR'
+
+    function updateUI() {
+      // Update buttons active states and aria
+      filterBtns.forEach(btn => {
+        const type = btn.dataset.type;
+        const val = btn.dataset.value;
+        const isSelected = type === 'category' ? selectedCategories.has(val) : selectedTags.has(val);
+        btn.classList.toggle('active', isSelected);
+        btn.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+      });
+
+      const totalActive = selectedCategories.size + selectedTags.size;
+      if (clearBtn) {
+        clearBtn.style.display = totalActive > 0 ? 'inline-block' : 'none';
+      }
+      if (countLabel) {
+        if (totalActive > 0) {
+          countLabel.textContent = `${totalActive} active filter${totalActive > 1 ? 's' : ''}`;
+          countLabel.style.display = 'block';
+        } else {
+          countLabel.style.display = 'none';
+        }
+      }
+
+      if (modeBtn) {
+        modeBtn.className = `filter-mode-btn mode-${matchMode.toLowerCase()}`;
+        modeBtn.querySelector('.mode-text').textContent = matchMode;
+      }
+
+      // Filter cards
+      let visibleCount = 0;
+      cards.forEach(card => {
+        const cardCats = (card.dataset.categories || '').split(',').map(s => s.trim()).filter(Boolean);
+        const cardTags = (card.dataset.tags || '').split(',').map(s => s.trim()).filter(Boolean);
+
+        let matches = true;
+
+        if (totalActive > 0) {
+          if (matchMode === 'OR') {
+            const hasCat = Array.from(selectedCategories).some(c => cardCats.includes(c));
+            const hasTag = Array.from(selectedTags).some(t => cardTags.includes(t));
+            matches = hasCat || hasTag;
+          } else {
+            // AND mode: must match all selected categories and all selected tags
+            const matchesAllCats = Array.from(selectedCategories).every(c => cardCats.includes(c));
+            const matchesAllTags = Array.from(selectedTags).every(t => cardTags.includes(t));
+            matches = matchesAllCats && matchesAllTags;
+          }
+        }
+
+        if (matches) {
+          card.style.display = '';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (emptyState) {
+        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
       }
     }
+
+    function sortCards() {
+      const sortVal = sortSelect ? sortSelect.value : 'date-desc';
+      cards.sort((a, b) => {
+        switch (sortVal) {
+          case 'date-asc':
+            return parseInt(a.dataset.date || 0) - parseInt(b.dataset.date || 0);
+          case 'title-asc':
+            return (a.dataset.title || '').localeCompare(b.dataset.title || '');
+          case 'title-desc':
+            return (b.dataset.title || '').localeCompare(a.dataset.title || '');
+          case 'time-asc':
+            return parseInt(a.dataset.readingTime || 0) - parseInt(b.dataset.readingTime || 0);
+          case 'time-desc':
+            return parseInt(b.dataset.readingTime || 0) - parseInt(a.dataset.readingTime || 0);
+          case 'date-desc':
+          default:
+            return parseInt(b.dataset.date || 0) - parseInt(a.dataset.date || 0);
+        }
+      });
+
+      // Re-append sorted cards in order
+      cards.forEach(card => grid.appendChild(card));
+    }
+
+    // Handle clicks on category/tag buttons
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const type = btn.dataset.type;
+        const val = btn.dataset.value;
+        const set = type === 'category' ? selectedCategories : selectedTags;
+        const wasSelected = set.has(val);
+        const totalActive = selectedCategories.size + selectedTags.size;
+
+        if (wasSelected) {
+          // "If you click a second time on an already selected tag or category, deselect all other choices."
+          if (totalActive > 1) {
+            selectedCategories.clear();
+            selectedTags.clear();
+            set.add(val);
+          } else {
+            // Only this item was selected, deselect it
+            set.delete(val);
+          }
+        } else {
+          set.add(val);
+        }
+
+        updateUI();
+      });
+    });
+
+    // Toggle match mode (AND / OR)
+    if (modeBtn) {
+      modeBtn.addEventListener('click', () => {
+        matchMode = matchMode === 'AND' ? 'OR' : 'AND';
+        updateUI();
+      });
+    }
+
+    // Reset filters
+    function clearAll() {
+      selectedCategories.clear();
+      selectedTags.clear();
+      updateUI();
+    }
+
+    if (clearBtn) clearBtn.addEventListener('click', clearAll);
+    if (emptyClearBtn) emptyClearBtn.addEventListener('click', clearAll);
+
+    // Sort listener
+    if (sortSelect) {
+      sortSelect.addEventListener('change', () => {
+        sortCards();
+      });
+    }
+
+    // Check if on a single term page
+    {{ if eq .Kind "term" }}
+    const termVal = {{ .Title | lower }};
+    filterBtns.forEach(btn => {
+      if (btn.dataset.value === termVal) {
+        if (btn.dataset.type === 'category') selectedCategories.add(termVal);
+        else selectedTags.add(termVal);
+      }
+    });
+    {{ end }}
+
+    // Run initial sorting and filtering
+    sortCards();
+    updateUI();
   });
 </script>
 {{ end }}

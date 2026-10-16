@@ -27,7 +27,7 @@ features = [
   "backlinks"
 ]
 min_version = "0.120.0"
-demosite = "https://smidr-theme.github.io/smidr/"
+demosite = "https://jokobus.github.io/smidr/"
 
 [author]
   name = "Smidr Team"

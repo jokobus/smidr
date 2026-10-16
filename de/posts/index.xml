@@ -1,0 +1,1873 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet type="text/xsl" href="/smidr/rss-style.xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Posts on Smidr</title><link>https://jokobus.github.io/smidr/de/posts/</link><description>Recent dispatches in Posts on Smidr</description><generator>Hugo -- gohugo.io</generator><language>de</language><managingEditor>contact@example.org (Smidr Engineer)</managingEditor><webMaster>contact@example.org (Smidr Engineer)</webMaster><lastBuildDate>Fri, 10 Apr 2026 14:30:00 +0000</lastBuildDate><atom:link href="https://jokobus.github.io/smidr/de/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Interaktive Arm-Kinematik &amp; WebAssembly-Simulation</title><link>https://jokobus.github.io/smidr/de/posts/interactive-robotics-simulation/</link><pubDate>Fri, 10 Apr 2026 14:30:00 +0000</pubDate><author>contact@example.org (Smidr Engineer)</author><guid>https://jokobus.github.io/smidr/de/posts/interactive-robotics-simulation/</guid><description><![CDATA[<p>Roboter-Manipulatoren transformieren Gelenkwinkel in räumliche Werkzeugkoordinaten. In dieser interaktiven Anleitung analysieren wir die Vorwärtskinematik eines zweigliedrigen planaren Roboterarms anhand mathematischer Herleitungen, Vektordiagrammen und <strong>Echtzeit-Codeausführung im Browser</strong>.</p>
+<h2 id="1-mathematische-formulierung">1. Mathematische Formulierung</h2>
+<p>Betrachten wir einen planaren Roboterarm mit den Gelenkwinkeln $\theta_1, \theta_2$ und den Armlängen $l_1, l_2$. Die kartesischen Koordinaten $(x_1, y_1)$ des Ellbogengelenks und $(x_{ee}, y_{ee})$ des Endeffektors ergeben sich trigonometrisch:</p>
+<p>$$\begin{aligned}
+x_1 &amp;= l_1 \cos(\theta_1) \
+y_1 &amp;= l_1 \sin(\theta_1) \
+x_{ee} &amp;= l_1 \cos(\theta_1) + l_2 \cos(\theta_1 + \theta_2) \
+y_{ee} &amp;= l_1 \sin(\theta_1) + l_2 \sin(\theta_1 + \theta_2)
+\end{aligned}$$</p>
+<p>Wie von John J. Craig in seinem Standardwerk <a class="cite-ref" href="#bib-craig2005" data-cite-key="craig2005" role="doc-biblioref" aria-label="Citation: craig2005">
+  <span class="cite-num">[craig2005]</span>
+</a>
+ beschrieben, bildet die Darstellung über homogene Transformationsmatrizen das Fundament für Manipulatoren mit höheren Freiheitsgraden.</p>
+<h2 id="2-kinematische-skizze-tikz">2. Kinematische Skizze (TikZ)</h2>
+<p>Das folgende Schema wird vollständig clientseitig im Browser mittels WebAssembly-TeX (TikzJax) gerendert:</p>
+<figure class="tikz-container" id="tikz-1792190887866967403">
+  <div class="tikz-wrapper">
+    <script type="text/tikz">
+
+\begin{tikzpicture}[scale=1.5, &gt;=stealth, line width=1.2pt]
+  % Basis
+  \fill[cyan] (0,0) circle (3pt) node[below left, text=cyan] {$O (0,0)$};
+  \draw[thick, dashed, gray] (0,0) -- (2.5,0) node[right, text=gray] {$X$};
+  \draw[thick, dashed, gray] (0,0) -- (0,2.5) node[above, text=gray] {$Y$};
+
+  % Glied 1
+  \draw[line width=3pt, cyan] (0,0) -- (1.5,1.5);
+  \fill[magenta] (1.5,1.5) circle (3pt) node[above left, text=magenta] {$J_1 (x_1, y_1)$};
+  \draw[-&gt;, cyan, line width=1pt] (0.6,0) arc (0:45:0.6) node[midway, right=2pt, text=cyan] {$\theta_1$};
+  \node[above left, text=cyan] at (0.75,0.75) {$l_1$};
+
+  % Glied 2
+  \draw[thick, dashed, gray] (1.5,1.5) -- (2.7,2.7);
+  \draw[line width=3pt, magenta] (1.5,1.5) -- (2.7,1.8);
+  \fill[yellow] (2.7,1.8) circle (4pt) node[right, text=yellow] {$EE (x_{ee}, y_{ee})$};
+  \draw[-&gt;, magenta, line width=1pt] (2.0,2.0) arc (45:14:0.7) node[midway, right=2pt, text=magenta] {$\theta_2$};
+  \node[above, text=magenta] at (2.1,1.75) {$l_2$};
+\end{tikzpicture}
+
+    </script>
+  </div>
+  
+  <figcaption class="tikz-caption">
+    <span class="tikz-caption-prefix">Figure:</span> 2-DOF Planarer Roboterarm Kinematik-Schema
+  </figcaption>
+  
+</figure>
+
+<h2 id="3-interaktive-webassembly-python-umgebung">3. Interaktive WebAssembly-Python-Umgebung</h2>
+<p>Du kannst die Winkel und Längen im folgenden Sandkasten direkt verändern. Klicke auf <strong>Run (WASM)</strong>, um die Position live im Browser zu berechnen:</p>
+<div class="code-runner-box" data-lang="python">
+  <div class="runner-header">
+    <div class="code-lang-badge">
+      <span>🔨</span>
+      <span>Planarer Kinematik-Rechner (Pyodide WASM)</span>
+    </div>
+    <div class="runner-actions">
+      <button class="code-copy-btn runner-btn-copy" type="button" aria-label="Copy code to clipboard">
+        <span>📋</span>
+        <span class="copy-text">Copy</span>
+      </button>
+      <button class="code-copy-btn runner-btn-clear" type="button" aria-label="Clear output">
+        <span>🗑️</span>
+        <span>Clear</span>
+      </button>
+      <button class="runner-btn-run" type="button" aria-label="Execute code in browser">
+        <span>▶</span>
+        <span>Run</span>
+      </button>
+    </div>
+  </div>
+  <div class="runner-editor-area">
+    <div class="runner-line-numbers" aria-hidden="true"></div>
+    <textarea class="runner-textarea" spellcheck="false" aria-label="Editable Code Area">
+import math
+
+def vorwaertskinematik(theta1_deg, theta2_deg, l1=1.0, l2=0.8):
+    t1 = math.radians(theta1_deg)
+    t2 = math.radians(theta2_deg)
+    
+    x1 = l1 * math.cos(t1)
+    y1 = l1 * math.sin(t1)
+    
+    x_ee = x1 &#43; l2 * math.cos(t1 &#43; t2)
+    y_ee = y1 &#43; l2 * math.sin(t1 &#43; t2)
+    
+    return (x1, y1), (x_ee, y_ee)
+
+# Probiere andere Winkel aus!
+gelenk, ee = vorwaertskinematik(theta1_deg=45.0, theta2_deg=30.0)
+
+print(&#34;=== Kinematik-Telemetrie ===&#34;)
+print(f&#34;Ellbogengelenk: x = {gelenk[0]:.4f} m, y = {gelenk[1]:.4f} m&#34;)
+print(f&#34;Endeffektor:    x = {ee[0]:.4f} m, y = {ee[1]:.4f} m&#34;)
+print(f&#34;Reichweite:     R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</textarea>
+    <button class="runner-btn-fullscreen" type="button" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
+      <svg class="fullscreen-icon-expand" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <polyline points="9 21 3 21 3 15"></polyline>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+      <svg class="fullscreen-icon-compress" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+        <polyline points="4 14 10 14 10 20"></polyline>
+        <polyline points="20 10 14 10 14 4"></polyline>
+        <line x1="14" y1="10" x2="21" y2="3"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+    </button>
+  </div>
+  <div class="runner-output-area" aria-live="polite">
+    <div class="runner-output-title">Terminal Output</div>
+    <pre class="runner-stdout"></pre>
+    <pre class="runner-stderr"></pre>
+  </div>
+</div>
+
+<h2 id="4-direkte-einbindung-von-quellcodedateien">4. Direkte Einbindung von Quellcodedateien</h2>
+<p>Mit <code>code-file</code> kannst du Quelldateien direkt aus deinem Repository einbinden:</p>
+<div class="code-file-container">
+    <div class="code-file-header">
+      <div class="code-file-title">
+        <span>📄</span>
+        <span>kinematics.py</span>
+      </div>
+      <span class="code-lang-badge">python</span>
+    </div>
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">forward_kinematics</span><span class="p">(</span><span class="n">theta1_deg</span><span class="p">,</span> <span class="n">theta2_deg</span><span class="p">,</span> <span class="n">l1</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">l2</span><span class="o">=</span><span class="mf">0.8</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Computes end-effector (x, y) coordinates for a 2-DOF planar robotic arm.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    :param theta1_deg: Base joint angle in degrees
+</span></span></span><span class="line"><span class="cl"><span class="s2">    :param theta2_deg: Elbow joint angle in degrees
+</span></span></span><span class="line"><span class="cl"><span class="s2">    :param l1: Length of link 1 (meters)
+</span></span></span><span class="line"><span class="cl"><span class="s2">    :param l2: Length of link 2 (meters)
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">t1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">theta1_deg</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">t2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">theta2_deg</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">x1</span> <span class="o">=</span> <span class="n">l1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y1</span> <span class="o">=</span> <span class="n">l1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">x_ee</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">l2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t1</span> <span class="o">+</span> <span class="n">t2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y_ee</span> <span class="o">=</span> <span class="n">y1</span> <span class="o">+</span> <span class="n">l2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t1</span> <span class="o">+</span> <span class="n">t2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="p">(</span><span class="n">x_ee</span><span class="p">,</span> <span class="n">y_ee</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">elbow</span><span class="p">,</span> <span class="n">ee</span> <span class="o">=</span> <span class="n">forward_kinematics</span><span class="p">(</span><span class="mf">45.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Elbow Joint Position:  x=</span><span class="si">{</span><span class="n">elbow</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> m, y=</span><span class="si">{</span><span class="n">elbow</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> m&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;End-Effector Position: x=</span><span class="si">{</span><span class="n">ee</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> m, y=</span><span class="si">{</span><span class="n">ee</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> m&#34;</span><span class="p">)</span></span></span></code></pre></div>
+  </div>
+<h2 id="5-echtzeit-parameterregler">5. Echtzeit-Parameterregler</h2>
+<div class="interactive-widget-box" id="widget-1792190887872062416">
+  <div class="widget-title">Robotik-Trajektorien-Regler</div>
+  <div class="widget-desc">Passe Geschwindigkeitsverstärkung und Dämpfung an, um das Einschwingverhalten zu testen.</div>
+
+  <div class="widget-controls">
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Proportional Gain ($K_p$):</span>
+        <strong class="val-kp">2.5</strong>
+      </div>
+      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5">
+    </div>
+
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Damping Ratio ($\zeta$):</span>
+        <strong class="val-zeta">0.45</strong>
+      </div>
+      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45">
+    </div>
+
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Natural Frequency ($\omega_n$):</span>
+        <strong class="val-wn">3.0</strong>
+      </div>
+      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0">
+    </div>
+  </div>
+
+  <canvas class="widget-display-canvas" width="600" height="180"></canvas>
+</div>
+
+<script>
+(function() {
+  const root = document.getElementById("widget-1792190887872062416");
+  if (!root) return;
+
+  const canvas = root.querySelector(".widget-display-canvas");
+  const ctx = canvas.getContext("2d");
+  const sliderKp = root.querySelector(".slider-kp");
+  const sliderZeta = root.querySelector(".slider-zeta");
+  const sliderWn = root.querySelector(".slider-wn");
+  const valKp = root.querySelector(".val-kp");
+  const valZeta = root.querySelector(".val-zeta");
+  const valWn = root.querySelector(".val-wn");
+
+  function draw() {
+    const Kp = parseFloat(sliderKp.value);
+    const zeta = parseFloat(sliderZeta.value);
+    const wn = parseFloat(sliderWn.value);
+
+    valKp.textContent = Kp.toFixed(1);
+    valZeta.textContent = zeta.toFixed(2);
+    valWn.textContent = wn.toFixed(1);
+
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+    ctx.lineWidth = 1;
+    for (let x = 40; x < w; x += 40) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, h);
+      ctx.stroke();
+    }
+    for (let y = 20; y < h; y += 30) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+      ctx.stroke();
+    }
+
+    
+    const setpointY = h * 0.35;
+    ctx.strokeStyle = "#a855f7";
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(0, setpointY);
+    ctx.lineTo(w, setpointY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    
+    ctx.strokeStyle = "#00f0ff";
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = "#00f0ff";
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+
+    const maxT = 6.0;
+    const baseY = h * 0.85;
+    const scaleY = (baseY - setpointY);
+
+    for (let px = 0; px < w; px++) {
+      const t = (px / w) * maxT;
+      let y = 0;
+      if (zeta < 1.0) {
+        const wd = wn * Math.sqrt(1 - zeta * zeta);
+        const env = Math.exp(-zeta * wn * t);
+        y = 1 - env * (Math.cos(wd * t) + (zeta / Math.sqrt(1 - zeta * zeta)) * Math.sin(wd * t));
+      } else {
+        
+        y = 1 - Math.exp(-wn * t) * (1 + wn * t);
+      }
+
+      const py = baseY - (y * scaleY * (Kp / 2.5));
+      if (px === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  sliderKp.addEventListener("input", draw);
+  sliderZeta.addEventListener("input", draw);
+  sliderWn.addEventListener("input", draw);
+  draw();
+})();
+</script>
+
+<h2 id="6-forschung--open-source-unterstützen">6. Forschung &amp; Open-Source unterstützen</h2>
+<div class="ad-container in-article-ad sponsor-card-custom">
+  <div class="ad-card">
+    <div class="ad-header">
+      <span class="ad-badge sponsor-badge-purple">SPONSOR</span>
+      <span class="ad-disclaimer">Open Hardware & AI Research</span>
+    </div>
+    <div class="ad-body">
+      
+      <div class="ad-text-wrap">
+        <h4 class="ad-title">Das autonome Forschungslabor unterstützen</h4>
+        <div class="ad-desc">Unsere Open-Source-Robotik-Tutorials und Simulationen werden frei unter MIT veröffentlicht. Unterstütze die kontinuierliche Weiterentwicklung auf GitHub Sponsors.</div>
+      </div>
+      
+      <div class="ad-action">
+        <a href="https://github.com/sponsors" target="_blank" rel="noopener sponsored" class="ad-btn sponsor-btn-gradient">
+          Auf GitHub unterstützen 💜
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<hr>
+<h2 id="7-literaturverzeichnis">7. Literaturverzeichnis</h2>
+<section class="smidr-bibliography-section" id="bib-sec-1792190887872239267" aria-label="References">
+  <h2 class="bib-section-title">
+    <span>📚</span> <span>References</span>
+  </h2>
+  <div class="smidr-bibliography">
+    <script type="text/bibtex" class="bibtex-source">
+
+@book{craig2005,
+  title = {Introduction to Robotics: Mechanics and Control},
+  author = {Craig, John J.},
+  edition = {3rd},
+  year = {2005},
+  publisher = {Pearson Prentice Hall}
+}
+@article{siciliano2009,
+  title = {Robotics: Modelling, Planning and Control},
+  author = {Siciliano, Bruno and Sciavicco, Lorenzo and Villani, Luigi and Oriolo, Giuseppe},
+  year = {2009},
+  publisher = {Springer}
+}
+
+    </script>
+    <ol class="bib-entries-list">
+      
+    </ol>
+  </div>
+</section>
+
+]]></description><content:encoded><![CDATA[<p>Roboter-Manipulatoren transformieren Gelenkwinkel in räumliche Werkzeugkoordinaten. In dieser interaktiven Anleitung analysieren wir die Vorwärtskinematik eines zweigliedrigen planaren Roboterarms anhand mathematischer Herleitungen, Vektordiagrammen und <strong>Echtzeit-Codeausführung im Browser</strong>.</p>
+<h2 id="1-mathematische-formulierung">1. Mathematische Formulierung</h2>
+<p>Betrachten wir einen planaren Roboterarm mit den Gelenkwinkeln $\theta_1, \theta_2$ und den Armlängen $l_1, l_2$. Die kartesischen Koordinaten $(x_1, y_1)$ des Ellbogengelenks und $(x_{ee}, y_{ee})$ des Endeffektors ergeben sich trigonometrisch:</p>
+<p>$$\begin{aligned}
+x_1 &amp;= l_1 \cos(\theta_1) \
+y_1 &amp;= l_1 \sin(\theta_1) \
+x_{ee} &amp;= l_1 \cos(\theta_1) + l_2 \cos(\theta_1 + \theta_2) \
+y_{ee} &amp;= l_1 \sin(\theta_1) + l_2 \sin(\theta_1 + \theta_2)
+\end{aligned}$$</p>
+<p>Wie von John J. Craig in seinem Standardwerk <a class="cite-ref" href="#bib-craig2005" data-cite-key="craig2005" role="doc-biblioref" aria-label="Citation: craig2005">
+  <span class="cite-num">[craig2005]</span>
+</a>
+ beschrieben, bildet die Darstellung über homogene Transformationsmatrizen das Fundament für Manipulatoren mit höheren Freiheitsgraden.</p>
+<h2 id="2-kinematische-skizze-tikz">2. Kinematische Skizze (TikZ)</h2>
+<p>Das folgende Schema wird vollständig clientseitig im Browser mittels WebAssembly-TeX (TikzJax) gerendert:</p>
+<figure class="tikz-container" id="tikz-1792190887866967403">
+  <div class="tikz-wrapper">
+    <script type="text/tikz">
+
+\begin{tikzpicture}[scale=1.5, &gt;=stealth, line width=1.2pt]
+  % Basis
+  \fill[cyan] (0,0) circle (3pt) node[below left, text=cyan] {$O (0,0)$};
+  \draw[thick, dashed, gray] (0,0) -- (2.5,0) node[right, text=gray] {$X$};
+  \draw[thick, dashed, gray] (0,0) -- (0,2.5) node[above, text=gray] {$Y$};
+
+  % Glied 1
+  \draw[line width=3pt, cyan] (0,0) -- (1.5,1.5);
+  \fill[magenta] (1.5,1.5) circle (3pt) node[above left, text=magenta] {$J_1 (x_1, y_1)$};
+  \draw[-&gt;, cyan, line width=1pt] (0.6,0) arc (0:45:0.6) node[midway, right=2pt, text=cyan] {$\theta_1$};
+  \node[above left, text=cyan] at (0.75,0.75) {$l_1$};
+
+  % Glied 2
+  \draw[thick, dashed, gray] (1.5,1.5) -- (2.7,2.7);
+  \draw[line width=3pt, magenta] (1.5,1.5) -- (2.7,1.8);
+  \fill[yellow] (2.7,1.8) circle (4pt) node[right, text=yellow] {$EE (x_{ee}, y_{ee})$};
+  \draw[-&gt;, magenta, line width=1pt] (2.0,2.0) arc (45:14:0.7) node[midway, right=2pt, text=magenta] {$\theta_2$};
+  \node[above, text=magenta] at (2.1,1.75) {$l_2$};
+\end{tikzpicture}
+
+    </script>
+  </div>
+  
+  <figcaption class="tikz-caption">
+    <span class="tikz-caption-prefix">Figure:</span> 2-DOF Planarer Roboterarm Kinematik-Schema
+  </figcaption>
+  
+</figure>
+
+<h2 id="3-interaktive-webassembly-python-umgebung">3. Interaktive WebAssembly-Python-Umgebung</h2>
+<p>Du kannst die Winkel und Längen im folgenden Sandkasten direkt verändern. Klicke auf <strong>Run (WASM)</strong>, um die Position live im Browser zu berechnen:</p>
+<div class="code-runner-box" data-lang="python">
+  <div class="runner-header">
+    <div class="code-lang-badge">
+      <span>🔨</span>
+      <span>Planarer Kinematik-Rechner (Pyodide WASM)</span>
+    </div>
+    <div class="runner-actions">
+      <button class="code-copy-btn runner-btn-copy" type="button" aria-label="Copy code to clipboard">
+        <span>📋</span>
+        <span class="copy-text">Copy</span>
+      </button>
+      <button class="code-copy-btn runner-btn-clear" type="button" aria-label="Clear output">
+        <span>🗑️</span>
+        <span>Clear</span>
+      </button>
+      <button class="runner-btn-run" type="button" aria-label="Execute code in browser">
+        <span>▶</span>
+        <span>Run</span>
+      </button>
+    </div>
+  </div>
+  <div class="runner-editor-area">
+    <div class="runner-line-numbers" aria-hidden="true"></div>
+    <textarea class="runner-textarea" spellcheck="false" aria-label="Editable Code Area">
+import math
+
+def vorwaertskinematik(theta1_deg, theta2_deg, l1=1.0, l2=0.8):
+    t1 = math.radians(theta1_deg)
+    t2 = math.radians(theta2_deg)
+    
+    x1 = l1 * math.cos(t1)
+    y1 = l1 * math.sin(t1)
+    
+    x_ee = x1 &#43; l2 * math.cos(t1 &#43; t2)
+    y_ee = y1 &#43; l2 * math.sin(t1 &#43; t2)
+    
+    return (x1, y1), (x_ee, y_ee)
+
+# Probiere andere Winkel aus!
+gelenk, ee = vorwaertskinematik(theta1_deg=45.0, theta2_deg=30.0)
+
+print(&#34;=== Kinematik-Telemetrie ===&#34;)
+print(f&#34;Ellbogengelenk: x = {gelenk[0]:.4f} m, y = {gelenk[1]:.4f} m&#34;)
+print(f&#34;Endeffektor:    x = {ee[0]:.4f} m, y = {ee[1]:.4f} m&#34;)
+print(f&#34;Reichweite:     R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</textarea>
+    <button class="runner-btn-fullscreen" type="button" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
+      <svg class="fullscreen-icon-expand" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <polyline points="9 21 3 21 3 15"></polyline>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+      <svg class="fullscreen-icon-compress" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+        <polyline points="4 14 10 14 10 20"></polyline>
+        <polyline points="20 10 14 10 14 4"></polyline>
+        <line x1="14" y1="10" x2="21" y2="3"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+    </button>
+  </div>
+  <div class="runner-output-area" aria-live="polite">
+    <div class="runner-output-title">Terminal Output</div>
+    <pre class="runner-stdout"></pre>
+    <pre class="runner-stderr"></pre>
+  </div>
+</div>
+
+<h2 id="4-direkte-einbindung-von-quellcodedateien">4. Direkte Einbindung von Quellcodedateien</h2>
+<p>Mit <code>code-file</code> kannst du Quelldateien direkt aus deinem Repository einbinden:</p>
+<div class="code-file-container">
+    <div class="code-file-header">
+      <div class="code-file-title">
+        <span>📄</span>
+        <span>kinematics.py</span>
+      </div>
+      <span class="code-lang-badge">python</span>
+    </div>
+    <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">forward_kinematics</span><span class="p">(</span><span class="n">theta1_deg</span><span class="p">,</span> <span class="n">theta2_deg</span><span class="p">,</span> <span class="n">l1</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">l2</span><span class="o">=</span><span class="mf">0.8</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Computes end-effector (x, y) coordinates for a 2-DOF planar robotic arm.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    :param theta1_deg: Base joint angle in degrees
+</span></span></span><span class="line"><span class="cl"><span class="s2">    :param theta2_deg: Elbow joint angle in degrees
+</span></span></span><span class="line"><span class="cl"><span class="s2">    :param l1: Length of link 1 (meters)
+</span></span></span><span class="line"><span class="cl"><span class="s2">    :param l2: Length of link 2 (meters)
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">t1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">theta1_deg</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">t2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">theta2_deg</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">x1</span> <span class="o">=</span> <span class="n">l1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y1</span> <span class="o">=</span> <span class="n">l1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">x_ee</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">l2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t1</span> <span class="o">+</span> <span class="n">t2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y_ee</span> <span class="o">=</span> <span class="n">y1</span> <span class="o">+</span> <span class="n">l2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t1</span> <span class="o">+</span> <span class="n">t2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="p">(</span><span class="n">x_ee</span><span class="p">,</span> <span class="n">y_ee</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">elbow</span><span class="p">,</span> <span class="n">ee</span> <span class="o">=</span> <span class="n">forward_kinematics</span><span class="p">(</span><span class="mf">45.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Elbow Joint Position:  x=</span><span class="si">{</span><span class="n">elbow</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> m, y=</span><span class="si">{</span><span class="n">elbow</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> m&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;End-Effector Position: x=</span><span class="si">{</span><span class="n">ee</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> m, y=</span><span class="si">{</span><span class="n">ee</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> m&#34;</span><span class="p">)</span></span></span></code></pre></div>
+  </div>
+<h2 id="5-echtzeit-parameterregler">5. Echtzeit-Parameterregler</h2>
+<div class="interactive-widget-box" id="widget-1792190887872062416">
+  <div class="widget-title">Robotik-Trajektorien-Regler</div>
+  <div class="widget-desc">Passe Geschwindigkeitsverstärkung und Dämpfung an, um das Einschwingverhalten zu testen.</div>
+
+  <div class="widget-controls">
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Proportional Gain ($K_p$):</span>
+        <strong class="val-kp">2.5</strong>
+      </div>
+      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5">
+    </div>
+
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Damping Ratio ($\zeta$):</span>
+        <strong class="val-zeta">0.45</strong>
+      </div>
+      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45">
+    </div>
+
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Natural Frequency ($\omega_n$):</span>
+        <strong class="val-wn">3.0</strong>
+      </div>
+      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0">
+    </div>
+  </div>
+
+  <canvas class="widget-display-canvas" width="600" height="180"></canvas>
+</div>
+
+<script>
+(function() {
+  const root = document.getElementById("widget-1792190887872062416");
+  if (!root) return;
+
+  const canvas = root.querySelector(".widget-display-canvas");
+  const ctx = canvas.getContext("2d");
+  const sliderKp = root.querySelector(".slider-kp");
+  const sliderZeta = root.querySelector(".slider-zeta");
+  const sliderWn = root.querySelector(".slider-wn");
+  const valKp = root.querySelector(".val-kp");
+  const valZeta = root.querySelector(".val-zeta");
+  const valWn = root.querySelector(".val-wn");
+
+  function draw() {
+    const Kp = parseFloat(sliderKp.value);
+    const zeta = parseFloat(sliderZeta.value);
+    const wn = parseFloat(sliderWn.value);
+
+    valKp.textContent = Kp.toFixed(1);
+    valZeta.textContent = zeta.toFixed(2);
+    valWn.textContent = wn.toFixed(1);
+
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+    ctx.lineWidth = 1;
+    for (let x = 40; x < w; x += 40) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, h);
+      ctx.stroke();
+    }
+    for (let y = 20; y < h; y += 30) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+      ctx.stroke();
+    }
+
+    
+    const setpointY = h * 0.35;
+    ctx.strokeStyle = "#a855f7";
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(0, setpointY);
+    ctx.lineTo(w, setpointY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    
+    ctx.strokeStyle = "#00f0ff";
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = "#00f0ff";
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+
+    const maxT = 6.0;
+    const baseY = h * 0.85;
+    const scaleY = (baseY - setpointY);
+
+    for (let px = 0; px < w; px++) {
+      const t = (px / w) * maxT;
+      let y = 0;
+      if (zeta < 1.0) {
+        const wd = wn * Math.sqrt(1 - zeta * zeta);
+        const env = Math.exp(-zeta * wn * t);
+        y = 1 - env * (Math.cos(wd * t) + (zeta / Math.sqrt(1 - zeta * zeta)) * Math.sin(wd * t));
+      } else {
+        
+        y = 1 - Math.exp(-wn * t) * (1 + wn * t);
+      }
+
+      const py = baseY - (y * scaleY * (Kp / 2.5));
+      if (px === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  sliderKp.addEventListener("input", draw);
+  sliderZeta.addEventListener("input", draw);
+  sliderWn.addEventListener("input", draw);
+  draw();
+})();
+</script>
+
+<h2 id="6-forschung--open-source-unterstützen">6. Forschung &amp; Open-Source unterstützen</h2>
+<div class="ad-container in-article-ad sponsor-card-custom">
+  <div class="ad-card">
+    <div class="ad-header">
+      <span class="ad-badge sponsor-badge-purple">SPONSOR</span>
+      <span class="ad-disclaimer">Open Hardware & AI Research</span>
+    </div>
+    <div class="ad-body">
+      
+      <div class="ad-text-wrap">
+        <h4 class="ad-title">Das autonome Forschungslabor unterstützen</h4>
+        <div class="ad-desc">Unsere Open-Source-Robotik-Tutorials und Simulationen werden frei unter MIT veröffentlicht. Unterstütze die kontinuierliche Weiterentwicklung auf GitHub Sponsors.</div>
+      </div>
+      
+      <div class="ad-action">
+        <a href="https://github.com/sponsors" target="_blank" rel="noopener sponsored" class="ad-btn sponsor-btn-gradient">
+          Auf GitHub unterstützen 💜
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<hr>
+<h2 id="7-literaturverzeichnis">7. Literaturverzeichnis</h2>
+<section class="smidr-bibliography-section" id="bib-sec-1792190887872239267" aria-label="References">
+  <h2 class="bib-section-title">
+    <span>📚</span> <span>References</span>
+  </h2>
+  <div class="smidr-bibliography">
+    <script type="text/bibtex" class="bibtex-source">
+
+@book{craig2005,
+  title = {Introduction to Robotics: Mechanics and Control},
+  author = {Craig, John J.},
+  edition = {3rd},
+  year = {2005},
+  publisher = {Pearson Prentice Hall}
+}
+@article{siciliano2009,
+  title = {Robotics: Modelling, Planning and Control},
+  author = {Siciliano, Bruno and Sciavicco, Lorenzo and Villani, Luigi and Oriolo, Giuseppe},
+  year = {2009},
+  publisher = {Springer}
+}
+
+    </script>
+    <ol class="bib-entries-list">
+      
+    </ol>
+  </div>
+</section>
+
+]]></content:encoded><category>robotics</category><category>kinematik</category><category>python</category><category>wasm</category><category>simulation</category></item><item><title>Schnellstartanleitung: Verfassen und Veröffentlichen mit Smidr</title><link>https://jokobus.github.io/smidr/de/posts/quick-start-guide/</link><pubDate>Wed, 25 Mar 2026 12:00:00 +0000</pubDate><author>contact@example.org (Smidr Engineer)</author><guid>https://jokobus.github.io/smidr/de/posts/quick-start-guide/</guid><description><![CDATA[<p>Willkommen bei <strong>Smidr</strong>! Diese Anleitung zeigt, wie einfach es ist, ansprechende technische Artikel mit nativem Markdown und den integrierten Shortcodes von Smidr zu verfassen.</p>
+<h2 id="1-neuen-beitrag-anlegen">1. Neuen Beitrag anlegen</h2>
+<p>Um einen neuen Beitrag mit vorkonfiguriertem Frontmatter zu erstellen, genügt ein einfacher Befehl im Terminal:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo new posts/mein-neuer-beitrag.md
+</span></span></code></pre></div><h2 id="2-latex-mathematik">2. LaTeX-Mathematik</h2>
+<p>Smidr bindet clientseitiges KaTeX für blitzschnelles Rendern mathematischer Formeln ein:</p>
+<ul>
+<li><strong>Im Fließtext</strong>: <code>$f(x) = \sigma(W x + b)$</code> wird zu $f(x) = \sigma(W x + b)$.</li>
+<li><strong>Freigestellt</strong>:</li>
+</ul>
+<p>$$\mathcal{L}_{PID}(t) = K_p e(t) + K_i \int_0^t e(\tau) d\tau + K_d \frac{de(t)}{dt}$$</p>
+<h2 id="3-code-blöcke-mit-kopierfunktion">3. Code-Blöcke mit Kopierfunktion</h2>
+<p>Verwende einfache Markdown-Codeblöcke. Smidr erkennt die Sprache automatisch, fügt ein Badge hinzu und bietet einen <strong>Kopieren</strong>-Button:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-rust" data-lang="rust"><span class="line"><span class="cl"><span class="c1">// Kinematik-Regler
+</span></span></span><span class="line"><span class="cl"><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">step_controller</span><span class="p">(</span><span class="n">target</span>: <span class="kt">f64</span><span class="p">,</span><span class="w"> </span><span class="n">current</span>: <span class="kt">f64</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kt">f64</span> <span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">current</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">gain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.45</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">gain</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">error</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><h2 id="4-hinweisboxen-admonitions">4. Hinweisboxen (Admonitions)</h2>
+<div class="callout callout-tip" role="region" aria-label="Tipp für Autoren">
+  <div class="callout-icon" aria-hidden="true">💡</div>
+  <div class="callout-body">
+    <div class="callout-title">Tipp für Autoren</div>
+    <div class="callout-content">
+      Es stehen 5 Stile zur Verfügung: <code>info</code>, <code>warning</code>, <code>caution</code>, <code>tip</code> und <code>robotics</code>.
+    </div>
+  </div>
+</div>
+
+<h2 id="5-clientseitige-webassembly-codeausführung">5. Clientseitige WebAssembly-Codeausführung</h2>
+<div class="code-runner-box" data-lang="python">
+  <div class="runner-header">
+    <div class="code-lang-badge">
+      <span>🔨</span>
+      <span>Interaktive Python-Umgebung</span>
+    </div>
+    <div class="runner-actions">
+      <button class="code-copy-btn runner-btn-copy" type="button" aria-label="Copy code to clipboard">
+        <span>📋</span>
+        <span class="copy-text">Copy</span>
+      </button>
+      <button class="code-copy-btn runner-btn-clear" type="button" aria-label="Clear output">
+        <span>🗑️</span>
+        <span>Clear</span>
+      </button>
+      <button class="runner-btn-run" type="button" aria-label="Execute code in browser">
+        <span>▶</span>
+        <span>Run</span>
+      </button>
+    </div>
+  </div>
+  <div class="runner-editor-area">
+    <div class="runner-line-numbers" aria-hidden="true"></div>
+    <textarea class="runner-textarea" spellcheck="false" aria-label="Editable Code Area">
+zahlen = [1, 2, 3, 4, 5, 6, 7, 8]
+quadrate = [x**2 for x in zahlen]
+print(&#34;Berechnete Quadrate:&#34;, quadrate)</textarea>
+    <button class="runner-btn-fullscreen" type="button" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
+      <svg class="fullscreen-icon-expand" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <polyline points="9 21 3 21 3 15"></polyline>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+      <svg class="fullscreen-icon-compress" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+        <polyline points="4 14 10 14 10 20"></polyline>
+        <polyline points="20 10 14 10 14 4"></polyline>
+        <line x1="14" y1="10" x2="21" y2="3"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+    </button>
+  </div>
+  <div class="runner-output-area" aria-live="polite">
+    <div class="runner-output-title">Terminal Output</div>
+    <pre class="runner-stdout"></pre>
+    <pre class="runner-stderr"></pre>
+  </div>
+</div>
+
+<h2 id="6-interaktive-schieberegler">6. Interaktive Schieberegler</h2>
+<div class="interactive-widget-box" id="widget-1792190887876100796">
+  <div class="widget-title">Interaktiver Systemregler</div>
+  <div class="widget-desc">Bewege die Schieberegler, um das Regelverhalten in Echtzeit zu prüfen.</div>
+
+  <div class="widget-controls">
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Proportional Gain ($K_p$):</span>
+        <strong class="val-kp">2.5</strong>
+      </div>
+      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5">
+    </div>
+
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Damping Ratio ($\zeta$):</span>
+        <strong class="val-zeta">0.45</strong>
+      </div>
+      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45">
+    </div>
+
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Natural Frequency ($\omega_n$):</span>
+        <strong class="val-wn">3.0</strong>
+      </div>
+      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0">
+    </div>
+  </div>
+
+  <canvas class="widget-display-canvas" width="600" height="180"></canvas>
+</div>
+
+<script>
+(function() {
+  const root = document.getElementById("widget-1792190887876100796");
+  if (!root) return;
+
+  const canvas = root.querySelector(".widget-display-canvas");
+  const ctx = canvas.getContext("2d");
+  const sliderKp = root.querySelector(".slider-kp");
+  const sliderZeta = root.querySelector(".slider-zeta");
+  const sliderWn = root.querySelector(".slider-wn");
+  const valKp = root.querySelector(".val-kp");
+  const valZeta = root.querySelector(".val-zeta");
+  const valWn = root.querySelector(".val-wn");
+
+  function draw() {
+    const Kp = parseFloat(sliderKp.value);
+    const zeta = parseFloat(sliderZeta.value);
+    const wn = parseFloat(sliderWn.value);
+
+    valKp.textContent = Kp.toFixed(1);
+    valZeta.textContent = zeta.toFixed(2);
+    valWn.textContent = wn.toFixed(1);
+
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+    ctx.lineWidth = 1;
+    for (let x = 40; x < w; x += 40) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, h);
+      ctx.stroke();
+    }
+    for (let y = 20; y < h; y += 30) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+      ctx.stroke();
+    }
+
+    
+    const setpointY = h * 0.35;
+    ctx.strokeStyle = "#a855f7";
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(0, setpointY);
+    ctx.lineTo(w, setpointY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    
+    ctx.strokeStyle = "#00f0ff";
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = "#00f0ff";
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+
+    const maxT = 6.0;
+    const baseY = h * 0.85;
+    const scaleY = (baseY - setpointY);
+
+    for (let px = 0; px < w; px++) {
+      const t = (px / w) * maxT;
+      let y = 0;
+      if (zeta < 1.0) {
+        const wd = wn * Math.sqrt(1 - zeta * zeta);
+        const env = Math.exp(-zeta * wn * t);
+        y = 1 - env * (Math.cos(wd * t) + (zeta / Math.sqrt(1 - zeta * zeta)) * Math.sin(wd * t));
+      } else {
+        
+        y = 1 - Math.exp(-wn * t) * (1 + wn * t);
+      }
+
+      const py = baseY - (y * scaleY * (Kp / 2.5));
+      if (px === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  sliderKp.addEventListener("input", draw);
+  sliderZeta.addEventListener("input", draw);
+  sliderWn.addEventListener("input", draw);
+  draw();
+})();
+</script>
+
+<h2 id="7-geheimer-text">7. Geheimer Text</h2>
+<p>Geheimer Schlüssel: <span class="smidr-secret" title="Markieren oder mit der Maus berühren, um geheimen Text anzuzeigen" role="note">CYBER-FORGE-2026</span>
+<br>
+<em>(Mit der Maus markieren oder berühren, um den Inhalt anzuzeigen!)</em></p>
+<h2 id="8-popover-fußnoten">8. Popover-Fußnoten</h2>
+<p>Fußnoten springen nicht an das Seitenende<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
+<h2 id="9-ki-transparenz--übersetzungshinweise">9. KI-Transparenz &amp; Übersetzungshinweise</h2>
+<p>Smidr enthält integrierte Hinweise zur Kennzeichnung von KI-Unterstützung und Übersetzung:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">used_ai</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">original_language</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;de&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">original_post_path</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;/de/posts/meine-notizen/&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">ai_model</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Ollama / Llama 3&#34;</span><span class="w">
+</span></span></span></code></pre></div><h2 id="10-openpgp-kryptografische-identitätsüberprüfung">10. OpenPGP Kryptografische Identitätsüberprüfung</h2>
+<p>Zeige deinen öffentlichen PGP-Schlüssel, Fingerabdruck und Download-Button mit <code>pgp-card</code>:</p>
+<div class="pgp-card">
+  <div class="pgp-card-header">
+    <div class="pgp-badge">
+      <span class="pgp-icon">🔐</span>
+      <span class="pgp-title">OpenPGP Public Key Verification</span>
+    </div>
+    <span class="pgp-algo">RSA 4096 / Ed25519</span>
+  </div>
+
+  <div class="pgp-card-body">
+    <div class="pgp-meta-grid">
+      <div class="pgp-meta-item">
+        <span class="pgp-label">UID / Identity:</span>
+        <span class="pgp-val"><strong>Smidr Engineer</strong> &lt;engineer@example.org&gt;</span>
+      </div>
+      
+      <div class="pgp-meta-item">
+        <span class="pgp-label">Key ID:</span>
+        <span class="pgp-val font-mono">0xA1B2C3D4E5F67890</span>
+      </div>
+      
+      
+      
+      <div class="pgp-meta-item">
+        <span class="pgp-label">Expires:</span>
+        <span class="pgp-val">Never</span>
+      </div>
+      
+    </div>
+
+    
+    <div class="pgp-fingerprint-box">
+      <div class="pgp-fp-label">Fingerabdruck:</div>
+      <div class="pgp-fp-value-row">
+        <code class="pgp-fp-code">ABCD1234EF567890ABCD  1234EF567890ABCD1234</code>
+        <button class="code-copy-btn" type="button" onclick="navigator.clipboard.writeText('ABCD1234EF567890ABCD1234EF567890ABCD1234'); this.innerHTML='<span>✓</span> Copied!'; var b=this; setTimeout(function(){ b.innerHTML='<span>📋</span> Copy'; }, 2000);" aria-label="Copy fingerprint">
+          <span>📋</span> Copy
+        </button>
+      </div>
+    </div>
+    
+
+    
+    <div class="pgp-armored-block">
+      <div class="pgp-armored-header">
+        <span>ASCII Armored Public Key</span>
+        <button class="code-copy-btn" type="button" onclick="navigator.clipboard.writeText(this.closest('.pgp-armored-block').querySelector('pre').innerText); this.innerHTML='<span>✓</span> Copied!'; var b=this; setTimeout(function(){ b.innerHTML='<span>📋</span> Copy'; }, 2000);">
+          <span>📋</span> Copy Key
+        </button>
+      </div>
+      <pre class="pgp-armored-code"><code>
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: OpenPGP.js v5.1.0
+
+mQGNBGXx... [ASCII Armored Key hier einfügen] ...
+-----END PGP PUBLIC KEY BLOCK-----</code></pre>
+    </div>
+    
+
+    
+    <div class="pgp-actions">
+      <a href="https://jokobus.github.io/smidr/openpgp/key.asc" download class="pub-btn" style="background: var(--gradient-cyber); color: #ffffff; border: none; font-weight: 700; padding: 0.5rem 1rem;">
+        <span>💾</span>
+        <span>Schlüssel herunterladen (.asc)</span>
+      </a>
+    </div>
+    
+  </div>
+</div>
+
+<h2 id="11-asciinema-terminal-wiedergabe">11. Asciinema Terminal-Wiedergabe</h2>
+<p>Interaktive Terminalaufzeichnungen ohne Videoballast einbetten:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">{{&lt; asciinema id=&#34;123456&#34; title=&#34;Installation von PyTorch mit CUDA&#34; &gt;}}
+</span></span></code></pre></div><h2 id="12-direkte-code-dateieinbindung">12. Direkte Code-Dateieinbindung</h2>
+<p>Statt Code per Copy-Paste einzufügen, binde Quelldateien direkt ein:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">{{&lt; code-file source=&#34;scripts/train.py&#34; lang=&#34;python&#34; title=&#34;Trainingsschleife&#34; &gt;}}
+</span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Beim Berühren mit der Maus oder Antippen öffnet sich direkt ein Popover!&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></description><content:encoded><![CDATA[<p>Willkommen bei <strong>Smidr</strong>! Diese Anleitung zeigt, wie einfach es ist, ansprechende technische Artikel mit nativem Markdown und den integrierten Shortcodes von Smidr zu verfassen.</p>
+<h2 id="1-neuen-beitrag-anlegen">1. Neuen Beitrag anlegen</h2>
+<p>Um einen neuen Beitrag mit vorkonfiguriertem Frontmatter zu erstellen, genügt ein einfacher Befehl im Terminal:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo new posts/mein-neuer-beitrag.md
+</span></span></code></pre></div><h2 id="2-latex-mathematik">2. LaTeX-Mathematik</h2>
+<p>Smidr bindet clientseitiges KaTeX für blitzschnelles Rendern mathematischer Formeln ein:</p>
+<ul>
+<li><strong>Im Fließtext</strong>: <code>$f(x) = \sigma(W x + b)$</code> wird zu $f(x) = \sigma(W x + b)$.</li>
+<li><strong>Freigestellt</strong>:</li>
+</ul>
+<p>$$\mathcal{L}_{PID}(t) = K_p e(t) + K_i \int_0^t e(\tau) d\tau + K_d \frac{de(t)}{dt}$$</p>
+<h2 id="3-code-blöcke-mit-kopierfunktion">3. Code-Blöcke mit Kopierfunktion</h2>
+<p>Verwende einfache Markdown-Codeblöcke. Smidr erkennt die Sprache automatisch, fügt ein Badge hinzu und bietet einen <strong>Kopieren</strong>-Button:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-rust" data-lang="rust"><span class="line"><span class="cl"><span class="c1">// Kinematik-Regler
+</span></span></span><span class="line"><span class="cl"><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">step_controller</span><span class="p">(</span><span class="n">target</span>: <span class="kt">f64</span><span class="p">,</span><span class="w"> </span><span class="n">current</span>: <span class="kt">f64</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kt">f64</span> <span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">current</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">gain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.45</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">gain</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">error</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><h2 id="4-hinweisboxen-admonitions">4. Hinweisboxen (Admonitions)</h2>
+<div class="callout callout-tip" role="region" aria-label="Tipp für Autoren">
+  <div class="callout-icon" aria-hidden="true">💡</div>
+  <div class="callout-body">
+    <div class="callout-title">Tipp für Autoren</div>
+    <div class="callout-content">
+      Es stehen 5 Stile zur Verfügung: <code>info</code>, <code>warning</code>, <code>caution</code>, <code>tip</code> und <code>robotics</code>.
+    </div>
+  </div>
+</div>
+
+<h2 id="5-clientseitige-webassembly-codeausführung">5. Clientseitige WebAssembly-Codeausführung</h2>
+<div class="code-runner-box" data-lang="python">
+  <div class="runner-header">
+    <div class="code-lang-badge">
+      <span>🔨</span>
+      <span>Interaktive Python-Umgebung</span>
+    </div>
+    <div class="runner-actions">
+      <button class="code-copy-btn runner-btn-copy" type="button" aria-label="Copy code to clipboard">
+        <span>📋</span>
+        <span class="copy-text">Copy</span>
+      </button>
+      <button class="code-copy-btn runner-btn-clear" type="button" aria-label="Clear output">
+        <span>🗑️</span>
+        <span>Clear</span>
+      </button>
+      <button class="runner-btn-run" type="button" aria-label="Execute code in browser">
+        <span>▶</span>
+        <span>Run</span>
+      </button>
+    </div>
+  </div>
+  <div class="runner-editor-area">
+    <div class="runner-line-numbers" aria-hidden="true"></div>
+    <textarea class="runner-textarea" spellcheck="false" aria-label="Editable Code Area">
+zahlen = [1, 2, 3, 4, 5, 6, 7, 8]
+quadrate = [x**2 for x in zahlen]
+print(&#34;Berechnete Quadrate:&#34;, quadrate)</textarea>
+    <button class="runner-btn-fullscreen" type="button" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
+      <svg class="fullscreen-icon-expand" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <polyline points="9 21 3 21 3 15"></polyline>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+      <svg class="fullscreen-icon-compress" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+        <polyline points="4 14 10 14 10 20"></polyline>
+        <polyline points="20 10 14 10 14 4"></polyline>
+        <line x1="14" y1="10" x2="21" y2="3"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+    </button>
+  </div>
+  <div class="runner-output-area" aria-live="polite">
+    <div class="runner-output-title">Terminal Output</div>
+    <pre class="runner-stdout"></pre>
+    <pre class="runner-stderr"></pre>
+  </div>
+</div>
+
+<h2 id="6-interaktive-schieberegler">6. Interaktive Schieberegler</h2>
+<div class="interactive-widget-box" id="widget-1792190887876100796">
+  <div class="widget-title">Interaktiver Systemregler</div>
+  <div class="widget-desc">Bewege die Schieberegler, um das Regelverhalten in Echtzeit zu prüfen.</div>
+
+  <div class="widget-controls">
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Proportional Gain ($K_p$):</span>
+        <strong class="val-kp">2.5</strong>
+      </div>
+      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5">
+    </div>
+
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Damping Ratio ($\zeta$):</span>
+        <strong class="val-zeta">0.45</strong>
+      </div>
+      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45">
+    </div>
+
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Natural Frequency ($\omega_n$):</span>
+        <strong class="val-wn">3.0</strong>
+      </div>
+      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0">
+    </div>
+  </div>
+
+  <canvas class="widget-display-canvas" width="600" height="180"></canvas>
+</div>
+
+<script>
+(function() {
+  const root = document.getElementById("widget-1792190887876100796");
+  if (!root) return;
+
+  const canvas = root.querySelector(".widget-display-canvas");
+  const ctx = canvas.getContext("2d");
+  const sliderKp = root.querySelector(".slider-kp");
+  const sliderZeta = root.querySelector(".slider-zeta");
+  const sliderWn = root.querySelector(".slider-wn");
+  const valKp = root.querySelector(".val-kp");
+  const valZeta = root.querySelector(".val-zeta");
+  const valWn = root.querySelector(".val-wn");
+
+  function draw() {
+    const Kp = parseFloat(sliderKp.value);
+    const zeta = parseFloat(sliderZeta.value);
+    const wn = parseFloat(sliderWn.value);
+
+    valKp.textContent = Kp.toFixed(1);
+    valZeta.textContent = zeta.toFixed(2);
+    valWn.textContent = wn.toFixed(1);
+
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+    ctx.lineWidth = 1;
+    for (let x = 40; x < w; x += 40) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, h);
+      ctx.stroke();
+    }
+    for (let y = 20; y < h; y += 30) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+      ctx.stroke();
+    }
+
+    
+    const setpointY = h * 0.35;
+    ctx.strokeStyle = "#a855f7";
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(0, setpointY);
+    ctx.lineTo(w, setpointY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    
+    ctx.strokeStyle = "#00f0ff";
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = "#00f0ff";
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+
+    const maxT = 6.0;
+    const baseY = h * 0.85;
+    const scaleY = (baseY - setpointY);
+
+    for (let px = 0; px < w; px++) {
+      const t = (px / w) * maxT;
+      let y = 0;
+      if (zeta < 1.0) {
+        const wd = wn * Math.sqrt(1 - zeta * zeta);
+        const env = Math.exp(-zeta * wn * t);
+        y = 1 - env * (Math.cos(wd * t) + (zeta / Math.sqrt(1 - zeta * zeta)) * Math.sin(wd * t));
+      } else {
+        
+        y = 1 - Math.exp(-wn * t) * (1 + wn * t);
+      }
+
+      const py = baseY - (y * scaleY * (Kp / 2.5));
+      if (px === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  sliderKp.addEventListener("input", draw);
+  sliderZeta.addEventListener("input", draw);
+  sliderWn.addEventListener("input", draw);
+  draw();
+})();
+</script>
+
+<h2 id="7-geheimer-text">7. Geheimer Text</h2>
+<p>Geheimer Schlüssel: <span class="smidr-secret" title="Markieren oder mit der Maus berühren, um geheimen Text anzuzeigen" role="note">CYBER-FORGE-2026</span>
+<br>
+<em>(Mit der Maus markieren oder berühren, um den Inhalt anzuzeigen!)</em></p>
+<h2 id="8-popover-fußnoten">8. Popover-Fußnoten</h2>
+<p>Fußnoten springen nicht an das Seitenende<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
+<h2 id="9-ki-transparenz--übersetzungshinweise">9. KI-Transparenz &amp; Übersetzungshinweise</h2>
+<p>Smidr enthält integrierte Hinweise zur Kennzeichnung von KI-Unterstützung und Übersetzung:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">used_ai</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">original_language</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;de&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">original_post_path</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;/de/posts/meine-notizen/&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">ai_model</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Ollama / Llama 3&#34;</span><span class="w">
+</span></span></span></code></pre></div><h2 id="10-openpgp-kryptografische-identitätsüberprüfung">10. OpenPGP Kryptografische Identitätsüberprüfung</h2>
+<p>Zeige deinen öffentlichen PGP-Schlüssel, Fingerabdruck und Download-Button mit <code>pgp-card</code>:</p>
+<div class="pgp-card">
+  <div class="pgp-card-header">
+    <div class="pgp-badge">
+      <span class="pgp-icon">🔐</span>
+      <span class="pgp-title">OpenPGP Public Key Verification</span>
+    </div>
+    <span class="pgp-algo">RSA 4096 / Ed25519</span>
+  </div>
+
+  <div class="pgp-card-body">
+    <div class="pgp-meta-grid">
+      <div class="pgp-meta-item">
+        <span class="pgp-label">UID / Identity:</span>
+        <span class="pgp-val"><strong>Smidr Engineer</strong> &lt;engineer@example.org&gt;</span>
+      </div>
+      
+      <div class="pgp-meta-item">
+        <span class="pgp-label">Key ID:</span>
+        <span class="pgp-val font-mono">0xA1B2C3D4E5F67890</span>
+      </div>
+      
+      
+      
+      <div class="pgp-meta-item">
+        <span class="pgp-label">Expires:</span>
+        <span class="pgp-val">Never</span>
+      </div>
+      
+    </div>
+
+    
+    <div class="pgp-fingerprint-box">
+      <div class="pgp-fp-label">Fingerabdruck:</div>
+      <div class="pgp-fp-value-row">
+        <code class="pgp-fp-code">ABCD1234EF567890ABCD  1234EF567890ABCD1234</code>
+        <button class="code-copy-btn" type="button" onclick="navigator.clipboard.writeText('ABCD1234EF567890ABCD1234EF567890ABCD1234'); this.innerHTML='<span>✓</span> Copied!'; var b=this; setTimeout(function(){ b.innerHTML='<span>📋</span> Copy'; }, 2000);" aria-label="Copy fingerprint">
+          <span>📋</span> Copy
+        </button>
+      </div>
+    </div>
+    
+
+    
+    <div class="pgp-armored-block">
+      <div class="pgp-armored-header">
+        <span>ASCII Armored Public Key</span>
+        <button class="code-copy-btn" type="button" onclick="navigator.clipboard.writeText(this.closest('.pgp-armored-block').querySelector('pre').innerText); this.innerHTML='<span>✓</span> Copied!'; var b=this; setTimeout(function(){ b.innerHTML='<span>📋</span> Copy'; }, 2000);">
+          <span>📋</span> Copy Key
+        </button>
+      </div>
+      <pre class="pgp-armored-code"><code>
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: OpenPGP.js v5.1.0
+
+mQGNBGXx... [ASCII Armored Key hier einfügen] ...
+-----END PGP PUBLIC KEY BLOCK-----</code></pre>
+    </div>
+    
+
+    
+    <div class="pgp-actions">
+      <a href="https://jokobus.github.io/smidr/openpgp/key.asc" download class="pub-btn" style="background: var(--gradient-cyber); color: #ffffff; border: none; font-weight: 700; padding: 0.5rem 1rem;">
+        <span>💾</span>
+        <span>Schlüssel herunterladen (.asc)</span>
+      </a>
+    </div>
+    
+  </div>
+</div>
+
+<h2 id="11-asciinema-terminal-wiedergabe">11. Asciinema Terminal-Wiedergabe</h2>
+<p>Interaktive Terminalaufzeichnungen ohne Videoballast einbetten:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">{{&lt; asciinema id=&#34;123456&#34; title=&#34;Installation von PyTorch mit CUDA&#34; &gt;}}
+</span></span></code></pre></div><h2 id="12-direkte-code-dateieinbindung">12. Direkte Code-Dateieinbindung</h2>
+<p>Statt Code per Copy-Paste einzufügen, binde Quelldateien direkt ein:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">{{&lt; code-file source=&#34;scripts/train.py&#34; lang=&#34;python&#34; title=&#34;Trainingsschleife&#34; &gt;}}
+</span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Beim Berühren mit der Maus oder Antippen öffnet sich direkt ein Popover!&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded><category>guide</category><category>markdown</category><category>quickstart</category><category>hugo</category></item><item><title>Interaktive browserbasierte Code-Ausführung mit WebAssembly</title><link>https://jokobus.github.io/smidr/de/posts/deep-learning-wasm-runners/</link><pubDate>Fri, 20 Mar 2026 14:30:00 +0000</pubDate><author>contact@example.org (Smidr Engineer)</author><guid>https://jokobus.github.io/smidr/de/posts/deep-learning-wasm-runners/</guid><description><![CDATA[<p>Eine der spannendsten Neuerungen für technische Blogs ist die Möglichkeit für Leser, Parameter direkt im Artikel zu verändern und Algorithmen im Browser zu starten.</p>
+<p>In diesem Beitrag zeigen wir, wie Smidr <strong>WebAssembly (Pyodide)</strong> nutzt, um Code ausschließlich im lokalen Browser des Lesers auszuführen.</p>
+<div class="callout callout-tip" role="region" aria-label="Server-Sicherheits- und Stabilitätsgarantie">
+  <div class="callout-icon" aria-hidden="true">💡</div>
+  <div class="callout-body">
+    <div class="callout-title">Server-Sicherheits- und Stabilitätsgarantie</div>
+    <div class="callout-content">
+      Da diese statische Website auf einem Raspberry Pi (oder GitHub Pages) gehostet wird, wird <strong>zu keinem Zeitpunkt Code an den Server gesendet oder dort ausgeführt</strong>.
+Alle Skripte laufen in einer isolierten WebAssembly-Sandbox im Browser. Endlosschleifen belasten nur den lokalen Browser-Tab und können niemals den Server überlasten.
+    </div>
+  </div>
+</div>
+
+<h2 id="live-python-sandbox-pyodide-wasm">Live-Python-Sandbox (Pyodide WASM)</h2>
+<p>Probiere den Vorwärtslauf des künstlichen Neurons unten aus. Ein Klick auf <strong>Run (WASM)</strong> lädt Pyodide und führt den Code direkt auf deinem Gerät aus:</p>
+<div class="code-runner-box" data-lang="python">
+  <div class="runner-header">
+    <div class="code-lang-badge">
+      <span>🔨</span>
+      <span>Pyodide Forward Pass Sandbox</span>
+    </div>
+    <div class="runner-actions">
+      <button class="code-copy-btn runner-btn-copy" type="button" aria-label="Copy code to clipboard">
+        <span>📋</span>
+        <span class="copy-text">Copy</span>
+      </button>
+      <button class="code-copy-btn runner-btn-clear" type="button" aria-label="Clear output">
+        <span>🗑️</span>
+        <span>Clear</span>
+      </button>
+      <button class="runner-btn-run" type="button" aria-label="Execute code in browser">
+        <span>▶</span>
+        <span>Run</span>
+      </button>
+    </div>
+  </div>
+  <div class="runner-editor-area">
+    <div class="runner-line-numbers" aria-hidden="true"></div>
+    <textarea class="runner-textarea" spellcheck="false" aria-label="Editable Code Area">
+import math
+
+def sigmoid(x):
+    return 1.0 / (1.0 &#43; math.exp(-x))
+
+weights = [0.75, -0.42, 1.15]
+inputs  = [1.2, 0.5, -0.8]
+bias    = 0.15
+
+z = sum(w * i for w, i in zip(weights, inputs)) &#43; bias
+activation = sigmoid(z)
+
+print(f&#34;Logit (z): {z:.4f}&#34;)
+print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
+    <button class="runner-btn-fullscreen" type="button" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
+      <svg class="fullscreen-icon-expand" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <polyline points="9 21 3 21 3 15"></polyline>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+      <svg class="fullscreen-icon-compress" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+        <polyline points="4 14 10 14 10 20"></polyline>
+        <polyline points="20 10 14 10 14 4"></polyline>
+        <line x1="14" y1="10" x2="21" y2="3"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+    </button>
+  </div>
+  <div class="runner-output-area" aria-live="polite">
+    <div class="runner-output-title">Terminal Output</div>
+    <pre class="runner-stdout"></pre>
+    <pre class="runner-stderr"></pre>
+  </div>
+</div>
+
+<h2 id="digital-garden-verknüpfung">Digital-Garden-Verknüpfung</h2>
+<p>Dieser Beitrag verweist direkt auf unseren Artikel <a href="https://jokobus.github.io/smidr/de/posts/first-robotics-control/">Autonome Quadrotor-Trajektorienoptimierung mit LQR</a>. Der Wissensgraph unten spiegelt dies wider!</p>
+]]></description><content:encoded><![CDATA[<p>Eine der spannendsten Neuerungen für technische Blogs ist die Möglichkeit für Leser, Parameter direkt im Artikel zu verändern und Algorithmen im Browser zu starten.</p>
+<p>In diesem Beitrag zeigen wir, wie Smidr <strong>WebAssembly (Pyodide)</strong> nutzt, um Code ausschließlich im lokalen Browser des Lesers auszuführen.</p>
+<div class="callout callout-tip" role="region" aria-label="Server-Sicherheits- und Stabilitätsgarantie">
+  <div class="callout-icon" aria-hidden="true">💡</div>
+  <div class="callout-body">
+    <div class="callout-title">Server-Sicherheits- und Stabilitätsgarantie</div>
+    <div class="callout-content">
+      Da diese statische Website auf einem Raspberry Pi (oder GitHub Pages) gehostet wird, wird <strong>zu keinem Zeitpunkt Code an den Server gesendet oder dort ausgeführt</strong>.
+Alle Skripte laufen in einer isolierten WebAssembly-Sandbox im Browser. Endlosschleifen belasten nur den lokalen Browser-Tab und können niemals den Server überlasten.
+    </div>
+  </div>
+</div>
+
+<h2 id="live-python-sandbox-pyodide-wasm">Live-Python-Sandbox (Pyodide WASM)</h2>
+<p>Probiere den Vorwärtslauf des künstlichen Neurons unten aus. Ein Klick auf <strong>Run (WASM)</strong> lädt Pyodide und führt den Code direkt auf deinem Gerät aus:</p>
+<div class="code-runner-box" data-lang="python">
+  <div class="runner-header">
+    <div class="code-lang-badge">
+      <span>🔨</span>
+      <span>Pyodide Forward Pass Sandbox</span>
+    </div>
+    <div class="runner-actions">
+      <button class="code-copy-btn runner-btn-copy" type="button" aria-label="Copy code to clipboard">
+        <span>📋</span>
+        <span class="copy-text">Copy</span>
+      </button>
+      <button class="code-copy-btn runner-btn-clear" type="button" aria-label="Clear output">
+        <span>🗑️</span>
+        <span>Clear</span>
+      </button>
+      <button class="runner-btn-run" type="button" aria-label="Execute code in browser">
+        <span>▶</span>
+        <span>Run</span>
+      </button>
+    </div>
+  </div>
+  <div class="runner-editor-area">
+    <div class="runner-line-numbers" aria-hidden="true"></div>
+    <textarea class="runner-textarea" spellcheck="false" aria-label="Editable Code Area">
+import math
+
+def sigmoid(x):
+    return 1.0 / (1.0 &#43; math.exp(-x))
+
+weights = [0.75, -0.42, 1.15]
+inputs  = [1.2, 0.5, -0.8]
+bias    = 0.15
+
+z = sum(w * i for w, i in zip(weights, inputs)) &#43; bias
+activation = sigmoid(z)
+
+print(f&#34;Logit (z): {z:.4f}&#34;)
+print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
+    <button class="runner-btn-fullscreen" type="button" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
+      <svg class="fullscreen-icon-expand" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <polyline points="9 21 3 21 3 15"></polyline>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+      <svg class="fullscreen-icon-compress" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+        <polyline points="4 14 10 14 10 20"></polyline>
+        <polyline points="20 10 14 10 14 4"></polyline>
+        <line x1="14" y1="10" x2="21" y2="3"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+    </button>
+  </div>
+  <div class="runner-output-area" aria-live="polite">
+    <div class="runner-output-title">Terminal Output</div>
+    <pre class="runner-stdout"></pre>
+    <pre class="runner-stderr"></pre>
+  </div>
+</div>
+
+<h2 id="digital-garden-verknüpfung">Digital-Garden-Verknüpfung</h2>
+<p>Dieser Beitrag verweist direkt auf unseren Artikel <a href="https://jokobus.github.io/smidr/de/posts/first-robotics-control/">Autonome Quadrotor-Trajektorienoptimierung mit LQR</a>. Der Wissensgraph unten spiegelt dies wider!</p>
+]]></content:encoded><category>machine-learning</category><category>wasm</category><category>python</category><category>pyodide</category><category>cybernetics</category></item><item><title>Autonome Quadrotor-Trajektorienoptimierung mit LQR</title><link>https://jokobus.github.io/smidr/de/posts/first-robotics-control/</link><pubDate>Sun, 15 Mar 2026 10:00:00 +0000</pubDate><author>contact@example.org (Smidr Engineer)</author><guid>https://jokobus.github.io/smidr/de/posts/first-robotics-control/</guid><description><![CDATA[<p>Der Entwurf von Trajektorienreglern für autonome Flugroboter erfordert eine exakte Balance zwischen Agilität und dynamischer Stabilität. Aufbauend auf den Grundlagen der Zustandsschätzung von Kalman <a class="cite-ref" href="#bib-kalman1960" data-cite-key="kalman1960" role="doc-biblioref" aria-label="Citation: kalman1960">
+  <span class="cite-num">[kalman1960]</span>
+</a>
+ und der klassischen Regelungstheorie <a class="cite-ref" href="#bib-astrom2010" data-cite-key="astrom2010" role="doc-biblioref" aria-label="Citation: astrom2010">
+  <span class="cite-num">[astrom2010]</span>
+</a>
+ formulieren wir einen Linear-Quadratischen Regler (LQR)<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
+<h2 id="mathematische-formulierung">Mathematische Formulierung</h2>
+<p>Die linearisierte kontinuierliche Fehlerdynamik um den Schwebepunkt wird im Zustandsraum beschrieben:</p>
+<p>$$\dot{x}(t) = A x(t) + B u(t)$$</p>
+<p>wobei der Zustandsvektor $x \in \mathbb{R}^{12}$ Position, Geschwindigkeiten und Euler-Winkel abbildet:</p>
+<p>$$x = \begin{bmatrix} p_x &amp; p_y &amp; p_z &amp; \dot{p}_x &amp; \dot{p}_y &amp; \dot{p}_z &amp; \phi &amp; \theta &amp; \psi &amp; p &amp; q &amp; r \end{bmatrix}^T$$</p>
+<p>Das quadratische Gütekriterium lautet:</p>
+<p>$$J = \int_{0}^{\infty} \left( x^T Q x + u^T R u \right) dt$$</p>
+<p>Die algebraische Riccati-Gleichung (CARE) liefert die Rückführmatrix $K$:</p>
+<p>$$A^T P + P A - P B R^{-1} B^T P + Q = 0 \implies u(t) = -K x(t)$$</p>
+<div class="callout callout-robotics" role="region" aria-label="Aktor-Sättigungswarnung">
+  <div class="callout-icon" aria-hidden="true">🤖</div>
+  <div class="callout-body">
+    <div class="callout-title">Aktor-Sättigungswarnung</div>
+    <div class="callout-content">
+      Die Drehzahlen der Antriebe sind durch die maximale ESC-Spannung physikalisch begrenzt. Anti-Windup-Schutz ist unerlässlich.
+    </div>
+  </div>
+</div>
+
+<h2 id="regelungsarchitektur-vektorielles-tikz-diagramm">Regelungsarchitektur (Vektorielles TikZ-Diagramm)</h2>
+<p>Hier ist das Blockschaltbild des Regelkreises, direkt im Browser mittels <strong>TikZ WebAssembly</strong> kompiliert:</p>
+<figure class="tikz-container" id="tikz-1792190887871213302">
+  <div class="tikz-wrapper">
+    <script type="text/tikz">
+
+\begin{tikzpicture}[auto, node distance=2cm, &gt;=latex]
+  \draw[rounded corners, fill=cyan!10, draw=cyan!80, line width=1pt] (0,0) rectangle (2.5,1.2) node[pos=.5] {\textbf{Regler} $K$};
+  \draw[rounded corners, fill=purple!10, draw=purple!80, line width=1pt] (4.5,0) rectangle (7.0,1.2) node[pos=.5] {\textbf{Quadrotor} $G(s)$};
+  \draw[-&gt;, line width=1pt] (-1.5,0.6) -- node[above] {$r(t)$} (0,0.6);
+  \draw[-&gt;, line width=1pt] (2.5,0.6) -- node[above] {$u(t)$} (4.5,0.6);
+  \draw[-&gt;, line width=1pt] (7.0,0.6) -- node[above] {$x(t)$} (9.0,0.6);
+  \draw[-&gt;, line width=1pt] (8.0,0.6) -- (8.0,-0.8) -- (-0.8,-0.8) -- (-0.8,0.3) -- (0,0.3);
+\end{tikzpicture}
+
+    </script>
+  </div>
+  
+  <figcaption class="tikz-caption">
+    <span class="tikz-caption-prefix">Figure:</span> Zustandsrückführung des Quadrotors als TikZ-Blockschaltbild.
+  </figcaption>
+  
+</figure>
+
+<h2 id="interaktiver-regler-simulator">Interaktiver Regler-Simulator</h2>
+<p>Passe die Dämpfung $\zeta$ und die Kreisverstärkung $K_p$ direkt im untenstehenden Systemsimulator an:</p>
+<div class="interactive-widget-box" id="widget-1792190887871239280">
+  <div class="widget-title">Sprungantwort eines Systems zweiter Ordnung</div>
+  <div class="widget-desc">Bewege die Schieberegler, um das Einschwingverhalten und Dämpfung in Echtzeit zu beobachten.</div>
+
+  <div class="widget-controls">
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Proportional Gain ($K_p$):</span>
+        <strong class="val-kp">2.5</strong>
+      </div>
+      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5">
+    </div>
+
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Damping Ratio ($\zeta$):</span>
+        <strong class="val-zeta">0.45</strong>
+      </div>
+      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45">
+    </div>
+
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Natural Frequency ($\omega_n$):</span>
+        <strong class="val-wn">3.0</strong>
+      </div>
+      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0">
+    </div>
+  </div>
+
+  <canvas class="widget-display-canvas" width="600" height="180"></canvas>
+</div>
+
+<script>
+(function() {
+  const root = document.getElementById("widget-1792190887871239280");
+  if (!root) return;
+
+  const canvas = root.querySelector(".widget-display-canvas");
+  const ctx = canvas.getContext("2d");
+  const sliderKp = root.querySelector(".slider-kp");
+  const sliderZeta = root.querySelector(".slider-zeta");
+  const sliderWn = root.querySelector(".slider-wn");
+  const valKp = root.querySelector(".val-kp");
+  const valZeta = root.querySelector(".val-zeta");
+  const valWn = root.querySelector(".val-wn");
+
+  function draw() {
+    const Kp = parseFloat(sliderKp.value);
+    const zeta = parseFloat(sliderZeta.value);
+    const wn = parseFloat(sliderWn.value);
+
+    valKp.textContent = Kp.toFixed(1);
+    valZeta.textContent = zeta.toFixed(2);
+    valWn.textContent = wn.toFixed(1);
+
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+    ctx.lineWidth = 1;
+    for (let x = 40; x < w; x += 40) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, h);
+      ctx.stroke();
+    }
+    for (let y = 20; y < h; y += 30) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+      ctx.stroke();
+    }
+
+    
+    const setpointY = h * 0.35;
+    ctx.strokeStyle = "#a855f7";
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(0, setpointY);
+    ctx.lineTo(w, setpointY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    
+    ctx.strokeStyle = "#00f0ff";
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = "#00f0ff";
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+
+    const maxT = 6.0;
+    const baseY = h * 0.85;
+    const scaleY = (baseY - setpointY);
+
+    for (let px = 0; px < w; px++) {
+      const t = (px / w) * maxT;
+      let y = 0;
+      if (zeta < 1.0) {
+        const wd = wn * Math.sqrt(1 - zeta * zeta);
+        const env = Math.exp(-zeta * wn * t);
+        y = 1 - env * (Math.cos(wd * t) + (zeta / Math.sqrt(1 - zeta * zeta)) * Math.sin(wd * t));
+      } else {
+        
+        y = 1 - Math.exp(-wn * t) * (1 + wn * t);
+      }
+
+      const py = baseY - (y * scaleY * (Kp / 2.5));
+      if (px === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  sliderKp.addEventListener("input", draw);
+  sliderZeta.addEventListener("input", draw);
+  sliderWn.addEventListener("input", draw);
+  draw();
+})();
+</script>
+
+<h2 id="geheimer-telemetrie-marker">Geheimer Telemetrie-Marker</h2>
+<p>Hier befindet sich eine verschlüsselte Nachricht:
+<span class="smidr-secret" title="Markieren oder mit der Maus berühren, um geheimen Text anzuzeigen" role="note">SCHLUESSEL-90812-AUTONOMER-ROVER-STARTBEREIT</span>
+
+<em>(Dieser Text wird erst sichtbar, wenn du ihn markierst oder mit der Maus darüberfährst!)</em></p>
+<p>In unserem weiteren Beitrag untersuchen wir <a href="https://jokobus.github.io/smidr/de/posts/deep-learning-wasm-runners/">WASM Client-seitige Code-Ausführung</a> für neuronale Netze direkt im Webbrowser!</p>
+<h2 id="literaturverzeichnis--referenzen">Literaturverzeichnis &amp; Referenzen</h2>
+<section class="smidr-bibliography-section" id="bib-sec-1792190887871294073" aria-label="Literaturverzeichnis &amp; Referenzen">
+  <h2 class="bib-section-title">
+    <span>📚</span> <span>Literaturverzeichnis &amp; Referenzen</span>
+  </h2>
+  <div class="smidr-bibliography">
+    <script type="text/bibtex" class="bibtex-source">
+
+@article{kalman1960,
+  title = {A New Approach to Linear Filtering and Prediction Problems},
+  author = {Kalman, Rudolph Emil},
+  journal = {Journal of Basic Engineering},
+  volume = {82},
+  number = {1},
+  pages = {35--45},
+  year = {1960},
+  doi = {10.1115/1.3662552}
+}
+
+@book{astrom2010,
+  title = {Feedback Systems: An Introduction for Scientists and Engineers},
+  author = {Astrom, Karl Johan and Murray, Richard M.},
+  publisher = {Princeton University Press},
+  year = {2010},
+  url = {https://www.cds.caltech.edu/~murray/amwiki}
+}
+
+    </script>
+    <ol class="bib-entries-list">
+      
+    </ol>
+  </div>
+</section>
+
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Die moderne Flugrobotik stützt sich auf linearisierte Trägheitsdynamiken um den Schwebepunkt herum.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></description><content:encoded><![CDATA[<p>Der Entwurf von Trajektorienreglern für autonome Flugroboter erfordert eine exakte Balance zwischen Agilität und dynamischer Stabilität. Aufbauend auf den Grundlagen der Zustandsschätzung von Kalman <a class="cite-ref" href="#bib-kalman1960" data-cite-key="kalman1960" role="doc-biblioref" aria-label="Citation: kalman1960">
+  <span class="cite-num">[kalman1960]</span>
+</a>
+ und der klassischen Regelungstheorie <a class="cite-ref" href="#bib-astrom2010" data-cite-key="astrom2010" role="doc-biblioref" aria-label="Citation: astrom2010">
+  <span class="cite-num">[astrom2010]</span>
+</a>
+ formulieren wir einen Linear-Quadratischen Regler (LQR)<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
+<h2 id="mathematische-formulierung">Mathematische Formulierung</h2>
+<p>Die linearisierte kontinuierliche Fehlerdynamik um den Schwebepunkt wird im Zustandsraum beschrieben:</p>
+<p>$$\dot{x}(t) = A x(t) + B u(t)$$</p>
+<p>wobei der Zustandsvektor $x \in \mathbb{R}^{12}$ Position, Geschwindigkeiten und Euler-Winkel abbildet:</p>
+<p>$$x = \begin{bmatrix} p_x &amp; p_y &amp; p_z &amp; \dot{p}_x &amp; \dot{p}_y &amp; \dot{p}_z &amp; \phi &amp; \theta &amp; \psi &amp; p &amp; q &amp; r \end{bmatrix}^T$$</p>
+<p>Das quadratische Gütekriterium lautet:</p>
+<p>$$J = \int_{0}^{\infty} \left( x^T Q x + u^T R u \right) dt$$</p>
+<p>Die algebraische Riccati-Gleichung (CARE) liefert die Rückführmatrix $K$:</p>
+<p>$$A^T P + P A - P B R^{-1} B^T P + Q = 0 \implies u(t) = -K x(t)$$</p>
+<div class="callout callout-robotics" role="region" aria-label="Aktor-Sättigungswarnung">
+  <div class="callout-icon" aria-hidden="true">🤖</div>
+  <div class="callout-body">
+    <div class="callout-title">Aktor-Sättigungswarnung</div>
+    <div class="callout-content">
+      Die Drehzahlen der Antriebe sind durch die maximale ESC-Spannung physikalisch begrenzt. Anti-Windup-Schutz ist unerlässlich.
+    </div>
+  </div>
+</div>
+
+<h2 id="regelungsarchitektur-vektorielles-tikz-diagramm">Regelungsarchitektur (Vektorielles TikZ-Diagramm)</h2>
+<p>Hier ist das Blockschaltbild des Regelkreises, direkt im Browser mittels <strong>TikZ WebAssembly</strong> kompiliert:</p>
+<figure class="tikz-container" id="tikz-1792190887871213302">
+  <div class="tikz-wrapper">
+    <script type="text/tikz">
+
+\begin{tikzpicture}[auto, node distance=2cm, &gt;=latex]
+  \draw[rounded corners, fill=cyan!10, draw=cyan!80, line width=1pt] (0,0) rectangle (2.5,1.2) node[pos=.5] {\textbf{Regler} $K$};
+  \draw[rounded corners, fill=purple!10, draw=purple!80, line width=1pt] (4.5,0) rectangle (7.0,1.2) node[pos=.5] {\textbf{Quadrotor} $G(s)$};
+  \draw[-&gt;, line width=1pt] (-1.5,0.6) -- node[above] {$r(t)$} (0,0.6);
+  \draw[-&gt;, line width=1pt] (2.5,0.6) -- node[above] {$u(t)$} (4.5,0.6);
+  \draw[-&gt;, line width=1pt] (7.0,0.6) -- node[above] {$x(t)$} (9.0,0.6);
+  \draw[-&gt;, line width=1pt] (8.0,0.6) -- (8.0,-0.8) -- (-0.8,-0.8) -- (-0.8,0.3) -- (0,0.3);
+\end{tikzpicture}
+
+    </script>
+  </div>
+  
+  <figcaption class="tikz-caption">
+    <span class="tikz-caption-prefix">Figure:</span> Zustandsrückführung des Quadrotors als TikZ-Blockschaltbild.
+  </figcaption>
+  
+</figure>
+
+<h2 id="interaktiver-regler-simulator">Interaktiver Regler-Simulator</h2>
+<p>Passe die Dämpfung $\zeta$ und die Kreisverstärkung $K_p$ direkt im untenstehenden Systemsimulator an:</p>
+<div class="interactive-widget-box" id="widget-1792190887871239280">
+  <div class="widget-title">Sprungantwort eines Systems zweiter Ordnung</div>
+  <div class="widget-desc">Bewege die Schieberegler, um das Einschwingverhalten und Dämpfung in Echtzeit zu beobachten.</div>
+
+  <div class="widget-controls">
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Proportional Gain ($K_p$):</span>
+        <strong class="val-kp">2.5</strong>
+      </div>
+      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5">
+    </div>
+
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Damping Ratio ($\zeta$):</span>
+        <strong class="val-zeta">0.45</strong>
+      </div>
+      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45">
+    </div>
+
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Natural Frequency ($\omega_n$):</span>
+        <strong class="val-wn">3.0</strong>
+      </div>
+      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0">
+    </div>
+  </div>
+
+  <canvas class="widget-display-canvas" width="600" height="180"></canvas>
+</div>
+
+<script>
+(function() {
+  const root = document.getElementById("widget-1792190887871239280");
+  if (!root) return;
+
+  const canvas = root.querySelector(".widget-display-canvas");
+  const ctx = canvas.getContext("2d");
+  const sliderKp = root.querySelector(".slider-kp");
+  const sliderZeta = root.querySelector(".slider-zeta");
+  const sliderWn = root.querySelector(".slider-wn");
+  const valKp = root.querySelector(".val-kp");
+  const valZeta = root.querySelector(".val-zeta");
+  const valWn = root.querySelector(".val-wn");
+
+  function draw() {
+    const Kp = parseFloat(sliderKp.value);
+    const zeta = parseFloat(sliderZeta.value);
+    const wn = parseFloat(sliderWn.value);
+
+    valKp.textContent = Kp.toFixed(1);
+    valZeta.textContent = zeta.toFixed(2);
+    valWn.textContent = wn.toFixed(1);
+
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+    ctx.lineWidth = 1;
+    for (let x = 40; x < w; x += 40) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, h);
+      ctx.stroke();
+    }
+    for (let y = 20; y < h; y += 30) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+      ctx.stroke();
+    }
+
+    
+    const setpointY = h * 0.35;
+    ctx.strokeStyle = "#a855f7";
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(0, setpointY);
+    ctx.lineTo(w, setpointY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    
+    ctx.strokeStyle = "#00f0ff";
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = "#00f0ff";
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+
+    const maxT = 6.0;
+    const baseY = h * 0.85;
+    const scaleY = (baseY - setpointY);
+
+    for (let px = 0; px < w; px++) {
+      const t = (px / w) * maxT;
+      let y = 0;
+      if (zeta < 1.0) {
+        const wd = wn * Math.sqrt(1 - zeta * zeta);
+        const env = Math.exp(-zeta * wn * t);
+        y = 1 - env * (Math.cos(wd * t) + (zeta / Math.sqrt(1 - zeta * zeta)) * Math.sin(wd * t));
+      } else {
+        
+        y = 1 - Math.exp(-wn * t) * (1 + wn * t);
+      }
+
+      const py = baseY - (y * scaleY * (Kp / 2.5));
+      if (px === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  sliderKp.addEventListener("input", draw);
+  sliderZeta.addEventListener("input", draw);
+  sliderWn.addEventListener("input", draw);
+  draw();
+})();
+</script>
+
+<h2 id="geheimer-telemetrie-marker">Geheimer Telemetrie-Marker</h2>
+<p>Hier befindet sich eine verschlüsselte Nachricht:
+<span class="smidr-secret" title="Markieren oder mit der Maus berühren, um geheimen Text anzuzeigen" role="note">SCHLUESSEL-90812-AUTONOMER-ROVER-STARTBEREIT</span>
+
+<em>(Dieser Text wird erst sichtbar, wenn du ihn markierst oder mit der Maus darüberfährst!)</em></p>
+<p>In unserem weiteren Beitrag untersuchen wir <a href="https://jokobus.github.io/smidr/de/posts/deep-learning-wasm-runners/">WASM Client-seitige Code-Ausführung</a> für neuronale Netze direkt im Webbrowser!</p>
+<h2 id="literaturverzeichnis--referenzen">Literaturverzeichnis &amp; Referenzen</h2>
+<section class="smidr-bibliography-section" id="bib-sec-1792190887871294073" aria-label="Literaturverzeichnis &amp; Referenzen">
+  <h2 class="bib-section-title">
+    <span>📚</span> <span>Literaturverzeichnis &amp; Referenzen</span>
+  </h2>
+  <div class="smidr-bibliography">
+    <script type="text/bibtex" class="bibtex-source">
+
+@article{kalman1960,
+  title = {A New Approach to Linear Filtering and Prediction Problems},
+  author = {Kalman, Rudolph Emil},
+  journal = {Journal of Basic Engineering},
+  volume = {82},
+  number = {1},
+  pages = {35--45},
+  year = {1960},
+  doi = {10.1115/1.3662552}
+}
+
+@book{astrom2010,
+  title = {Feedback Systems: An Introduction for Scientists and Engineers},
+  author = {Astrom, Karl Johan and Murray, Richard M.},
+  publisher = {Princeton University Press},
+  year = {2010},
+  url = {https://www.cds.caltech.edu/~murray/amwiki}
+}
+
+    </script>
+    <ol class="bib-entries-list">
+      
+    </ol>
+  </div>
+</section>
+
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Die moderne Flugrobotik stützt sich auf linearisierte Trägheitsdynamiken um den Schwebepunkt herum.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded><category>robotics</category><category>control-theory</category><category>lqr</category><category>cybernetics</category></item></channel></rss>

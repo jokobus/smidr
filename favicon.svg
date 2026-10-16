@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <!-- Cyberpunk Gradient: Electric Cyan -> Purple -> Neon Pink -->
+    <linearGradient id="cyberHammerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" />
+      <stop offset="50%" stop-color="#8a2be2" />
+      <stop offset="100%" stop-color="#ff007a" />
+    </linearGradient>
+    <linearGradient id="metalShaft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#cbd5e1" />
+      <stop offset="50%" stop-color="#64748b" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <linearGradient id="cyberNeonGrip" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" />
+      <stop offset="100%" stop-color="#ff007a" />
+    </linearGradient>
+    <filter id="neonGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background Cyber Shield Badge -->
+  <rect width="100" height="100" rx="24" fill="#090d16" />
+  <rect x="2" y="2" width="96" height="96" rx="22" fill="none" stroke="url(#cyberHammerGrad)" stroke-width="2.5" opacity="0.75" />
+
+  <!-- Styled Fancier Forged Smith Hammer (Tilted -35deg with Cyberpunk Styling) -->
+  <g transform="translate(50, 52) rotate(-35) translate(-50, -50)" filter="url(#neonGlow)">
+    <!-- Hammer Handle / Shaft -->
+    <path d="M46 44 L54 44 L55 86 L45 86 Z" fill="url(#metalShaft)" />
+    
+    <!-- Cyber Neon Grip Bands -->
+    <rect x="44.5" y="60" width="11" height="3" rx="1.5" fill="#00f0ff" />
+    <rect x="44.5" y="68" width="11" height="3" rx="1.5" fill="#a855f7" />
+    <rect x="44.5" y="76" width="11" height="3" rx="1.5" fill="#ff007a" />
+    <!-- Pommel / Base Energy Core -->
+    <rect x="43" y="85" width="14" height="4" rx="2" fill="url(#cyberHammerGrad)" />
+
+    <!-- Hammer Head: Faceted, Aerodynamic Tech Mallet -->
+    <path d="M22 24 L78 24 L82 30 L80 44 L76 48 L24 48 L20 44 L18 30 Z" fill="url(#cyberHammerGrad)" />
+
+    <!-- Striking Face Hardened Bevels -->
+    <polygon points="18,30 22,24 22,48 20,44" fill="#ffffff" opacity="0.85" />
+    <polygon points="78,24 82,30 80,44 76,48" fill="#00f0ff" opacity="0.9" />
+
+    <!-- Central Tech Core / Circuit Inlay -->
+    <rect x="36" y="32" width="28" height="8" rx="2" fill="#090d16" opacity="0.7" />
+    <line x1="38" y1="36" x2="62" y2="36" stroke="#00f0ff" stroke-width="2" stroke-linecap="round" />
+    <circle cx="50" cy="36" r="2.5" fill="#ff007a" />
+  </g>
+</svg>

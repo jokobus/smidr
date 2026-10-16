@@ -1,69 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:atom="http://www.w3.org/2005/Atom">
   <xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes"/>
   <xsl:template match="/">
     <html lang="en">
       <head>
-        <title><xsl:value-of select="/rss/channel/title"/> - RSS Feed Preview</title>
+        <title><xsl:value-of select="/rss/channel/title"/> - Web Feed Preview</title>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <style>
+          <![CDATA[
           :root {
             --bg: #090d16;
-            --surface: #131d31;
-            --border: rgba(255, 255, 255, 0.1);
+            --surface: #0f172a;
+            --surface-elevated: #1e293b;
+            --border: #1e293b;
+            --border-highlight: #334155;
             --primary: #00f0ff;
-            --text: #f1f5f9;
+            --secondary: #ff007a;
+            --text: #f8fafc;
             --muted: #94a3b8;
           }
+          * { box-sizing: border-box; }
           body {
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background: var(--bg);
             color: var(--text);
             line-height: 1.6;
             margin: 0;
-            padding: 2rem 1.5rem;
+            padding: 2.5rem 1.5rem;
           }
           .container {
-            max-width: 800px;
+            max-width: 820px;
             margin: 0 auto;
           }
           .card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
           }
           .badge {
-            display: inline-block;
-            background: rgba(0, 240, 255, 0.15);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(0, 240, 255, 0.12);
             color: var(--primary);
-            padding: 0.2rem 0.6rem;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            padding: 0.25rem 0.75rem;
             border-radius: 9999px;
             font-size: 0.8rem;
             font-weight: 700;
-            font-family: monospace;
+            letter-spacing: 0.5px;
           }
-          h1 { margin-top: 0.5rem; margin-bottom: 0.5rem; }
-          a { color: var(--primary); text-decoration: none; }
-          a:hover { text-decoration: underline; }
-          .feed-url-box {
+          h1 {
+            margin: 1rem 0 0.5rem;
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+          }
+          h2 {
+            margin-top: 0;
+            margin-bottom: 1.25rem;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #ffffff;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.75rem;
+          }
+          p { margin: 0 0 1rem; }
+          a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.15s ease;
+          }
+          a:hover {
+            color: #38bdf8;
+            text-decoration: underline;
+          }
+          .feed-box-wrapper {
             display: flex;
+            align-items: stretch;
             gap: 0.5rem;
-            margin: 1rem 0;
+            margin: 1.25rem 0;
+            flex-wrap: wrap;
+          }
+          .feed-url-box {
+            flex: 1;
+            min-width: 260px;
             background: #060911;
             padding: 0.75rem 1rem;
             border-radius: 8px;
             border: 1px solid var(--border);
-            font-family: monospace;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.9rem;
+            color: var(--primary);
             word-break: break-all;
+            display: flex;
+            align-items: center;
+          }
+          .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.25rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            border: none;
+          }
+          .btn-primary {
+            background: var(--primary);
+            color: #090d16;
+          }
+          .btn-primary:hover {
+            background: #38bdf8;
+            text-decoration: none;
+            transform: translateY(-1px);
           }
           .post-item {
             border-bottom: 1px solid var(--border);
-            padding-bottom: 1.25rem;
-            margin-bottom: 1.25rem;
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
           }
           .post-item:last-child {
             border-bottom: none;
@@ -72,41 +136,116 @@
           }
           .post-date {
             font-size: 0.8rem;
-            color: var(--primary);
-            font-family: monospace;
+            color: var(--muted);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
           }
+          .post-title {
+            margin: 0.4rem 0 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+          }
+          .post-desc {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            margin: 0;
+            line-height: 1.6;
+          }
+          .tag-pill {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-right: 0.4rem;
+            margin-top: 0.5rem;
+          }
+          .return-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+          }
+          ]]>
         </style>
       </head>
       <body>
         <div class="container">
           <div class="card">
-            <span class="badge">📡 RSS FEED / ATOM WEB PREVIEW</span>
+            <span class="badge">📡 RSS / ATOM WEB FEED PREVIEW</span>
             <h1><xsl:value-of select="/rss/channel/title"/></h1>
-            <p><xsl:value-of select="/rss/channel/description"/></p>
-            <p style="color: var(--muted); font-size: 0.9rem;">
-              This is the raw XML web feed. Subscribe by copying the feed URL below into your preferred RSS news reader (such as NetNewsWire, Feedly, Thunderbird, or Inoreader):
+            <p style="color: var(--muted); font-size: 1.05rem;"><xsl:value-of select="/rss/channel/description"/></p>
+            <p style="color: #cbd5e1; font-size: 0.925rem;">
+              You are viewing the styled preview of this website's RSS news feed. To subscribe, copy the URL below into your RSS reader (e.g. NetNewsWire, Feedly, Thunderbird, Inoreader, or Reeder):
             </p>
-            <div class="feed-url-box">
-              <span id="feed-url"><xsl:value-of select="/rss/channel/link"/>index.xml</span>
+            <div class="feed-box-wrapper">
+              <div class="feed-url-box">
+                <span id="feed-url">
+                  <xsl:choose>
+                    <xsl:when test="/rss/channel/atom:link[@rel='self']/@href">
+                      <xsl:value-of select="/rss/channel/atom:link[@rel='self']/@href"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="/rss/channel/link"/>index.xml
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </span>
+              </div>
+              <button id="copy-btn" class="btn btn-primary" onclick="copyFeedUrl()">Copy Feed URL</button>
             </div>
-            <a href="{/rss/channel/link}">&larr; Return to Homepage</a>
+            <div>
+              <a href="{/rss/channel/link}" class="return-link">&#x2190; Return to Homepage</a>
+            </div>
           </div>
 
           <div class="card">
-            <h2 style="margin-top: 0;">Recent Posts in Feed</h2>
+            <h2>Recent Articles in Feed</h2>
             <xsl:for-each select="/rss/channel/item">
               <div class="post-item">
                 <div class="post-date"><xsl:value-of select="pubDate"/></div>
-                <h3 style="margin: 0.35rem 0 0.5rem;">
+                <div class="post-title">
                   <a href="{link}"><xsl:value-of select="title"/></a>
-                </h3>
-                <p style="color: var(--muted); font-size: 0.95rem; margin: 0;">
+                </div>
+                <div class="post-desc">
                   <xsl:value-of select="description" disable-output-escaping="yes"/>
-                </p>
+                </div>
+                <xsl:if test="category">
+                  <div style="margin-top: 0.5rem;">
+                    <xsl:for-each select="category">
+                      <span class="tag-pill"><xsl:value-of select="."/></span>
+                    </xsl:for-each>
+                  </div>
+                </xsl:if>
               </div>
             </xsl:for-each>
           </div>
         </div>
+
+        <script>
+          <![CDATA[
+          function copyFeedUrl() {
+            var el = document.getElementById('feed-url');
+            var btn = document.getElementById('copy-btn');
+            if (!el || !btn) return;
+            var text = el.textContent.trim();
+            navigator.clipboard.writeText(text).then(function() {
+              var old = btn.textContent;
+              btn.textContent = '✓ Copied!';
+              btn.style.background = '#10b981';
+              btn.style.color = '#ffffff';
+              setTimeout(function() {
+                btn.textContent = old;
+                btn.style.background = '';
+                btn.style.color = '';
+              }, 2000);
+            }).catch(function() {
+              prompt('Copy feed URL:', text);
+            });
+          }
+          ]]>
+        </script>
       </body>
     </html>
   </xsl:template>

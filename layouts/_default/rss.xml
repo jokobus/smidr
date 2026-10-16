@@ -1,17 +1,26 @@
 {{- $pctx := . -}}
 {{- if .IsHome -}}{{ $pctx = .Site }}{{- end -}}
 {{- $pages := slice -}}
-{{- if or $.IsHome $.IsSection -}}
-{{- $pages = $pctx.RegularPages -}}
+{{- if .IsHome -}}
+  {{- $pages = where $pctx.RegularPages "Section" "posts" -}}
+  {{- if eq (len $pages) 0 -}}
+    {{- $pages = where $pctx.RegularPages "Section" "in" site.Params.mainSections -}}
+  {{- end -}}
+  {{- if eq (len $pages) 0 -}}
+    {{- $pages = $pctx.RegularPages -}}
+  {{- end -}}
+{{- else if .IsSection -}}
+  {{- $pages = $pctx.RegularPages -}}
 {{- else -}}
-{{- $pages = $pctx.Pages -}}
+  {{- $pages = $pctx.Pages -}}
 {{- end -}}
+{{- $pages = where $pages "Title" "!=" "" -}}
 {{- $limit := .Site.Config.Services.RSS.Limit -}}
 {{- if ge $limit 1 -}}
 {{- $pages = $pages | first $limit -}}
 {{- end -}}
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
-<?xml-stylesheet type="text/xsl" href="{{ "rss-style.xsl" | relURL }}"?>
+{{ printf "<?xml-stylesheet type=\"text/xsl\" href=%q ?>" ("rss-style.xsl" | relURL) | safeHTML }}
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{{ if eq .Title .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{ . }} on {{ end }}{{ .Site.Title }}{{ end }}</title>

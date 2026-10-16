@@ -1,6 +1,6 @@
 {{ define "main" }}
-<div class="container">
-  <header class="article-header">
+<div class="container-wide">
+  <header class="article-header" style="margin-bottom: 2rem;">
     {{ if eq .Kind "term" }}
     <div class="tag-badge" style="margin-bottom: 0.5rem;">
       #{{ .Title | upper }}
@@ -12,61 +12,96 @@
     {{ end }}
   </header>
 
-  <!-- Categories & Tags Filter Bar -->
   {{ $hasCats := gt (len .Site.Taxonomies.categories) 0 }}
   {{ $hasTags := gt (len .Site.Taxonomies.tags) 0 }}
-  {{ if or $hasCats $hasTags }}
-  <div class="list-taxonomies-bar">
-    {{ if $hasCats }}
-    <div class="tax-group">
-      <span class="tax-group-label">📂 {{ i18n "categories" | default "Categories" }}:</span>
-      <div class="tax-pill-list">
-        {{ range .Site.Taxonomies.categories }}
-        <a href="{{ .Page.RelPermalink }}" class="tax-pill{{ if eq $.Title .Page.Title }} active{{ end }}">
-          {{ .Page.Title }} <span class="tax-count">{{ .Count }}</span>
-        </a>
+
+  <div class="blog-layout">
+    <!-- Main Content Area: Posts Grid -->
+    <main class="blog-main">
+      <div class="posts-grid">
+        {{ range .Pages }}
+        <article class="post-card">
+          <div class="post-card-date">{{ .Date.Format "02. Jan 2006" }}</div>
+          <h3 class="post-card-title">
+            <a href="{{ .RelPermalink }}" style="color: inherit; text-decoration: none;">{{ .Title }}</a>
+          </h3>
+          <p class="post-card-summary">
+            {{ with .Description }}{{ . | truncate 130 }}{{ else }}{{ .Summary | plainify | truncate 130 }}{{ end }}
+          </p>
+          <div class="post-card-meta">
+            <span>⏱️ {{ i18n "read_time" .ReadingTime }}</span>
+            {{ with .Params.tags }}
+            <div class="post-tags">
+              {{ range first 2 . }}
+              <span class="tag-badge">#{{ . }}</span>
+              {{ end }}
+            </div>
+            {{ end }}
+          </div>
+        </article>
         {{ end }}
       </div>
-    </div>
-    {{ end }}
+    </main>
 
-    {{ if $hasTags }}
-    <div class="tax-group">
-      <span class="tax-group-label">🏷️ {{ i18n "tags" | default "Tags" }}:</span>
-      <div class="tax-pill-list">
-        {{ range .Site.Taxonomies.tags }}
-        <a href="{{ .Page.RelPermalink }}" class="tax-pill{{ if eq $.Title .Page.Title }} active{{ end }}">
-          #{{ .Page.Title }} <span class="tax-count">{{ .Count }}</span>
-        </a>
-        {{ end }}
-      </div>
-    </div>
-    {{ end }}
-  </div>
-  {{ end }}
+    <!-- Sidebar / Collapsible Accordion: Categories & Tags -->
+    {{ if or $hasCats $hasTags }}
+    <aside class="blog-sidebar">
+      <details class="taxonomies-accordion" open>
+        <summary class="taxonomies-accordion-summary">
+          <span class="taxonomies-summary-title">
+            <span>🏷️</span>
+            <span>{{ i18n "categories" | default "Categories" }} &amp; {{ i18n "tags" | default "Tags" }}</span>
+          </span>
+          <span class="taxonomies-chevron">
+            <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </summary>
+        
+        <div class="taxonomies-accordion-content">
+          {{ if $hasCats }}
+          <div class="tax-sidebar-card">
+            <h3 class="tax-sidebar-heading">📂 {{ i18n "categories" | default "Categories" }}</h3>
+            <div class="tax-pill-list">
+              {{ range .Site.Taxonomies.categories }}
+              <a href="{{ .Page.RelPermalink }}" class="tax-pill{{ if eq $.Title .Page.Title }} active{{ end }}">
+                {{ .Page.Title }} <span class="tax-count">{{ .Count }}</span>
+              </a>
+              {{ end }}
+            </div>
+          </div>
+          {{ end }}
 
-  <div class="posts-grid">
-    {{ range .Pages }}
-    <article class="post-card">
-      <div class="post-card-date">{{ .Date.Format "02. Jan 2006" }}</div>
-      <h3 class="post-card-title">
-        <a href="{{ .RelPermalink }}" style="color: inherit; text-decoration: none;">{{ .Title }}</a>
-      </h3>
-      <p class="post-card-summary">
-        {{ with .Description }}{{ . | truncate 130 }}{{ else }}{{ .Summary | plainify | truncate 130 }}{{ end }}
-      </p>
-      <div class="post-card-meta">
-        <span>⏱️ {{ i18n "read_time" .ReadingTime }}</span>
-        {{ with .Params.tags }}
-        <div class="post-tags">
-          {{ range first 2 . }}
-          <span class="tag-badge">#{{ . }}</span>
+          {{ if $hasTags }}
+          <div class="tax-sidebar-card">
+            <h3 class="tax-sidebar-heading">🏷️ {{ i18n "tags" | default "Tags" }}</h3>
+            <div class="tax-pill-list">
+              {{ range .Site.Taxonomies.tags }}
+              <a href="{{ .Page.RelPermalink }}" class="tax-pill{{ if eq $.Title .Page.Title }} active{{ end }}">
+                #{{ .Page.Title }} <span class="tax-count">{{ .Count }}</span>
+              </a>
+              {{ end }}
+            </div>
+          </div>
           {{ end }}
         </div>
-        {{ end }}
-      </div>
-    </article>
+      </details>
+    </aside>
     {{ end }}
   </div>
 </div>
+
+<script>
+  // On smaller screens, collapse accordion by default unless on a term page
+  document.addEventListener('DOMContentLoaded', () => {
+    const acc = document.querySelector('.taxonomies-accordion');
+    if (acc && window.innerWidth < 1024) {
+      const isTerm = {{ if eq .Kind "term" }}true{{ else }}false{{ end }};
+      if (!isTerm) {
+        acc.removeAttribute('open');
+      }
+    }
+  });
+</script>
 {{ end }}

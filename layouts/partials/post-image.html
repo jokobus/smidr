@@ -1,0 +1,32 @@
+{{- /* Smidr Theme - Responsive Image Pipeline */ -}}
+{{- $imageParam := .Params.image -}}
+{{- if $imageParam -}}
+  {{- $alt := .Title -}}
+  {{- $imgResource := .Resources.GetMatch (printf "*%s*" $imageParam) -}}
+  {{- if not $imgResource -}}
+    {{- $imgResource = resources.Get $imageParam -}}
+  {{- end -}}
+
+  <div class="post-featured-image-container">
+    {{- if $imgResource -}}
+      {{- if eq $imgResource.MediaType.SubType "svg" -}}
+        <figure class="post-featured-figure">
+          <img class="post-featured-img" src="{{ $imgResource.RelPermalink }}" alt="{{ $alt }}" loading="lazy">
+        </figure>
+      {{- else -}}
+        {{- /* Generate responsive WebP and fallback sizes */ -}}
+        {{- $thumbWebp := $imgResource.Resize "1200x webp q85" -}}
+        {{- $thumbFallback := $imgResource.Resize "1200x q85" -}}
+        <picture class="post-featured-figure">
+          <source type="image/webp" srcset="{{ $thumbWebp.RelPermalink }}">
+          <img class="post-featured-img" src="{{ $thumbFallback.RelPermalink }}" width="{{ $thumbFallback.Width }}" height="{{ $thumbFallback.Height }}" alt="{{ $alt }}" loading="lazy">
+        </picture>
+      {{- end -}}
+    {{- else -}}
+      <!-- Direct URL / External Image -->
+      <figure class="post-featured-figure">
+        <img class="post-featured-img" src="{{ $imageParam | safeURL }}" alt="{{ $alt }}" loading="lazy">
+      </figure>
+    {{- end -}}
+  </div>
+{{- end -}}

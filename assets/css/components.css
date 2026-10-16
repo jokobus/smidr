@@ -1325,3 +1325,379 @@ a.cite-ref:hover .cite-tooltip {
   color: #090d16;
   font-weight: 800;
 }
+
+/* ==========================================================================
+   AI Transparency & Origin Badge
+   ========================================================================== */
+.ai-transparency-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background: rgba(168, 85, 247, 0.08);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.ai-transparency-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.ai-transparency-content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.ai-orig-link {
+  color: var(--color-secondary);
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.ai-orig-link:hover {
+  color: var(--color-primary);
+}
+
+.ai-badge-human {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.ai-model-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-full);
+  background: rgba(0, 240, 255, 0.12);
+  color: var(--color-primary);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+}
+
+/* ==========================================================================
+   Code File Inclusion Shortcode
+   ========================================================================== */
+.code-file-container {
+  margin: 1.75rem 0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--code-border);
+  background: var(--code-bg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.code-file-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: var(--code-header-bg);
+  border-bottom: 1px solid var(--code-border);
+}
+
+.code-file-title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ==========================================================================
+   Sticky & Collapsible Table of Contents (ToC)
+   ========================================================================== */
+.toc-box {
+  margin: 1.5rem 0 2rem 0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.toc-details {
+  padding: 0.85rem 1.25rem;
+}
+
+.toc-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--color-primary);
+  user-select: none;
+  list-style: none;
+}
+
+.toc-summary::-webkit-details-marker {
+  display: none;
+}
+
+.toc-title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.toc-chevron {
+  transition: transform var(--transition-fast);
+  color: var(--color-text-dim);
+}
+
+.toc-details[open] .toc-chevron {
+  transform: rotate(180deg);
+}
+
+.toc-nav-wrapper {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.toc-nav-wrapper ul {
+  list-style: none;
+  padding-left: 1rem;
+  margin: 0.25rem 0;
+}
+
+.toc-nav-wrapper > nav > ul {
+  padding-left: 0;
+}
+
+.toc-nav-wrapper a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  display: inline-block;
+  padding: 0.15rem 0;
+}
+
+.toc-nav-wrapper a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Asciinema Terminal Player
+   ========================================================================== */
+.asciinema-wrapper {
+  margin: 2rem 0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--code-border);
+  background: #090d16;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.asciinema-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: var(--code-header-bg);
+  border-bottom: 1px solid var(--code-border);
+}
+
+.asciinema-body {
+  padding: 0.5rem;
+  background: #090d16;
+}
+
+.asciinema-player-box {
+  width: 100%;
+}
+
+/* ==========================================================================
+   Giscus Comments Section
+   ========================================================================== */
+.comments-container {
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.comments-header {
+  margin-bottom: 1.5rem;
+}
+
+.comments-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.giscus-wrapper {
+  min-height: 120px;
+}
+
+/* ==========================================================================
+   OpenPGP Cryptographic Card
+   ========================================================================== */
+.pgp-card {
+  margin: 2rem 0;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.pgp-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.25rem;
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pgp-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.pgp-algo {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+}
+
+.pgp-card-body {
+  padding: 1.25rem;
+}
+
+.pgp-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.pgp-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.88rem;
+}
+
+.pgp-label {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+}
+
+.pgp-val {
+  color: var(--color-text);
+}
+
+.pgp-fingerprint-box {
+  margin: 1rem 0;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+}
+
+.pgp-fp-label {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--color-primary);
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.pgp-fp-value-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.pgp-fp-code {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: #f1f5f9;
+  letter-spacing: 0.04em;
+  word-break: break-all;
+}
+
+.pgp-armored-block {
+  margin: 1.25rem 0;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--code-border);
+  background: var(--code-bg);
+  overflow: hidden;
+}
+
+.pgp-armored-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.85rem;
+  background: var(--code-header-bg);
+  border-bottom: 1px solid var(--code-border);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-dim);
+}
+
+.pgp-armored-code {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: #f8f8f2 !important;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.pgp-actions {
+  margin-top: 1.25rem;
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* ==========================================================================
+   Responsive Post Featured Image
+   ========================================================================== */
+.post-featured-image-container {
+  margin: 1.5rem 0 2rem 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+}
+
+.post-featured-figure {
+  margin: 0;
+  width: 100%;
+}
+
+.post-featured-img {
+  width: 100%;
+  height: auto;
+  max-height: 480px;
+  object-fit: cover;
+  display: block;
+}

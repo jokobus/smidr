@@ -1,0 +1,46 @@
+{{- /* Smidr Theme - AI Transparency & Origin Badge */ -}}
+{{- $showAi := false -}}
+{{- if isset .Params "used_ai" -}}
+  {{- $showAi = true -}}
+{{- else if .Params.original_language -}}
+  {{- $showAi = true -}}
+{{- end -}}
+
+{{- if $showAi -}}
+{{- $usedAi := .Params.used_ai | default false -}}
+{{- $origLang := .Params.original_language | default "" -}}
+{{- $origPath := .Params.original_post_path | default "" -}}
+{{- $aiModel := .Params.ai_model | default "" -}}
+{{- $currLang := .Language.Lang -}}
+
+<div class="ai-transparency-box">
+  <div class="ai-transparency-icon">
+    {{ if $usedAi }}✨{{ else }}🛡️{{ end }}
+  </div>
+  <div class="ai-transparency-content">
+    {{- if not $usedAi -}}
+      <span class="ai-badge-human">{{ i18n "ai_original" }}</span>
+    {{- else if and $origPath (ne $currLang $origLang) -}}
+      <span>
+        {{ i18n "ai_translated_from" }}
+        <a href="{{ $origPath | relLangURL }}" class="ai-orig-link">{{ i18n "ai_original_link_text" }}</a>.
+      </span>
+    {{- else if and $origPath (eq $currLang $origLang) -}}
+      <span>
+        {{ i18n "ai_enhanced_from" }}
+        <a href="{{ $origPath | relLangURL }}" class="ai-orig-link">{{ i18n "ai_original_link_text" }}</a>.
+      </span>
+    {{- else if eq .Params.ai_mode "enhanced" -}}
+      <span>{{ i18n "ai_enhanced" }}.</span>
+    {{- else if eq .Params.ai_mode "translated" -}}
+      <span>{{ i18n "ai_translated" }}.</span>
+    {{- else -}}
+      <span>{{ i18n "ai_assisted" }}.</span>
+    {{- end -}}
+
+    {{- with $aiModel -}}
+    <span class="ai-model-tag">{{ . }}</span>
+    {{- end -}}
+  </div>
+</div>
+{{- end -}}

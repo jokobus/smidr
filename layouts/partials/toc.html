@@ -1,0 +1,22 @@
+{{- /* Smidr Theme - Sticky & Collapsible Table of Contents */ -}}
+{{- $showToc := false -}}
+{{- if and (ne .Params.toc false) (gt .WordCount 150) (ne .TableOfContents "<nav id=\"TableOfContents\"></nav>") -}}
+  {{- $showToc = true -}}
+{{- end -}}
+
+{{- if $showToc -}}
+<aside class="toc-box" aria-label="{{ i18n "table_of_contents" }}">
+  <details class="toc-details" open>
+    <summary class="toc-summary">
+      <span class="toc-title">
+        <span class="toc-icon">📑</span>
+        <span>{{ i18n "table_of_contents" }}</span>
+      </span>
+      <span class="toc-chevron">▾</span>
+    </summary>
+    <div class="toc-nav-wrapper">
+      {{ .TableOfContents }}
+    </div>
+  </details>
+</aside>
+{{- end -}}

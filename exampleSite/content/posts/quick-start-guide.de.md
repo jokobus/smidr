@@ -70,3 +70,42 @@ Geheimer Schlüssel: {{< secret >}}CYBER-FORGE-2026{{< /secret >}}
 Fußnoten springen nicht an das Seitenende[^1].
 
 [^1]: Beim Berühren mit der Maus oder Antippen öffnet sich direkt ein Popover!
+
+## 9. KI-Transparenz & Übersetzungshinweise
+
+Smidr enthält integrierte Hinweise zur Kennzeichnung von KI-Unterstützung und Übersetzung:
+
+```yaml
+used_ai: true
+original_language: "de"
+original_post_path: "/de/posts/meine-notizen/"
+ai_model: "Ollama / Llama 3"
+```
+
+## 10. OpenPGP Kryptografische Identitätsüberprüfung
+
+Zeige deinen öffentlichen PGP-Schlüssel, Fingerabdruck und Download-Button mit `pgp-card`:
+
+{{< pgp-card name="Jakob / Jokobus" email="jokobus@example.com" keyId="A1B2C3D4E5F67890" fingerprint="ABCD 1234 EF56 7890 ABCD  1234 EF56 7890 ABCD 1234" algo="RSA 4096 / Ed25519" keyUrl="/openpgp/key.asc" >}}
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: OpenPGP.js v5.1.0
+
+mQGNBGXx... [ASCII Armored Key hier einfügen] ...
+-----END PGP PUBLIC KEY BLOCK-----
+{{< /pgp-card >}}
+
+## 11. Asciinema Terminal-Wiedergabe
+
+Interaktive Terminalaufzeichnungen ohne Videoballast einbetten:
+
+```markdown
+{{</* asciinema id="123456" title="Installation von PyTorch mit CUDA" */>}}
+```
+
+## 12. Direkte Code-Dateieinbindung
+
+Statt Code per Copy-Paste einzufügen, binde Quelldateien direkt ein:
+
+```markdown
+{{</* code-file source="scripts/train.py" lang="python" title="Trainingsschleife" */>}}
+```

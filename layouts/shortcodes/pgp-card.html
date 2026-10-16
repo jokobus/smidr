@@ -1,0 +1,90 @@
+{{- /* Smidr Theme - OpenPGP Cryptographic Identity Verification Card */ -}}
+{{- $name := .Get "name" | default .Site.Params.author.name | default .Site.Title -}}
+{{- $email := .Get "email" | default .Site.Params.author.email | default "" -}}
+{{- $keyId := .Get "keyId" | default (.Get "key_id") -}}
+{{- $fingerprint := .Get "fingerprint" | default "" -}}
+{{- $algo := .Get "algo" | default "RSA 4096 / Ed25519" -}}
+{{- $keyUrl := .Get "keyUrl" | default (.Get "key_url") | default (.Get "download") -}}
+{{- $created := .Get "created" | default "" -}}
+{{- $expires := .Get "expires" | default "Never" -}}
+
+{{- /* Clean up and format fingerprint with spaces */ -}}
+{{- $cleanFp := replace $fingerprint " " "" -}}
+{{- $formattedFp := "" -}}
+{{- if eq (len $cleanFp) 40 -}}
+  {{- $part1 := substr $cleanFp 0 20 -}}
+  {{- $part2 := substr $cleanFp 20 20 -}}
+  {{- $formattedFp = printf "%s  %s" $part1 $part2 -}}
+{{- else -}}
+  {{- $formattedFp = $fingerprint -}}
+{{- end -}}
+
+<div class="pgp-card">
+  <div class="pgp-card-header">
+    <div class="pgp-badge">
+      <span class="pgp-icon">🔐</span>
+      <span class="pgp-title">OpenPGP Public Key Verification</span>
+    </div>
+    <span class="pgp-algo">{{ $algo }}</span>
+  </div>
+
+  <div class="pgp-card-body">
+    <div class="pgp-meta-grid">
+      <div class="pgp-meta-item">
+        <span class="pgp-label">UID / Identity:</span>
+        <span class="pgp-val"><strong>{{ $name }}</strong>{{ with $email }} &lt;{{ . }}&gt;{{ end }}</span>
+      </div>
+      {{ with $keyId }}
+      <div class="pgp-meta-item">
+        <span class="pgp-label">Key ID:</span>
+        <span class="pgp-val font-mono">0x{{ . }}</span>
+      </div>
+      {{ end }}
+      {{ with $created }}
+      <div class="pgp-meta-item">
+        <span class="pgp-label">Created:</span>
+        <span class="pgp-val">{{ . }}</span>
+      </div>
+      {{ end }}
+      {{ with $expires }}
+      <div class="pgp-meta-item">
+        <span class="pgp-label">Expires:</span>
+        <span class="pgp-val">{{ . }}</span>
+      </div>
+      {{ end }}
+    </div>
+
+    {{ if $formattedFp }}
+    <div class="pgp-fingerprint-box">
+      <div class="pgp-fp-label">{{ i18n "pgp_fingerprint" }}:</div>
+      <div class="pgp-fp-value-row">
+        <code class="pgp-fp-code">{{ $formattedFp }}</code>
+        <button class="code-copy-btn" type="button" onclick="navigator.clipboard.writeText('{{ $cleanFp }}'); this.innerHTML='<span>✓</span> Copied!'; var b=this; setTimeout(function(){ b.innerHTML='<span>📋</span> Copy'; }, 2000);" aria-label="Copy fingerprint">
+          <span>📋</span> Copy
+        </button>
+      </div>
+    </div>
+    {{ end }}
+
+    {{ with .Inner }}
+    <div class="pgp-armored-block">
+      <div class="pgp-armored-header">
+        <span>ASCII Armored Public Key</span>
+        <button class="code-copy-btn" type="button" onclick="navigator.clipboard.writeText(this.closest('.pgp-armored-block').querySelector('pre').innerText); this.innerHTML='<span>✓</span> Copied!'; var b=this; setTimeout(function(){ b.innerHTML='<span>📋</span> Copy'; }, 2000);">
+          <span>📋</span> Copy Key
+        </button>
+      </div>
+      <pre class="pgp-armored-code"><code>{{ . | chomp }}</code></pre>
+    </div>
+    {{ end }}
+
+    {{ with $keyUrl }}
+    <div class="pgp-actions">
+      <a href="{{ . | relURL }}" download class="pub-btn" style="background: var(--gradient-cyber); color: #ffffff; border: none; font-weight: 700; padding: 0.5rem 1rem;">
+        <span>💾</span>
+        <span>{{ i18n "pgp_download_key" }}</span>
+      </a>
+    </div>
+    {{ end }}
+  </div>
+</div>

@@ -1,0 +1,61 @@
+{{- /* Smidr Theme - Privacy-first Giscus (GitHub Discussions) Comments */ -}}
+{{- $giscus := .Site.Params.giscus -}}
+{{- if and $giscus $giscus.enable (ne .Params.comments false) -}}
+<section class="comments-container" id="comments" aria-label="{{ i18n "comments_title" }}">
+  <div class="comments-header">
+    <h3 class="comments-title">
+      <span>💬</span>
+      <span>{{ i18n "comments_title" }}</span>
+    </h3>
+  </div>
+
+  <div class="giscus-wrapper">
+    <div class="giscus"></div>
+  </div>
+
+  <script>
+  (function() {
+    function getTheme() {
+      var currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      return currentTheme === 'light' ? 'light' : 'noborder_gray';
+    }
+
+    var script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.setAttribute('data-repo', '{{ $giscus.repo }}');
+    script.setAttribute('data-repo-id', '{{ $giscus.repoId }}');
+    script.setAttribute('data-category', '{{ $giscus.category | default "General" }}');
+    script.setAttribute('data-category-id', '{{ $giscus.categoryId }}');
+    script.setAttribute('data-mapping', '{{ $giscus.mapping | default "pathname" }}');
+    script.setAttribute('data-strict', '0');
+    script.setAttribute('data-reactions-enabled', '{{ $giscus.reactionsEnabled | default "1" }}');
+    script.setAttribute('data-emit-metadata', '0');
+    script.setAttribute('data-input-position', '{{ $giscus.inputPosition | default "bottom" }}');
+    script.setAttribute('data-theme', getTheme());
+    script.setAttribute('data-lang', '{{ $.Language.Lang | default "en" }}');
+    script.setAttribute('crossorigin', 'anonymous');
+    script.async = true;
+
+    document.querySelector('.giscus-wrapper').appendChild(script);
+
+    // Sync theme dynamically with Smidr theme switcher
+    var observer = new MutationObserver(function() {
+      var iframe = document.querySelector('iframe.giscus-frame');
+      if (!iframe) return;
+      iframe.contentWindow.postMessage({
+        giscus: {
+          setConfig: {
+            theme: getTheme()
+          }
+        }
+      }, 'https://giscus.app');
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+  })();
+  </script>
+</section>
+{{- end -}}

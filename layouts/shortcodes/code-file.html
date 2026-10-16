@@ -1,0 +1,59 @@
+{{- /* Smidr Theme - Direct File Inclusion Shortcode */ -}}
+{{- $source := .Get "source" | default (.Get "file") | default (.Get 0) -}}
+{{- $lang := .Get "lang" | default (.Get "language") -}}
+{{- $options := .Get "options" | default "" -}}
+{{- $title := .Get "title" -}}
+
+{{- if not $source -}}
+  {{- errorf "Shortcode 'code' requires a 'source' parameter pointing to a file path. Position: %s" .Position -}}
+{{- end -}}
+
+{{- /* Determine file extension as fallback language if not explicitly provided */ -}}
+{{- if not $lang -}}
+  {{- $ext := path.Ext $source | strings.TrimPrefix "." -}}
+  {{- if eq $ext "py" }}{{ $lang = "python" }}
+  {{- else if eq $ext "js" }}{{ $lang = "javascript" }}
+  {{- else if eq $ext "ts" }}{{ $lang = "typescript" }}
+  {{- else if eq $ext "rs" }}{{ $lang = "rust" }}
+  {{- else if eq $ext "cpp" }}{{ $lang = "cpp" }}
+  {{- else if eq $ext "c" }}{{ $lang = "c" }}
+  {{- else if eq $ext "sh" }}{{ $lang = "bash" }}
+  {{- else if eq $ext "yml" }}{{ $lang = "yaml" }}
+  {{- else if eq $ext "toml" }}{{ $lang = "toml" }}
+  {{- else if eq $ext "json" }}{{ $lang = "json" }}
+  {{- else if $ext }}{{ $lang = $ext }}
+  {{- else }}{{ $lang = "plaintext" }}{{ end -}}
+{{- end -}}
+
+{{- /* Attempt to read file: 1. Page Resource, 2. Global Assets Resource, 3. Filesystem Path */ -}}
+{{- $content := "" -}}
+{{- with .Page.Resources.Get $source -}}
+  {{- $content = .Content -}}
+{{- else -}}
+  {{- with resources.Get $source -}}
+    {{- $content = .Content -}}
+  {{- else -}}
+    {{- if fileExists $source -}}
+      {{- $content = readFile $source -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if $content -}}
+  {{- $codeSnippet := trim $content "\n\r" -}}
+  {{- $displayTitle := $title | default (path.Base $source) -}}
+  <div class="code-file-container">
+    <div class="code-file-header">
+      <div class="code-file-title">
+        <span>📄</span>
+        <span>{{ $displayTitle }}</span>
+      </div>
+      <span class="code-lang-badge">{{ $lang }}</span>
+    </div>
+    {{ highlight $codeSnippet $lang $options }}
+  </div>
+{{- else -}}
+  <div class="alert alert-warning">
+    <strong>⚠️ Code File Missing:</strong> Unable to locate <code>{{ $source }}</code>. Ensure the file path is relative to the page bundle, assets directory, or site root.
+  </div>
+{{- end -}}

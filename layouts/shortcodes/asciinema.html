@@ -1,0 +1,86 @@
+{{- /* Smidr Theme - Asciinema Terminal Session Player */ -}}
+{{- $src := .Get "src" | default (.Get "file") | default (.Get 0) -}}
+{{- $id := .Get "id" -}}
+{{- $title := .Get "title" | default "Terminal Telemetry Session" -}}
+{{- $rows := .Get "rows" | default 20 -}}
+{{- $theme := .Get "theme" | default "solarized-dark" -}}
+{{- $speed := .Get "speed" | default 1 -}}
+{{- $loop := .Get "loop" | default false -}}
+{{- $preload := .Get "preload" | default true -}}
+
+{{- if not (or $src $id) -}}
+  {{- errorf "Shortcode 'asciinema' requires a cast source or ID. Example: {{< asciinema src=\"/casts/demo.cast\" >}} or {{< asciinema id=\"123456\" >}}" -}}
+{{- end -}}
+
+{{- if $id -}}
+  <!-- Official Asciinema.org Cloud Embed -->
+  <div class="asciinema-wrapper">
+    <div class="asciinema-header">
+      <div class="code-lang-badge">
+        <span>💻</span>
+        <span>{{ $title }}</span>
+      </div>
+      <span class="tag-badge">CLOUD CAST</span>
+    </div>
+    <div class="asciinema-body">
+      <script async id="asciicast-{{ $id }}" src="https://asciinema.org/a/{{ $id }}.js"></script>
+    </div>
+  </div>
+{{- else -}}
+  <!-- Self-Hosted .cast File Player (100% Private & Autonomous) -->
+  {{- $castUrl := $src | relURL -}}
+  {{- with .Page.Resources.Get $src -}}
+    {{- $castUrl = .RelPermalink -}}
+  {{- end -}}
+  {{- $uid := printf "asciinema-%s" (delimit (shuffle (seq 1 9)) "") -}}
+
+  <div class="asciinema-wrapper" id="wrapper-{{ $uid }}">
+    <div class="asciinema-header">
+      <div class="code-lang-badge">
+        <span>💻</span>
+        <span>{{ $title }}</span>
+      </div>
+      <span class="tag-badge">TERMINAL REPLAY</span>
+    </div>
+    <div class="asciinema-body">
+      <div id="{{ $uid }}" class="asciinema-player-box" data-cast-url="{{ $castUrl }}" data-rows="{{ $rows }}" data-theme="{{ $theme }}" data-speed="{{ $speed }}" data-loop="{{ $loop }}" data-preload="{{ $preload }}"></div>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    function loadScript(src, cb) {
+      if (document.querySelector('script[src="' + src + '"]')) {
+        cb();
+        return;
+      }
+      var s = document.createElement('script');
+      s.src = src;
+      s.onload = cb;
+      document.head.appendChild(s);
+    }
+    function loadCSS(href) {
+      if (document.querySelector('link[href="' + href + '"]')) return;
+      var l = document.createElement('link');
+      l.rel = 'stylesheet';
+      l.href = href;
+      document.head.appendChild(l);
+    }
+
+    loadCSS('https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.css');
+    loadScript('https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.js', function() {
+      var el = document.getElementById('{{ $uid }}');
+      if (el && window.AsciinemaPlayer) {
+        window.AsciinemaPlayer.create(el.dataset.castUrl, el, {
+          rows: parseInt(el.dataset.rows, 10) || 20,
+          theme: el.dataset.theme || 'solarized-dark',
+          speed: parseFloat(el.dataset.speed) || 1,
+          loop: el.dataset.loop === 'true',
+          preload: el.dataset.preload === 'true',
+          fit: 'width'
+        });
+      }
+    });
+  })();
+  </script>
+{{- end -}}

@@ -1,4 +1,5 @@
 {{ define "main" }}
+{{- $isPost := or (eq .Section "posts") (eq .Type "posts") -}}
 <div class="container">
   <article class="article-container" itemscope itemtype="http://schema.org/BlogPosting">
     {{- if and (ne .Params.head false) (ne .Params.head "false") -}}
@@ -17,6 +18,7 @@
       {{ .Content }}
     </div>
 
+    {{- if $isPost -}}
     <!-- Article Bottom Sharing & Copy Link Action -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--color-border); flex-wrap: wrap; gap: 1rem;">
       <div class="post-tags">
@@ -71,6 +73,7 @@
       <div style="flex: 1;"></div>
       {{ end }}
     </nav>
+    {{- end -}}
   </article>
 </div>
 {{ end }}

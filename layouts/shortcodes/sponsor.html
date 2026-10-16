@@ -1,0 +1,34 @@
+{{- /* Smidr Theme - In-Article Sponsor Shortcode */ -}}
+{{- $title := .Get "title" | default "Support This Research" -}}
+{{- $text := .Get "text" | default "If you find these robotics, machine learning, and engineering deep dives useful, consider supporting open-source development." -}}
+{{- $link := .Get "link" | default "https://github.com/sponsors" -}}
+{{- $button := .Get "button" | default "Sponsor on GitHub 💜" -}}
+{{- $badge := .Get "badge" | default "SPONSOR" -}}
+{{- $image := .Get "image" -}}
+
+<div class="ad-container in-article-ad sponsor-card-custom">
+  <div class="ad-card">
+    <div class="ad-header">
+      <span class="ad-badge sponsor-badge-purple">{{ $badge }}</span>
+      <span class="ad-disclaimer">Open Hardware & AI Research</span>
+    </div>
+    <div class="ad-body">
+      {{ with $image }}
+      <div class="ad-image-wrap">
+        <img src="{{ . | relURL }}" alt="Sponsor" class="ad-image" loading="lazy">
+      </div>
+      {{ end }}
+      <div class="ad-text-wrap">
+        <h4 class="ad-title">{{ $title }}</h4>
+        <div class="ad-desc">{{ $text | markdownify }}</div>
+      </div>
+      {{ with $link }}
+      <div class="ad-action">
+        <a href="{{ . }}" target="_blank" rel="noopener sponsored" class="ad-btn sponsor-btn-gradient">
+          {{ $button }}
+        </a>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</div>

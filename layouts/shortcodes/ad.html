@@ -1,0 +1,34 @@
+{{- /* Smidr Theme - In-Article Sponsor / Ad Shortcode */ -}}
+{{- $title := .Get "title" | default "Research Sponsor" -}}
+{{- $text := .Get "text" | default "Supporter of open robotics and engineering development." -}}
+{{- $link := .Get "link" | default "#" -}}
+{{- $button := .Get "button" | default "Learn More →" -}}
+{{- $badge := .Get "badge" | default "SPONSORED" -}}
+{{- $image := .Get "image" -}}
+
+<div class="ad-container in-article-ad">
+  <div class="ad-card">
+    <div class="ad-header">
+      <span class="ad-badge">{{ $badge }}</span>
+      <span class="ad-disclaimer">Supporter of open robotics & science</span>
+    </div>
+    <div class="ad-body">
+      {{ with $image }}
+      <div class="ad-image-wrap">
+        <img src="{{ . | relURL }}" alt="Sponsor" class="ad-image" loading="lazy">
+      </div>
+      {{ end }}
+      <div class="ad-text-wrap">
+        <h4 class="ad-title">{{ $title }}</h4>
+        <div class="ad-desc">{{ $text | markdownify }}</div>
+      </div>
+      {{ with $link }}
+      <div class="ad-action">
+        <a href="{{ . }}" target="_blank" rel="noopener sponsored" class="ad-btn">
+          {{ $button }}
+        </a>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</div>

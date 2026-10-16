@@ -80,6 +80,27 @@ params:
     websiteId: "your-umami-website-id-here"
     hostUrl: "https://cloud.umami.is"
 
+  # Optional Privacy-Friendly Advertisement / Sponsorship Slot
+  ad:
+    enabled: false
+    badge: "SPONSOR"
+    disclaimer: "Support open robotics research"
+    title: "Autonomous Robotics Lab"
+    text: "Open-source motion planning and neural control tools for agile mobile manipulators."
+    button: "Learn More →"
+    link: "https://github.com/sponsors"
+
+  # Optional Giscus GitHub Discussions Comments
+  giscus:
+    enable: false
+    repo: "your-username/your-repo"
+    repoId: "R_kgDO..."
+    category: "Announcements"
+    categoryId: "DIC_kwDO..."
+    mapping: "pathname"
+    reactionsEnabled: "1"
+    inputPosition: "bottom"
+
 # Goldmark Markdown configuration
 markup:
   goldmark:

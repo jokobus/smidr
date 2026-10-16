@@ -8,12 +8,18 @@ features = [
   "dark-mode",
   "command-palette",
   "wasm-code-runner",
+  "tikz-rendering",
+  "bibtex-citations",
   "katex-math",
   "fuzzy-search",
   "digital-garden-graph",
   "popover-footnotes",
   "callout-boxes",
   "interactive-widgets",
+  "ai-transparency",
+  "asciinema-player",
+  "openpgp-card",
+  "giscus-comments",
   "game-404",
   "dynamic-tab-favicon",
   "i18n-en-de",
@@ -21,6 +27,7 @@ features = [
   "backlinks"
 ]
 min_version = "0.120.0"
+demosite = "https://jokobus.github.io/smidr/"
 
 [author]
   name = "Smidr Team"

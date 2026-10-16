@@ -1,0 +1,34 @@
+{{- /* Smidr Theme - Privacy-Friendly Advertisement & Sponsorship Slot */ -}}
+{{- $ad := .Site.Params.ad -}}
+{{- if and $ad $ad.enabled (ne .Params.ad false) -}}
+<div class="ad-container" aria-label="Advertisement / Sponsored Content">
+  <div class="ad-card">
+    <div class="ad-header">
+      <span class="ad-badge">{{ $ad.badge | default "SPONSORED" }}</span>
+      <span class="ad-disclaimer">{{ $ad.disclaimer | default "Support independent engineering & research" }}</span>
+    </div>
+    <div class="ad-body">
+      {{ with $ad.image }}
+      <div class="ad-image-wrap">
+        <img src="{{ . | relURL }}" alt="Sponsor" class="ad-image" loading="lazy">
+      </div>
+      {{ end }}
+      <div class="ad-text-wrap">
+        {{ with $ad.title }}
+        <h4 class="ad-title">{{ . }}</h4>
+        {{ end }}
+        {{ with $ad.text }}
+        <p class="ad-desc">{{ . }}</p>
+        {{ end }}
+      </div>
+      {{ with $ad.link }}
+      <div class="ad-action">
+        <a href="{{ . }}" target="_blank" rel="noopener sponsored" class="ad-btn">
+          {{ $ad.button | default "Learn More →" }}
+        </a>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</div>
+{{- end -}}

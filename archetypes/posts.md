@@ -5,15 +5,22 @@ draft: true
 description: "A brief summary of this post (appears on social cards and post previews)."
 tags: ["robotics", "machine-learning"]
 categories: ["Engineering"]
+toc: true
+image: ""
 math: true
 tikz: false
 gardenGraph: true
 showBacklinks: true
+comments: true
+used_ai: false
+# original_language: "en"
+# original_post_path: ""
+# ai_model: "Ollama / Llama 3"
 ---
 
 <!-- 
 ================================================================================
-💡 QUICK WRITING CHEATSHEET FOR SMIDR THEME
+💡 COMPLETE WRITING CHEATSHEET FOR SMIDR THEME
 ================================================================================
 1. Headings: Use ## for Section Title, ### for Subsection Title.
 2. Math Equations (KaTeX):
@@ -32,27 +39,35 @@ showBacklinks: true
    import math
    print("Hello from browser WASM:", math.sqrt(16))
    {{</* /code-runner */>}}
-6. Interactive Dynamic System Sliders (PID / Oscillator):
+6. Direct File-Based Code Inclusion:
+   {{</* code-file source="scripts/train.py" lang="python" title="Training Script" */>}}
+7. Interactive Dynamic System Sliders (PID / Oscillator):
    {{</* interactive-widget title="System Tuner" */>}}
-7. TikZ Vector Diagrams (WebAssembly TeX, set tikz: true in frontmatter):
+8. Asciinema Terminal Replay (.cast or ID):
+   {{</* asciinema src="/casts/demo.cast" title="Terminal Session" */>}}
+9. TikZ Vector Diagrams (WebAssembly TeX, set tikz: true in frontmatter):
    {{</* tikz caption="Control Loop Diagram" */>}}
    \begin{tikzpicture}
      \draw[->, line width=1pt] (0,0) -- (3,0);
    \end{tikzpicture}
    {{</* /tikz */>}}
-8. BibTeX In-Text Citations & Bibliography:
-   - In text: As proven by {{</* cite "kalman1960" */>}}...
-   - At end of post:
-   {{</* bibliography */>}}
-   @article{kalman1960,
-     title = {A New Approach to Linear Filtering},
-     author = {Kalman, R. E.},
-     year = {1960}
-   }
-   {{</* /bibliography */>}}
-9. Secret Text (Hidden until selected or hovered):
-   {{</* secret hint="Hover to reveal" */>}}Hidden secret text{{</* /secret */>}}
-10. Inline Footnote Popover (Hover to view without scrolling):
+10. BibTeX In-Text Citations & Bibliography:
+    - In text: As proven by {{</* cite "kalman1960" */>}}...
+    - At end of post:
+    {{</* bibliography */>}}
+    @article{kalman1960,
+      title = {A New Approach to Linear Filtering},
+      author = {Kalman, R. E.},
+      year = {1960}
+    }
+    {{</* /bibliography */>}}
+11. OpenPGP Cryptographic Identity Verification:
+    {{</* pgp-card name="Your Name" fingerprint="ABCD...1234" */>}}
+12. Sponsorship / Ad Card:
+    {{</* sponsor title="Support this Research" link="https://github.com/sponsors/..." */>}}
+13. Secret Text (Hidden until selected or hovered):
+    {{</* secret hint="Hover to reveal" */>}}Hidden secret text{{</* /secret */>}}
+14. Inline Footnote Popover (Hover to view without scrolling):
     Here is a sentence with a note[^1].
     [^1]: This footnote pops up directly on hover or tap!
 ================================================================================

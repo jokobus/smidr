@@ -1,10 +1,21 @@
 # Smidr 🔨
 
-[![Hugo](https://img.shields.io/badge/Hugo-%3E%3D_0.120.0-ff4088?style=flat&logo=hugo)](https://gohugo.io/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-00f0ff.svg?style=flat)](LICENSE)
-[![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero_npm-00f5a0.svg?style=flat)](#)
-[![WebAssembly](https://img.shields.io/badge/WASM-Pyodide_%26_TikZ-8a2be2.svg?style=flat)](#)
-[![Privacy](https://img.shields.io/badge/Analytics-Umami_(No_Google)-ff007a.svg?style=flat)](#)
+<p align="center">
+  <a href="https://jokobus.github.io/smidr/" target="_blank">
+    <img src="https://img.shields.io/badge/🌐_LIVE_PREVIEW-jokobus.github.io%2Fsmidr-00f0ff?style=for-the-badge&logo=googlechrome&logoColor=black" alt="Live Demo" height="38">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://gohugo.io/"><img src="https://img.shields.io/badge/Hugo-%3E%3D_0.120.0-ff4088?style=flat&logo=hugo" alt="Hugo"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-00f0ff.svg?style=flat" alt="License"></a>
+  <a href="https://jokobus.github.io/smidr/"><img src="https://img.shields.io/badge/Demo-Live_Preview-8a2be2.svg?style=flat&logo=githubpages&logoColor=white" alt="Live Preview"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Dependencies-Zero_npm-00f5a0.svg?style=flat" alt="Zero Dependencies"></a>
+  <a href="#"><img src="https://img.shields.io/badge/WASM-Pyodide_%26_TikZ-ff007a.svg?style=flat" alt="WebAssembly"></a>
+</p>
+
+> 🚀 **Explore the Live Theme Demo:** **[https://jokobus.github.io/smidr/](https://jokobus.github.io/smidr/)**  
+> *Test in-browser WebAssembly Python execution, dynamic sliders, interactive graph, and theme switching live.*
 
 A modern, tech-savvy, and futuristic Hugo theme engineered for **Robotics, Machine Learning, and Engineering** blogs, research portfolios, and digital gardens.
 

@@ -1,0 +1,21 @@
+{{- $period := .Get "period" -}}
+{{- $title := .Get "title" -}}
+{{- $org := .Get "org" -}}
+{{- $location := .Get "location" -}}
+
+<div class="cv-timeline-item">
+  <div class="cv-timeline-period">{{ $period }}</div>
+  <div class="cv-timeline-marker"></div>
+  <div class="cv-timeline-content">
+    <div class="cv-timeline-title">{{ $title }}</div>
+    <div class="cv-timeline-org">
+      <strong>{{ $org }}</strong>
+      {{ with $location }}<span class="cv-location">&bull; {{ . }}</span>{{ end }}
+    </div>
+    {{ with .Inner }}
+    <div class="cv-timeline-desc">
+      {{ . | markdownify }}
+    </div>
+    {{ end }}
+  </div>
+</div>

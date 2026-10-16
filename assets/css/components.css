@@ -434,14 +434,19 @@ sup.footnote-ref a:hover {
   width: 100%;
   min-height: 140px;
   padding: 1rem;
-  background: transparent;
-  color: var(--color-text);
+  background: rgba(0, 0, 0, 0.45) !important;
+  color: #f1f5f9 !important;
   border: none;
   outline: none;
   font-family: var(--font-mono);
   font-size: 0.9rem;
   line-height: 1.5;
   resize: vertical;
+}
+
+[data-theme="light"] .runner-textarea {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: #0f172a !important;
 }
 
 .runner-output-area {
@@ -564,31 +569,62 @@ sup.footnote-ref a:hover {
   border-top: 1px solid var(--color-border);
 }
 
+.backlinks-header-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
 .backlinks-header {
   display: flex;
   align-items: center;
   gap: 0.6rem;
   font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 1rem;
   color: var(--color-text);
+  margin: 0;
 }
 
-.backlinks-list {
+.backlink-count-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-dim);
+  color: var(--color-primary);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.backlinks-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1rem;
-  list-style: none;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
 }
 
 .backlink-card {
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
   background: var(--color-bg-surface);
   text-decoration: none;
   color: inherit;
   transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.backlink-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--gradient-cyber);
+  opacity: 0.8;
 }
 
 .backlink-card:hover {
@@ -597,17 +633,309 @@ sup.footnote-ref a:hover {
   box-shadow: var(--shadow-glow);
 }
 
+.backlink-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.backlink-badge {
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  color: var(--color-primary);
+  letter-spacing: 0.05em;
+}
+
+.backlink-date {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-dim);
+}
+
 .backlink-title {
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
+  font-weight: 700;
   color: var(--color-text);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.45rem;
+  line-height: 1.35;
 }
 
 .backlink-snippet {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--color-text-muted);
-  line-height: 1.4;
+  line-height: 1.5;
+  flex: 1;
+  margin-bottom: 0.85rem;
+}
+
+.backlink-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--color-text-dim);
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.backlink-arrow {
+  color: var(--color-primary);
+  font-weight: 700;
+  transition: transform var(--transition-fast);
+}
+
+.backlink-card:hover .backlink-arrow {
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   Publications Styles
+   ========================================================================== */
+.publication-card {
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
+  margin-bottom: 1.5rem;
+  transition: all var(--transition-fast);
+}
+
+.publication-card:hover {
+  border-color: var(--color-border-glow);
+  box-shadow: var(--shadow-sm);
+}
+
+.publication-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.pub-year-badge {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary-dim);
+  color: var(--color-primary);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+}
+
+.pub-venue {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.publication-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.4rem;
+  line-height: 1.35;
+}
+
+.publication-authors {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+}
+
+.publication-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.pub-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  transition: all var(--transition-fast);
+}
+
+.pub-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-glow);
+}
+
+.pub-details {
+  margin-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+  padding-top: 0.75rem;
+}
+
+.pub-details-summary {
+  font-size: 0.85rem;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.pub-details-content {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+/* ==========================================================================
+   CV Timeline Styles
+   ========================================================================== */
+.cv-timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 140px 24px 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 640px) {
+  .cv-timeline-item {
+    grid-template-columns: 24px 1fr;
+  }
+  .cv-timeline-period {
+    grid-column: 2;
+    order: -1;
+    margin-bottom: 0.25rem;
+  }
+}
+
+.cv-timeline-period {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-primary);
+  font-weight: 600;
+  padding-top: 0.15rem;
+}
+
+.cv-timeline-marker {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.cv-timeline-marker::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: var(--shadow-glow);
+  margin-top: 0.35rem;
+}
+
+.cv-timeline-marker::after {
+  content: "";
+  position: absolute;
+  top: 1.25rem;
+  bottom: -2rem;
+  width: 2px;
+  background: var(--color-border);
+}
+
+.cv-timeline-content {
+  padding-bottom: 1rem;
+}
+
+.cv-timeline-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.25rem;
+}
+
+.cv-timeline-org {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.cv-timeline-desc {
+  font-size: 0.9rem;
+  color: var(--color-text-dim);
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   Taxonomy Overview Grid (/tags/ and /categories/)
+   ========================================================================== */
+.terms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.term-card {
+  padding: 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
+  text-decoration: none;
+  color: inherit;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+}
+
+.term-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+.term-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.term-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.term-count-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-dim);
+  color: var(--color-primary);
+}
+
+.term-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.garden-stats-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  background: rgba(168, 85, 247, 0.15);
+  color: var(--color-secondary);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  margin-left: 0.5rem;
 }
 
 /* Digital Garden Interactive Canvas Graph */

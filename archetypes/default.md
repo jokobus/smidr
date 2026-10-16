@@ -2,14 +2,23 @@
 title: "{{ replace .Name "-" " " | title }}"
 date: {{ .Date }}
 draft: true
-description: ""
-summary: ""
-tags: []
-categories: []
+description: "A brief summary of this post."
+tags: ["engineering"]
+categories: ["Robotics"]
 math: true
-codeRunner: false
 gardenGraph: true
 showBacklinks: true
 ---
 
-Write your article content here using standard Markdown, LaTeX math ($e^{i\pi} + 1 = 0$), callouts, and interactive widgets.
+<!-- 
+💡 SMIDR THEME QUICK CHEATSHEET:
+- Math: $E = mc^2$ and $$\dot{x} = Ax + Bu$$
+- Code block: ```python ... ``` (includes auto-copy button & language badge)
+- Callouts: {{</* alert type="info|warning|caution|tip|robotics" title="..." */>}}...{{</* /alert */>}}
+- WASM Code Runner: {{</* code-runner lang="python" */>}}...{{</* /code-runner */>}}
+- Slider Simulator: {{</* interactive-widget */>}}
+- Secret text: {{</* secret */>}}hidden payload{{</* /secret */>}}
+- Footnotes: note[^1] and [^1]: Popover definition
+-->
+
+Write your article here.

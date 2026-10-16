@@ -43,7 +43,8 @@
 {{- /* CSS Assets Bundling */}}
 {{ $mainCss := resources.Get "css/main.css" }}
 {{ $compCss := resources.Get "css/components.css" }}
-{{ $bundleCss := slice $mainCss $compCss | resources.Concat "css/smidr-bundle.css" | resources.Minify | resources.Fingerprint }}
+{{ $syntaxCss := resources.Get "css/syntax.css" }}
+{{ $bundleCss := slice $mainCss $compCss $syntaxCss | resources.Concat "css/smidr-bundle.css" | resources.Minify | resources.Fingerprint }}
 <link rel="stylesheet" href="{{ $bundleCss.RelPermalink }}" integrity="{{ $bundleCss.Data.Integrity }}">
 
 {{- /* LaTeX Math Mode (KaTeX) */}}

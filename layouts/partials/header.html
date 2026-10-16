@@ -1,11 +1,12 @@
 <header class="site-header" role="banner">
   <div class="container-wide header-inner">
     <a href="{{ .Site.Home.RelPermalink }}" class="site-logo" aria-label="{{ .Site.Title }} Home">
-      <span class="logo-badge">⚡</span>
+      <span class="logo-badge">🔨</span>
       <span class="logo-text">{{ .Site.Title }}</span>
     </a>
 
-    <nav class="site-nav" aria-label="Main Navigation">
+    <!-- Desktop Navigation Menu -->
+    <nav class="site-nav desktop-nav" aria-label="Main Navigation">
       <ul class="nav-menu">
         {{- range .Site.Menus.main -}}
         <li>
@@ -17,8 +18,9 @@
       </ul>
     </nav>
 
+    <!-- Header Actions (Search, Language, Theme, Mobile Hamburger) -->
     <div class="header-actions">
-      <!-- Search & Command Palette Trigger -->
+      <!-- Search Trigger (Cmd+K) -->
       <button id="search-trigger-btn" class="search-trigger-btn" type="button" aria-label="{{ i18n "search_prompt" }}">
         <span>🔍</span>
         <span class="search-btn-text">{{ i18n "search_placeholder" | truncate 12 "..." }}</span>
@@ -47,6 +49,33 @@
       <button class="btn-icon" type="button" data-action="toggle-theme" aria-label="{{ i18n "theme_toggle" }}">
         <span class="theme-icon">☀️</span>
       </button>
+
+      <!-- Mobile Hamburger Menu Button -->
+      <button id="mobile-menu-btn" class="btn-icon mobile-menu-btn" type="button" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger-icon">☰</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Dropdown Navigation Drawer -->
+  <div id="mobile-nav-drawer" class="mobile-nav-drawer" aria-hidden="true">
+    <div class="container">
+      <ul class="mobile-menu-list">
+        {{- range .Site.Menus.main -}}
+        <li>
+          <a class="mobile-nav-link{{ if or (eq $.RelPermalink .URL) (eq $.Section .Identifier) }} active{{ end }}" href="{{ .URL | relLangURL }}">
+            {{ .Name }}
+          </a>
+        </li>
+        {{- end -}}
+        <li class="mobile-menu-divider"></li>
+        <li>
+          <a class="mobile-nav-link" href="{{ "categories/" | relLangURL }}">📂 {{ i18n "categories" }}</a>
+        </li>
+        <li>
+          <a class="mobile-nav-link" href="{{ "tags/" | relLangURL }}">🏷️ {{ i18n "tags" }}</a>
+        </li>
+      </ul>
     </div>
   </div>
 </header>

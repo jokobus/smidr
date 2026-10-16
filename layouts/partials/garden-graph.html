@@ -1,22 +1,62 @@
 {{- $currentPage := . -}}
 {{- $nodes := slice -}}
 {{- $links := slice -}}
+{{- $isHome := .IsHome -}}
 
-{{- /* Add current node */}}
-{{- $nodes = $nodes | append (dict "id" $currentPage.RelPermalink "title" $currentPage.Title "url" $currentPage.RelPermalink "type" "post" "isCurrent" true) -}}
+{{- if $isHome -}}
+  {{- /* Global Site Knowledge Graph: Map all posts, tags, and connections */}}
+  {{- range .Site.RegularPages -}}
+    {{- $postId := .RelPermalink -}}
+    {{- $nodes = $nodes | append (dict "id" $postId "title" .Title "url" .RelPermalink "type" "post" "isCurrent" false) -}}
+    
+    {{- range .Params.tags -}}
+      {{- $tagId := printf "tag:%s" . -}}
+      {{- $tagUrl := printf "%s%s" ("tags/" | relLangURL) (. | urlize) -}}
+      {{- $nodes = $nodes | append (dict "id" $tagId "title" (printf "#%s" .) "url" $tagUrl "type" "tag" "isCurrent" false) -}}
+      {{- $links = $links | append (dict "source" $postId "target" $tagId) -}}
+    {{- end -}}
 
-{{- /* Add tags and link to current post */}}
-{{- range $currentPage.Params.tags -}}
-  {{- $tagId := printf "tag:%s" . -}}
-  {{- $tagUrl := printf "%s%s" ("tags/" | relLangURL) (. | urlize) -}}
-  {{- $nodes = $nodes | append (dict "id" $tagId "title" (printf "#%s" .) "url" $tagUrl "type" "tag" "isCurrent" false) -}}
-  {{- $links = $links | append (dict "source" $currentPage.RelPermalink "target" $tagId) -}}
+    {{- range .Params.categories -}}
+      {{- $catId := printf "cat:%s" . -}}
+      {{- $catUrl := printf "%s%s" ("categories/" | relLangURL) (. | urlize) -}}
+      {{- $nodes = $nodes | append (dict "id" $catId "title" (printf "📂 %s" .) "url" $catUrl "type" "category" "isCurrent" false) -}}
+      {{- $links = $links | append (dict "source" $postId "target" $catId) -}}
+    {{- end -}}
+  {{- end -}}
 
-  {{- /* Find up to 3 related posts sharing this tag */}}
-  {{- range first 3 (where (where $.Site.RegularPages ".Params.tags" "intersect" (slice .)) "RelPermalink" "ne" $currentPage.RelPermalink) -}}
-    {{- $relatedId := .RelPermalink -}}
-    {{- $nodes = $nodes | append (dict "id" $relatedId "title" .Title "url" .RelPermalink "type" "post" "isCurrent" false) -}}
-    {{- $links = $links | append (dict "source" $tagId "target" $relatedId) -}}
+{{- else -}}
+  {{- /* Article-specific Knowledge Graph */}}
+  {{- $nodes = $nodes | append (dict "id" $currentPage.RelPermalink "title" $currentPage.Title "url" $currentPage.RelPermalink "type" "post" "isCurrent" true) -}}
+
+  {{- range $currentPage.Params.tags -}}
+    {{- $tagId := printf "tag:%s" . -}}
+    {{- $tagUrl := printf "%s%s" ("tags/" | relLangURL) (. | urlize) -}}
+    {{- $nodes = $nodes | append (dict "id" $tagId "title" (printf "#%s" .) "url" $tagUrl "type" "tag" "isCurrent" false) -}}
+    {{- $links = $links | append (dict "source" $currentPage.RelPermalink "target" $tagId) -}}
+
+    {{- range (where (where $.Site.RegularPages ".Params.tags" "intersect" (slice .)) "RelPermalink" "ne" $currentPage.RelPermalink) -}}
+      {{- $relatedId := .RelPermalink -}}
+      {{- $nodes = $nodes | append (dict "id" $relatedId "title" .Title "url" .RelPermalink "type" "post" "isCurrent" false) -}}
+      {{- $links = $links | append (dict "source" $tagId "target" $relatedId) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* Also map backlinks as direct edges */}}
+  {{- range where .Site.RegularPages "RelPermalink" "ne" $currentPage.RelPermalink -}}
+    {{- if or (in .RawContent $currentPage.RelPermalink) (in .Content $currentPage.RelPermalink) -}}
+      {{- $backlinkId := .RelPermalink -}}
+      {{- $nodes = $nodes | append (dict "id" $backlinkId "title" .Title "url" .RelPermalink "type" "post" "isCurrent" false) -}}
+      {{- $links = $links | append (dict "source" $backlinkId "target" $currentPage.RelPermalink) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* Fallback: if post has no tags yet, include other recent posts so graph is never empty */}}
+  {{- if eq (len $links) 0 -}}
+    {{- range first 4 (where .Site.RegularPages "RelPermalink" "ne" $currentPage.RelPermalink) -}}
+      {{- $otherId := .RelPermalink -}}
+      {{- $nodes = $nodes | append (dict "id" $otherId "title" .Title "url" .RelPermalink "type" "post" "isCurrent" false) -}}
+      {{- $links = $links | append (dict "source" $currentPage.RelPermalink "target" $otherId) -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}
 
@@ -35,11 +75,12 @@
     <div class="garden-title-wrap">
       <span class="garden-graph-icon">🕸️</span>
       <strong>{{ i18n "garden_graph_title" }}</strong>
+      <span class="garden-stats-badge">{{ len $uniqueNodes }} nodes &bull; {{ len $links }} edges</span>
     </div>
     <span class="meta-words" style="font-size: 0.8rem; opacity: 0.8;">{{ i18n "garden_graph_subtitle" }}</span>
   </div>
   <canvas class="garden-canvas"></canvas>
   <script type="application/json" class="garden-data">
-{{ dict "currentNodeId" $currentPage.RelPermalink "nodes" $uniqueNodes "links" $links | jsonify (dict "indent" "  ") | safeHTML }}
+{{ dict "currentNodeId" $currentPage.RelPermalink "nodes" $uniqueNodes "links" $links | jsonify | safeJS }}
   </script>
 </div>

@@ -1,0 +1,39 @@
+{{ define "main" }}
+<div class="container">
+  <header class="article-header">
+    <div class="tag-badge" style="margin-bottom: 0.5rem;">
+      {{ if eq .Data.Plural "categories" }}📂 TAXONOMY{{ else }}🏷️ TAXONOMY{{ end }}
+    </div>
+    <h1 class="article-title">
+      {{ if eq .Data.Plural "categories" }}
+        {{ i18n "all_categories" }}
+      {{ else }}
+        {{ i18n "all_tags" }}
+      {{ end }}
+    </h1>
+    <p style="color: var(--color-text-muted); font-size: 1.1rem; margin-top: 0.5rem;">
+      {{ if eq .Data.Plural "categories" }}
+        Browse articles grouped by primary engineering disciplines and research fields.
+      {{ else }}
+        Explore articles across interconnected keywords, tools, and technical topics.
+      {{ end }}
+    </p>
+  </header>
+
+  <div class="terms-grid">
+    {{ range .Data.Terms.ByCount }}
+    <a href="{{ .Page.RelPermalink }}" class="term-card">
+      <div class="term-card-header">
+        <span class="term-name">
+          {{ if eq $.Data.Plural "categories" }}📁{{ else }}#{{ end }} {{ .Page.Title }}
+        </span>
+        <span class="term-count-badge">{{ .Count }} {{ if eq .Count 1 }}post{{ else }}posts{{ end }}</span>
+      </div>
+      <p class="term-desc">
+        {{ with .Page.Description }}{{ . | truncate 90 }}{{ else }}View all dispatches cataloged under {{ .Page.Title }}.{{ end }}
+      </p>
+    </a>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

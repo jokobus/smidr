@@ -1,6 +1,6 @@
 /**
  * Smidr Hugo Theme - Core Script
- * Handles theme toggling, dynamic tab/favicon, and code copy actions.
+ * Handles theme toggling, dynamic tab/favicon, mobile navigation, and code copy actions.
  */
 
 (function () {
@@ -55,12 +55,12 @@
     originalFavicon = faviconLink.href;
   }
 
-  // Generate dynamic alert favicon via SVG data URI
-  const awayFaviconSvg = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="%23ff007a"/><text x="50" y="68" font-size="52" text-anchor="middle" fill="white" font-family="monospace" font-weight="900">!</text></svg>`;
+  // Generate dynamic alert favicon via SVG data URI with glowing hammer badge
+  const awayFaviconSvg = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="%23ff007a"/><text x="50" y="66" font-size="46" text-anchor="middle" fill="white">🔨</text></svg>`;
 
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
-      const awayTitle = document.body.dataset.tabAwayTitle || "⚡ Smidr: Don't miss this update!";
+      const awayTitle = document.body.dataset.tabAwayTitle || "🔨 Smidr: Don't miss this update!";
       document.title = awayTitle;
       if (faviconLink) {
         faviconLink.href = awayFaviconSvg;
@@ -73,13 +73,37 @@
     }
   });
 
+  // --- Mobile Navigation Drawer Toggle ---
+  function setupMobileMenu() {
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const drawer = document.getElementById('mobile-nav-drawer');
+    if (!menuBtn || !drawer) return;
+
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isExpanded = menuBtn.getAttribute('aria-expanded') === 'true';
+      menuBtn.setAttribute('aria-expanded', !isExpanded);
+      drawer.classList.toggle('open');
+      drawer.setAttribute('aria-hidden', isExpanded);
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+      if (drawer.classList.contains('open') && !drawer.contains(e.target) && !menuBtn.contains(e.target)) {
+        drawer.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        drawer.setAttribute('aria-hidden', 'true');
+      }
+    });
+  }
+
   // --- Enhanced Code Blocks (Language Tags & Copy to Clipboard) ---
   function enhanceCodeBlocks() {
     const codeBlocks = document.querySelectorAll('.article-content pre > code, .highlight > pre > code');
     
     codeBlocks.forEach(code => {
       const pre = code.closest('pre');
-      if (!pre || pre.closest('.highlight-wrapper') || pre.closest('.runner-box')) return;
+      if (!pre || pre.closest('.highlight-wrapper') || pre.closest('.code-runner-box')) return;
 
       // Extract language from class (e.g. language-python, language-rust)
       let lang = 'CODE';
@@ -135,6 +159,7 @@
   // --- DOM Ready Hook ---
   document.addEventListener('DOMContentLoaded', () => {
     enhanceCodeBlocks();
+    setupMobileMenu();
     
     // Bind theme buttons
     document.querySelectorAll('[data-action="toggle-theme"]').forEach(btn => {

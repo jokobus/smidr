@@ -1,7 +1,7 @@
 /**
  * Smidr Hugo Theme - Digital Garden Knowledge Graph
  * Lightweight, high-performance canvas force-directed graph.
- * Fully interactive (drag, hover, click to navigate).
+ * Fully interactive (drag, hover, click to navigate) and responsive on mobile.
  */
 
 (function () {
@@ -15,6 +15,7 @@
     let graphData;
     try {
       graphData = JSON.parse(dataScript.textContent);
+      if (typeof graphData === 'string') graphData = JSON.parse(graphData);
       if (typeof graphData.nodes === 'string') graphData.nodes = JSON.parse(graphData.nodes);
       if (typeof graphData.links === 'string') graphData.links = JSON.parse(graphData.links);
     } catch (e) {
@@ -22,27 +23,40 @@
       return;
     }
 
+    if (!graphData.nodes || graphData.nodes.length === 0) return;
+
     const ctx = canvas.getContext('2d');
-    const width = canvas.clientWidth || 600;
-    const height = canvas.clientHeight || 280;
-    
-    // Scale for high-DPI displays
+    let width = 600;
+    let height = 300;
     const dpr = window.devicePixelRatio || 1;
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    ctx.scale(dpr, dpr);
+
+    function resizeCanvas() {
+      const rect = container.getBoundingClientRect();
+      width = Math.max(300, Math.floor(rect.width));
+      height = window.innerWidth < 640 ? 250 : 320;
+      
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+    }
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
     // Prepare nodes & links
-    const nodes = graphData.nodes.map((n, i) => ({
+    const nodes = graphData.nodes.map((n) => ({
       id: n.id,
       title: n.title,
       url: n.url,
-      type: n.type || 'post', // 'post' or 'tag'
-      x: width / 2 + (Math.random() - 0.5) * (width * 0.6),
-      y: height / 2 + (Math.random() - 0.5) * (height * 0.6),
+      type: n.type || 'post', // 'post', 'tag', 'category'
+      x: width / 2 + (Math.random() - 0.5) * (width * 0.7),
+      y: height / 2 + (Math.random() - 0.5) * (height * 0.7),
       vx: 0,
       vy: 0,
-      radius: n.type === 'tag' ? 6 : (n.isCurrent ? 9 : 7)
+      radius: n.isCurrent ? 10 : (n.type === 'category' ? 8 : (n.type === 'tag' ? 6 : 7))
     }));
 
     const nodeMap = new Map();
@@ -61,10 +75,10 @@
     let hoveredNode = null;
 
     // Simulation parameters
-    const repulsion = 450;
-    const springLength = 65;
-    const springStrength = 0.05;
-    const damping = 0.85;
+    const repulsion = nodes.length > 20 ? 350 : 550;
+    const springLength = nodes.length > 20 ? 55 : 75;
+    const springStrength = 0.04;
+    const damping = 0.82;
 
     function tick() {
       // Repulsion between all nodes
@@ -104,16 +118,16 @@
       // Center gravity & update position
       for (const node of nodes) {
         if (node === draggedNode) continue;
-        node.vx += (width / 2 - node.x) * 0.01;
-        node.vy += (height / 2 - node.y) * 0.01;
+        node.vx += (width / 2 - node.x) * 0.008;
+        node.vy += (height / 2 - node.y) * 0.008;
         node.vx *= damping;
         node.vy *= damping;
         node.x += node.vx;
         node.y += node.vy;
 
         // Boundaries
-        node.x = Math.max(node.radius + 5, Math.min(width - node.radius - 5, node.x));
-        node.y = Math.max(node.radius + 5, Math.min(height - node.radius - 5, node.y));
+        node.x = Math.max(node.radius + 6, Math.min(width - node.radius - 6, node.x));
+        node.y = Math.max(node.radius + 6, Math.min(height - node.radius - 6, node.y));
       }
     }
 
@@ -121,14 +135,15 @@
       ctx.clearRect(0, 0, width, height);
 
       const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-      const edgeColor = isDark ? 'rgba(0, 240, 255, 0.2)' : 'rgba(2, 132, 199, 0.25)';
+      const edgeColor = isDark ? 'rgba(0, 240, 255, 0.22)' : 'rgba(2, 132, 199, 0.25)';
       const nodeColorPost = isDark ? '#00f0ff' : '#0284c7';
       const nodeColorTag = isDark ? '#a855f7' : '#7e22ce';
+      const nodeColorCat = isDark ? '#10b981' : '#059669';
       const nodeColorCurrent = '#ff007a';
 
       // Draw links
       ctx.strokeStyle = edgeColor;
-      ctx.lineWidth = 1.2;
+      ctx.lineWidth = 1.3;
       for (const link of links) {
         ctx.beginPath();
         ctx.moveTo(link.source.x, link.source.y);
@@ -144,7 +159,11 @@
         if (node.id === graphData.currentNodeId) {
           ctx.fillStyle = nodeColorCurrent;
           ctx.shadowColor = nodeColorCurrent;
-          ctx.shadowBlur = 10;
+          ctx.shadowBlur = 12;
+        } else if (node.type === 'category') {
+          ctx.fillStyle = nodeColorCat;
+          ctx.shadowColor = nodeColorCat;
+          ctx.shadowBlur = 8;
         } else if (node.type === 'tag') {
           ctx.fillStyle = nodeColorTag;
           ctx.shadowColor = nodeColorTag;
@@ -152,13 +171,13 @@
         } else {
           ctx.fillStyle = nodeColorPost;
           ctx.shadowColor = nodeColorPost;
-          ctx.shadowBlur = 6;
+          ctx.shadowBlur = 8;
         }
         ctx.fill();
         ctx.shadowBlur = 0; // reset shadow
 
-        // Label on hover or for current node
-        if (node === hoveredNode || node.id === graphData.currentNodeId) {
+        // Label on hover or for current node or when few nodes
+        if (node === hoveredNode || node.id === graphData.currentNodeId || nodes.length <= 12) {
           ctx.font = '11px sans-serif';
           ctx.fillStyle = isDark ? '#f1f5f9' : '#0f172a';
           ctx.textAlign = 'center';
@@ -190,7 +209,7 @@
         const n = nodes[i];
         const dx = pos.x - n.x;
         const dy = pos.y - n.y;
-        if (dx * dx + dy * dy <= (n.radius + 4) * (n.radius + 4)) {
+        if (dx * dx + dy * dy <= (n.radius + 6) * (n.radius + 6)) {
           return n;
         }
       }
@@ -218,11 +237,40 @@
 
     window.addEventListener('mouseup', (e) => {
       if (draggedNode) {
-        // If it was a quick click without much drag, navigate
         if (hoveredNode && hoveredNode.url) {
           window.location.href = hoveredNode.url;
         }
         draggedNode = null;
+      }
+    });
+
+    // Touch support for mobile phones
+    canvas.addEventListener('touchstart', (e) => {
+      const pos = getMousePos(e);
+      const clicked = findNodeAt(pos);
+      if (clicked) {
+        e.preventDefault();
+        draggedNode = clicked;
+        hoveredNode = clicked;
+      }
+    }, { passive: false });
+
+    canvas.addEventListener('touchmove', (e) => {
+      if (draggedNode) {
+        e.preventDefault();
+        const pos = getMousePos(e);
+        draggedNode.x = pos.x;
+        draggedNode.y = pos.y;
+      }
+    }, { passive: false });
+
+    canvas.addEventListener('touchend', (e) => {
+      if (draggedNode) {
+        if (hoveredNode && hoveredNode.url) {
+          window.location.href = hoveredNode.url;
+        }
+        draggedNode = null;
+        hoveredNode = null;
       }
     });
   }

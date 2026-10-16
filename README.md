@@ -1,18 +1,23 @@
-# Smidr ⚡
+# Smidr 🔨
 
 A modern, tech-savvy, and futuristic Hugo theme engineered for **Robotics, Machine Learning, and Engineering** blogs and digital gardens.
 
-Designed to look sleek and cyberpunk while adhering to strict privacy, high accessibility standards (a11y), and zero server-side vulnerabilities.
+Named after the Old Norse smith / craftsman (*Smiðr*), it features a cyberpunk forged aesthetic with clean typography, high accessibility (a11y), responsive mobile layouts, and zero server-side vulnerabilities.
 
 ---
 
 ## ✨ Features
 
 - **🎨 Futuristic Cyber Aesthetics & Color Gradients:**
+  - Iconic **Smith's Hammer** (🔨) brand logo and custom favicon.
   - Modern neon gradients (`#00f0ff`, `#7000ff`, `#ff007a`, `#00f5a0`), subtle circuit dot grids, and glassmorphism.
-  - Hover glow effects and dynamic border highlights.
   - Custom `::selection` styling with vibrant neon accents.
   - **Secret Text Shortcode**: Hidden text colored identical to the background that reveals itself when selected or hovered!
+
+- **📱 Full Mobile & Small-Screen Responsiveness:**
+  - Fully optimized for smartphones and tablets.
+  - Collapsible slide-down mobile navigation drawer with touch-friendly menu targets.
+  - Auto-resizing interactive canvas widgets and touch controls for games, graphs, and code playgrounds.
 
 - **🌓 Instant Dark / Light Mode:**
   - Smooth theme toggling (Dark by default, crisp Light mode).
@@ -37,16 +42,23 @@ Designed to look sleek and cyberpunk while adhering to strict privacy, high acce
   - Embed interactive parameter sliders ($K_p$, damping $\zeta$, natural frequency $\omega_n$) with real-time HTML5 Canvas step response graphs (`{{< interactive-widget >}}`).
 
 - **🕸️ Contextual Backlinks & Digital Garden Knowledge Graph:**
-  - Bidirectional link detection discovers and displays incoming references at the bottom of articles (Roam/Obsidian style).
-  - Interactive force-directed canvas graph mapping relationships between articles and tags.
+  - Bidirectional link detection discovers and displays incoming references at the bottom of articles in Obsidian/Roam-style cards.
+  - Interactive force-directed canvas graph mapping relationships between articles, tags, and categories.
+
+- **📚 Academic Publications & CV Sections:**
+  - Dedicated **Publications** page with conference/journal cards, PDF/DOI/Code links, and expandable BibTeX & Abstract (`{{< publication >}}`).
+  - Dedicated **About & CV** page with a clean career timeline (`{{< cv-item >}}`) and technical skillsets.
+
+- **🏷️ Taxonomy & Categories Overview:**
+  - Complete `/categories/` and `/tags/` overview grids with post count badges and keyword exploration.
 
 - **📐 LaTeX Math Mode (KaTeX):**
   - Blazing fast, client-side rendering for inline (`$...$`) and display (`$$...$$`) mathematical equations.
 
-- **💻 Enhanced Code Blocks:**
-  - Language badges (e.g. `PYTHON`, `RUST`, `BASH`).
-  - Copy to clipboard with animated "Copied! ✓" feedback.
-  - Horizontal scrolling without line breaking or layout disruption.
+- **💻 High-Contrast Code Highlighting:**
+  - Bundled Dracula syntax highlighting for both dark and light modes.
+  - Immediate visibility with no unstyled text lag.
+  - Language badges (e.g. `PYTHON`, `RUST`, `BASH`), animated "Copied! ✓" feedback, and horizontal scrolling.
 
 - **💬 Modern Inline Footnote Popovers:**
   - Reveals footnote content in an elegant popover on hover or tap without jumping readers down to the footer.
@@ -57,23 +69,36 @@ Designed to look sleek and cyberpunk while adhering to strict privacy, high acce
 - **🎮 Retro-Cyberpunk 404 Jump & Run Game:**
   - Interactive HTML5 canvas mini-game on the 404 page featuring a Cyber Rover jumping over obstacles, double-jumping, collecting energy cores, and tracking High Scores in `localStorage`.
 
-- **👁️ Dynamic Tab Title & Favicon:**
-  - Changes the browser tab title and favicon to an alert state when the visitor navigates away, switching back on return.
-
-- **🛡️ Privacy & Semantic SEO:**
-  - Zero Google trackers or ad networks.
-  - Privacy-first analytics via **Umami**.
-  - Semantic HTML5, ARIA labels, skip-to-content accessibility link.
-  - Full OpenGraph & Twitter Cards metadata for Discord, Mastodon, X, and Slack link unfurls.
-  - Legal notices: Configurable copyright range (`© 2024-2026`), Imprint (Impressum), and Privacy Policy.
+- **📡 RSS / Atom Feed with Human-Readable XSLT:**
+  - Standard RSS 2.0 XML feed (`index.xml`) compliant with all feed readers.
+  - Styled with an **XSLT stylesheet (`rss-style.xsl`)**, so when a human visitor opens the `.xml` link in Chrome or Firefox, it renders as a sleek, user-friendly webpage instead of raw XML!
 
 ---
 
-## 🚀 Quick Start
+## ✍️ Quick Start: Writing a New Post (Zero AI Needed)
 
-### 1. Installation
+Writing a new article is as simple as running:
 
-You can add Smidr as a git submodule to your Hugo site:
+```bash
+hugo new posts/my-first-post.md
+```
+
+This uses Smidr's built-in archetype, pre-filling a complete cheatsheet with:
+- Frontmatter tags, categories, math mode toggle
+- Ready-to-use LaTeX math example
+- Formatted code block with copy button
+- Callout alert box
+- Interactive Pyodide WASM runner
+- Parameter slider widget
+- Popover footnote
+
+You can also look at `exampleSite/content/posts/quick-start-guide.en.md` for a complete live reference.
+
+---
+
+## 🚀 Installation & Setup
+
+### 1. Add Submodule
 
 ```bash
 git submodule add https://github.com/jokobus/smidr.git themes/smidr
@@ -81,11 +106,9 @@ git submodule add https://github.com/jokobus/smidr.git themes/smidr
 
 ### 2. Configure `hugo.yaml`
 
-Set the theme in your site's `hugo.yaml`:
-
 ```yaml
 baseURL: "https://yourdomain.com/"
-title: "Your Robotics & ML Logbook"
+title: "Smidr"
 theme: "smidr"
 defaultContentLanguage: "en"
 
@@ -93,19 +116,23 @@ outputs:
   home:
     - HTML
     - RSS
-    - JSON # Required for Command Palette search!
+    - JSON # Required for Command Palette fuzzy search!
   page:
     - HTML
   section:
     - HTML
     - RSS
+  taxonomy:
+    - HTML
+  term:
+    - HTML
 
-# Multi-language configuration (English & German)
 languages:
   en:
     label: "English"
     locale: "en-US"
     weight: 1
+    title: "Smidr"
     menus:
       main:
         - name: "Home"
@@ -114,19 +141,18 @@ languages:
         - name: "Blog"
           url: "/posts/"
           weight: 20
-        - name: "Projects"
-          url: "/projects/"
-          weight: 30
         - name: "Publications"
           url: "/publications/"
-          weight: 40
-        - name: "About"
+          weight: 30
+        - name: "About & CV"
           url: "/about/"
-          weight: 50
+          weight: 40
+
   de:
     label: "Deutsch"
     locale: "de-DE"
     weight: 2
+    title: "Smidr"
     menus:
       main:
         - name: "Start"
@@ -135,9 +161,12 @@ languages:
         - name: "Blog"
           url: "/de/posts/"
           weight: 20
-        - name: "Projekte"
-          url: "/de/projects/"
+        - name: "Publikationen"
+          url: "/de/publications/"
           weight: 30
+        - name: "Über mich & CV"
+          url: "/de/about/"
+          weight: 40
 
 params:
   since: 2024
@@ -161,38 +190,53 @@ markup:
 
 ## 📝 Shortcodes Guide
 
-### 1. Admonitions / Callouts (`alert`)
-
+### 1. Academic Publication (`publication`)
 ```markdown
-{{</* alert type="robotics" title="Actuator Limit" */>}}
-Rotational motor velocities are physically bounded by maximum ESC voltage.
+{{</* publication
+  title="Real-Time Neural MPC for Agile Flight"
+  authors="J. Smidr, A. Turing"
+  venue="ICRA 2026"
+  year="2026"
+  pdf="https://arxiv.org/abs/..."
+  doi="https://doi.org/..."
+  code="https://github.com/..."
+*/>}}
+**Abstract:** Paper summary here...
+```bibtex
+@inproceedings{...}
+```
+{{</* /publication */>}}
+```
+
+### 2. CV / Career Timeline (`cv-item`)
+```markdown
+{{</* cv-item period="2024 — Present" title="Senior Systems Engineer" org="Robotics Lab" location="Munich" */>}}
+Key achievements and responsibilities.
+{{</* /cv-item */>}}
+```
+
+### 3. Admonitions (`alert`)
+```markdown
+{{</* alert type="robotics" title="Actuator Saturation" */>}}
+Rotational velocities are physically bounded by maximum ESC voltage.
 {{</* /alert */>}}
 ```
 Supported types: `info`, `warning`, `caution`, `tip`, `robotics`.
 
-### 2. Interactive WASM Code Runner (`code-runner`)
-
+### 4. Interactive WASM Code Runner (`code-runner`)
 ```markdown
 {{</* code-runner lang="python" title="Pyodide Forward Pass" */>}}
 import math
-
-def sigmoid(x):
-    return 1.0 / (1.0 + math.exp(-x))
-
-print("Activation:", sigmoid(2.5))
+print("Result:", math.sqrt(64))
 {{</* /code-runner */>}}
 ```
 
-### 3. Interactive Parameter Slider Widget (`interactive-widget`)
-
+### 5. Interactive Parameter Slider Widget (`interactive-widget`)
 ```markdown
 {{</* interactive-widget title="PID Step Response Tuner" */>}}
 ```
 
-### 4. Secret Text (`secret`)
-
-Text colored identically to the background, revealed on cursor hover or text selection:
-
+### 6. Secret Text (`secret`)
 ```markdown
 {{</* secret hint="Select to decrypt" */>}}
 CLASSIFIED-PAYLOAD-VECTOR
@@ -201,27 +245,22 @@ CLASSIFIED-PAYLOAD-VECTOR
 
 ---
 
-## 🛠️ Extensibility: Adding Future Pages (About, CV, Publications)
+## 🔒 Security on Static Servers (Raspberry Pi & GitHub Pages)
 
-The navigation menu reads directly from your `hugo.yaml` `menus.main`. To add future sections when you're ready:
-
-1. Create the markdown content file (e.g. `content/about.en.md` and `content/about.de.md` or `content/publications.en.md`).
-2. Add the corresponding menu item in `hugo.yaml` under `menus.main`:
-   ```yaml
-   - name: "Publications"
-     url: "/publications/"
-     weight: 40
-   ```
+When hosting with Caddy on a Raspberry Pi or deploying via GitHub Actions:
+- Hugo outputs purely static HTML, CSS, JavaScript, and SVG files.
+- Pyodide WebAssembly runs **100% inside the client's browser engine**.
+- No code is sent to or executed on the server.
+- The server only serves static files, preventing remote code execution (RCE) and computational overload.
 
 ---
 
-## 🔒 Security on Static Servers (Raspberry Pi & GitHub Pages)
+## ❓ Frequently Asked Questions
 
-When hosting with Caddy / Nginx on a Raspberry Pi or deploying via GitHub Actions:
-- Hugo outputs purely static HTML, CSS, JavaScript, and SVG files.
-- Pyodide WebAssembly runs **100% inside the client's browser engine**.
-- No Node.js backend, no Python backend, and no database runs on the server.
-- The server only serves static files, preventing remote code execution (RCE) and computational overload.
+### Is it correct that the RSS feed is only an `.xml` file?
+**Yes!** By internet specification (RSS 2.0 / Atom), RSS feeds are structured XML documents intended for automated consumption by feed readers (such as Feedly, NetNewsWire, Thunderbird, or Inoreader). 
+
+However, in Smidr we bundle a custom **XSLT stylesheet (`rss-style.xsl`)**. When a human visitor clicks the `/index.xml` link directly in their browser, the browser applies the stylesheet to render a beautiful, responsive preview page with feed details and recent articles!
 
 ---
 

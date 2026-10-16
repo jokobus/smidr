@@ -15,6 +15,10 @@ outputs:
   section:
     - HTML
     - RSS
+  taxonomy:
+    - HTML
+  term:
+    - HTML
 
 # Multi-language configuration (English & German)
 languages:
@@ -22,10 +26,10 @@ languages:
     label: "English"
     locale: "en-US"
     weight: 1
-    title: "Smidr // Robotics & ML"
+    title: "Smidr"
     params:
       description: "A futuristic robotics, machine learning, and engineering logbook."
-      subtitle: "Autonomous Systems & Cybernetics"
+      subtitle: "Robotics & Machine Learning"
     menus:
       main:
         - name: "Home"
@@ -34,21 +38,21 @@ languages:
         - name: "Blog"
           url: "/posts/"
           weight: 20
-        - name: "Projects"
-          url: "/projects/"
-          weight: 30
         - name: "Publications"
           url: "/publications/"
+          weight: 30
+        - name: "About & CV"
+          url: "/about/"
           weight: 40
 
   de:
     label: "Deutsch"
     locale: "de-DE"
     weight: 2
-    title: "Smidr // Robotik & ML"
+    title: "Smidr"
     params:
       description: "Ein futuristisches Logbuch über Robotik, maschinelles Lernen und Ingenieurwesen."
-      subtitle: "Autonome Systeme & Kybernetik"
+      subtitle: "Robotik & Maschinelles Lernen"
     menus:
       main:
         - name: "Start"
@@ -57,11 +61,11 @@ languages:
         - name: "Blog"
           url: "/de/posts/"
           weight: 20
-        - name: "Projekte"
-          url: "/de/projects/"
-          weight: 30
         - name: "Publikationen"
           url: "/de/publications/"
+          weight: 30
+        - name: "Über mich & CV"
+          url: "/de/about/"
           weight: 40
 
 params:

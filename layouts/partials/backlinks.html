@@ -11,19 +11,31 @@
 
 {{- if gt (len $backlinks) 0 -}}
 <section class="backlinks-section" aria-label="{{ i18n "backlinks_title" }}">
-  <h3 class="backlinks-header">
-    <span>🔗</span>
-    <span>{{ i18n "backlinks_title" }}</span>
-  </h3>
-  <ul class="backlinks-list">
+  <div class="backlinks-header-wrap">
+    <h3 class="backlinks-header">
+      <span class="backlink-icon">🔗</span>
+      <span>{{ i18n "backlinks_title" }}</span>
+    </h3>
+    <span class="backlink-count-badge">{{ len $backlinks }} {{ if eq (len $backlinks) 1 }}reference{{ else }}references{{ end }}</span>
+  </div>
+
+  <div class="backlinks-grid">
     {{- range $backlinks -}}
-    <li>
-      <a href="{{ .RelPermalink }}" class="backlink-card">
-        <h4 class="backlink-title">{{ .Title }}</h4>
-        <p class="backlink-snippet">{{ with .Description }}{{ . | truncate 90 }}{{ else }}{{ .Summary | plainify | truncate 90 }}{{ end }}</p>
-      </a>
-    </li>
+    <a href="{{ .RelPermalink }}" class="backlink-card" aria-label="Reference in {{ .Title }}">
+      <div class="backlink-top">
+        <span class="backlink-badge">{{ i18n "referenced_in" }}</span>
+        <time class="backlink-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "02. Jan 2006" }}</time>
+      </div>
+      <h4 class="backlink-title">{{ .Title }}</h4>
+      <p class="backlink-snippet">
+        {{ with .Description }}{{ . | truncate 110 }}{{ else }}{{ .Summary | plainify | truncate 110 }}{{ end }}
+      </p>
+      <div class="backlink-meta">
+        <span>⏱️ {{ i18n "read_time" .ReadingTime }}</span>
+        <span class="backlink-arrow">&rarr;</span>
+      </div>
+    </a>
     {{- end -}}
-  </ul>
+  </div>
 </section>
 {{- end -}}

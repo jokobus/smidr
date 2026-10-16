@@ -1,0 +1,48 @@
+{{- $title := .Get "title" -}}
+{{- $authors := .Get "authors" -}}
+{{- $venue := .Get "venue" -}}
+{{- $year := .Get "year" -}}
+{{- $pdf := .Get "pdf" -}}
+{{- $doi := .Get "doi" -}}
+{{- $code := .Get "code" -}}
+{{- $id := printf "pub-%d" (now.UnixNano) -}}
+
+<div class="publication-card" id="{{ $id }}">
+  <div class="publication-header">
+    <span class="pub-year-badge">{{ $year }}</span>
+    <span class="pub-venue">{{ $venue }}</span>
+  </div>
+  <h3 class="publication-title">{{ $title }}</h3>
+  <div class="publication-authors">{{ $authors }}</div>
+
+  <div class="publication-actions">
+    {{ with $pdf }}
+    <a href="{{ . }}" class="pub-btn" target="_blank" rel="noopener noreferrer">
+      <span>📄</span> <span>PDF</span>
+    </a>
+    {{ end }}
+
+    {{ with $doi }}
+    <a href="{{ . }}" class="pub-btn" target="_blank" rel="noopener noreferrer">
+      <span>🔗</span> <span>DOI</span>
+    </a>
+    {{ end }}
+
+    {{ with $code }}
+    <a href="{{ . }}" class="pub-btn" target="_blank" rel="noopener noreferrer">
+      <span>💻</span> <span>Code</span>
+    </a>
+    {{ end }}
+  </div>
+
+  {{ with .Inner }}
+  <details class="pub-details">
+    <summary class="pub-details-summary">
+      <span>📑</span> <span>Abstract & BibTeX</span>
+    </summary>
+    <div class="pub-details-content">
+      {{ . | markdownify }}
+    </div>
+  </details>
+  {{ end }}
+</div>

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <defs>
-    <linearGradient id="cyberGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="hammerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#00f0ff" />
       <stop offset="50%" stop-color="#7000ff" />
       <stop offset="100%" stop-color="#ff007a" />
@@ -14,6 +14,20 @@
     </filter>
   </defs>
   <rect width="100" height="100" rx="22" fill="#090d16" />
-  <rect x="2" y="2" width="96" height="96" rx="20" fill="none" stroke="url(#cyberGrad)" stroke-width="3" opacity="0.6" />
-  <path d="M56 16 L26 54 L48 54 L42 84 L74 46 L52 46 Z" fill="url(#cyberGrad)" filter="url(#glow)" />
+  <rect x="2" y="2" width="96" height="96" rx="20" fill="none" stroke="url(#hammerGrad)" stroke-width="3" opacity="0.6" />
+  
+  <!-- Modern Geometric Smith's Hammer -->
+  <g transform="rotate(-35 50 50)" filter="url(#glow)">
+    <!-- Hammer Head -->
+    <path d="M30 26 L70 26 L74 32 L74 46 L70 52 L30 52 L26 46 L26 32 Z" fill="url(#hammerGrad)" />
+    <!-- Impact Face Highlight -->
+    <rect x="24" y="32" width="4" height="14" rx="1.5" fill="#ffffff" opacity="0.9" />
+    <rect x="72" y="32" width="4" height="14" rx="1.5" fill="#00f0ff" opacity="0.9" />
+    <!-- Hammer Shaft -->
+    <path d="M47 52 L53 52 L54 84 L46 84 Z" fill="#94a3b8" />
+    <!-- Cyber Grip Stripes -->
+    <line x1="46" y1="64" x2="54" y2="64" stroke="#00f0ff" stroke-width="2" />
+    <line x1="46" y1="72" x2="54" y2="72" stroke="#ff007a" stroke-width="2" />
+    <line x1="46" y1="80" x2="54" y2="80" stroke="#7000ff" stroke-width="2" />
+  </g>
 </svg>

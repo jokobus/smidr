@@ -1,0 +1,107 @@
+/* Smidr Theme - Syntax Highlighting Stylesheet */
+
+/* Explicit default colors so code is NEVER black or invisible */
+pre, pre code, .chroma {
+  color: #f8f8f2 !important;
+  background-color: var(--code-bg) !important;
+  font-family: var(--font-mono) !important;
+}
+
+[data-theme="light"] pre,
+[data-theme="light"] pre code,
+[data-theme="light"] .chroma {
+  color: #1e293b !important;
+  background-color: #f1f5f9 !important;
+}
+
+/* Chroma Syntax Highlighting Classes (Dark Mode Default) */
+.chroma .x { color: #f8f8f2; }
+.chroma .err { color: #ff5555; }
+.chroma .lnlinks { outline: none; text-decoration: none; color: inherit; }
+.chroma .lntd { vertical-align: top; padding: 0; margin: 0; border: 0; }
+.chroma .lntable { border-spacing: 0; padding: 0; margin: 0; border: 0; }
+.chroma .hl { background-color: rgba(255, 255, 255, 0.1); }
+.chroma .lnt { white-space: pre; user-select: none; margin-right: 0.4em; padding: 0 0.4em; color: #6272a4; }
+.chroma .ln { white-space: pre; user-select: none; margin-right: 0.4em; padding: 0 0.4em; color: #6272a4; }
+.chroma .line { display: flex; }
+.chroma .k { color: #ff79c6; font-weight: 600; }
+.chroma .kc { color: #ff79c6; }
+.chroma .kd { color: #8be9fd; font-style: italic; }
+.chroma .kn { color: #ff79c6; }
+.chroma .kp { color: #ff79c6; }
+.chroma .kr { color: #ff79c6; }
+.chroma .kt { color: #8be9fd; font-weight: 600; }
+.chroma .na { color: #50fa7b; }
+.chroma .nc { color: #50fa7b; font-weight: 600; }
+.chroma .no { color: #bd93f9; }
+.chroma .nd { color: #f1fa8c; }
+.chroma .ni { color: #f8f8f2; }
+.chroma .ne { color: #ff5555; }
+.chroma .nl { color: #8be9fd; font-style: italic; }
+.chroma .nn { color: #f8f8f2; }
+.chroma .nx { color: #50fa7b; }
+.chroma .nt { color: #ff79c6; }
+.chroma .nb { color: #8be9fd; font-style: italic; }
+.chroma .bp { color: #8be9fd; font-style: italic; }
+.chroma .nv { color: #8be9fd; }
+.chroma .vc { color: #8be9fd; }
+.chroma .vg { color: #8be9fd; }
+.chroma .vi { color: #8be9fd; }
+.chroma .vm { color: #8be9fd; }
+.chroma .nf { color: #50fa7b; font-weight: 600; }
+.chroma .fm { color: #50fa7b; font-weight: 600; }
+.chroma .ld { color: #f1fa8c; }
+.chroma .s { color: #f1fa8c; }
+.chroma .sa { color: #f1fa8c; }
+.chroma .sb { color: #f1fa8c; }
+.chroma .sc { color: #f1fa8c; }
+.chroma .dl { color: #f1fa8c; }
+.chroma .sd { color: #f1fa8c; }
+.chroma .s2 { color: #f1fa8c; }
+.chroma .se { color: #bd93f9; }
+.chroma .sh { color: #f1fa8c; }
+.chroma .si { color: #f1fa8c; }
+.chroma .sx { color: #f1fa8c; }
+.chroma .sr { color: #f1fa8c; }
+.chroma .s1 { color: #f1fa8c; }
+.chroma .ss { color: #f1fa8c; }
+.chroma .m { color: #bd93f9; }
+.chroma .mb { color: #bd93f9; }
+.chroma .mf { color: #bd93f9; }
+.chroma .mh { color: #bd93f9; }
+.chroma .mi { color: #bd93f9; }
+.chroma .il { color: #bd93f9; }
+.chroma .mo { color: #bd93f9; }
+.chroma .o { color: #ff79c6; }
+.chroma .ow { color: #ff79c6; }
+.chroma .or { color: #ff79c6; }
+.chroma .p { color: #f8f8f2; }
+.chroma .c { color: #6272a4; font-style: italic; }
+.chroma .ch { color: #6272a4; font-style: italic; }
+.chroma .cm { color: #6272a4; font-style: italic; }
+.chroma .c1 { color: #6272a4; font-style: italic; }
+.chroma .cs { color: #6272a4; font-style: italic; }
+.chroma .cp { color: #ff79c6; }
+.chroma .cpf { color: #ff79c6; }
+.chroma .gd { color: #ff5555; }
+.chroma .gi { color: #50fa7b; }
+.chroma .w { color: #f8f8f2; }
+
+/* Light Theme Syntax Overrides */
+[data-theme="light"] .chroma .k { color: #d946ef; }
+[data-theme="light"] .chroma .kd { color: #0284c7; }
+[data-theme="light"] .chroma .kt { color: #0284c7; }
+[data-theme="light"] .chroma .kn { color: #d946ef; }
+[data-theme="light"] .chroma .nf { color: #059669; }
+[data-theme="light"] .chroma .nc { color: #0d9488; }
+[data-theme="light"] .chroma .nx { color: #0284c7; }
+[data-theme="light"] .chroma .s,
+[data-theme="light"] .chroma .s2,
+[data-theme="light"] .chroma .s1 { color: #d97706; }
+[data-theme="light"] .chroma .m,
+[data-theme="light"] .chroma .mi,
+[data-theme="light"] .chroma .mf { color: #7c3aed; }
+[data-theme="light"] .chroma .c,
+[data-theme="light"] .chroma .c1 { color: #64748b; }
+[data-theme="light"] .chroma .o { color: #d946ef; }
+[data-theme="light"] .chroma .p { color: #334155; }

@@ -55,8 +55,28 @@
     originalFavicon = faviconLink.href;
   }
 
-  // Generate dynamic alert favicon via SVG data URI with glowing hammer badge
-  const awayFaviconSvg = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="%23ff007a"/><text x="50" y="66" font-size="46" text-anchor="middle" fill="white">🔨</text></svg>`;
+  // Generate dynamic alert favicon via SVG data URI with cyberpunk gradient hammer and alert beacon
+  const awayFaviconSvg = `data:image/svg+xml,${encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+      <defs>
+        <linearGradient id="awayGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#00f0ff" />
+          <stop offset="50%" stop-color="#8a2be2" />
+          <stop offset="100%" stop-color="#ff007a" />
+        </linearGradient>
+      </defs>
+      <rect width="100" height="100" rx="24" fill="#090d16" />
+      <rect x="2" y="2" width="96" height="96" rx="22" fill="none" stroke="url(#awayGrad)" stroke-width="3" />
+      <g transform="translate(50, 52) rotate(-35) translate(-50, -50)">
+        <path d="M46 44 L54 44 L55 86 L45 86 Z" fill="#94a3b8" />
+        <rect x="44" y="62" width="12" height="4" rx="2" fill="#00f0ff" />
+        <rect x="44" y="74" width="12" height="4" rx="2" fill="#ff007a" />
+        <path d="M22 24 L78 24 L82 30 L80 44 L76 48 L24 48 L20 44 L18 30 Z" fill="url(#awayGrad)" />
+      </g>
+      <circle cx="82" cy="18" r="14" fill="#ff007a" />
+      <circle cx="82" cy="18" r="7" fill="#ffffff" />
+    </svg>
+  `.trim())}`;
 
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {

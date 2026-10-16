@@ -55,7 +55,25 @@
       const stderrEl = runner.querySelector('.runner-stderr');
       const lang = runner.dataset.lang || 'python';
 
+      const copyBtn = runner.querySelector('.runner-btn-copy');
+
       if (!runBtn || !textarea || !stdoutEl) return;
+
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(textarea.value);
+            copyBtn.classList.add('copied');
+            copyBtn.innerHTML = `<span>✓</span> <span class="copy-text">Copied!</span>`;
+            setTimeout(() => {
+              copyBtn.classList.remove('copied');
+              copyBtn.innerHTML = `<span>📋</span> <span class="copy-text">Copy</span>`;
+            }, 2000);
+          } catch (err) {
+            console.error('Failed to copy code from sandbox: ', err);
+          }
+        });
+      }
 
       if (clearBtn) {
         clearBtn.addEventListener('click', () => {

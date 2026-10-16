@@ -1,20 +1,49 @@
 {{ define "main" }}
 <div class="container">
   <header class="article-header">
+    {{ if eq .Kind "term" }}
     <div class="tag-badge" style="margin-bottom: 0.5rem;">
-      {{ if eq .Kind "taxonomy" }}
-        🏷️ {{ i18n "tags" | upper }}
-      {{ else if eq .Kind "term" }}
-        #{{ .Title | upper }}
-      {{ else }}
-        📂 {{ i18n "posts_title" | upper }}
-      {{ end }}
+      #{{ .Title | upper }}
     </div>
+    {{ end }}
     <h1 class="article-title">{{ .Title }}</h1>
     {{ with .Description }}
     <p style="color: var(--color-text-muted); font-size: 1.1rem; margin-top: 0.5rem;">{{ . }}</p>
     {{ end }}
   </header>
+
+  <!-- Categories & Tags Filter Bar -->
+  {{ $hasCats := gt (len .Site.Taxonomies.categories) 0 }}
+  {{ $hasTags := gt (len .Site.Taxonomies.tags) 0 }}
+  {{ if or $hasCats $hasTags }}
+  <div class="list-taxonomies-bar">
+    {{ if $hasCats }}
+    <div class="tax-group">
+      <span class="tax-group-label">📂 {{ i18n "categories" | default "Categories" }}:</span>
+      <div class="tax-pill-list">
+        {{ range .Site.Taxonomies.categories }}
+        <a href="{{ .Page.RelPermalink }}" class="tax-pill{{ if eq $.Title .Page.Title }} active{{ end }}">
+          {{ .Page.Title }} <span class="tax-count">{{ .Count }}</span>
+        </a>
+        {{ end }}
+      </div>
+    </div>
+    {{ end }}
+
+    {{ if $hasTags }}
+    <div class="tax-group">
+      <span class="tax-group-label">🏷️ {{ i18n "tags" | default "Tags" }}:</span>
+      <div class="tax-pill-list">
+        {{ range .Site.Taxonomies.tags }}
+        <a href="{{ .Page.RelPermalink }}" class="tax-pill{{ if eq $.Title .Page.Title }} active{{ end }}">
+          #{{ .Page.Title }} <span class="tax-count">{{ .Count }}</span>
+        </a>
+        {{ end }}
+      </div>
+    </div>
+    {{ end }}
+  </div>
+  {{ end }}
 
   <div class="posts-grid">
     {{ range .Pages }}

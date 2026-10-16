@@ -149,6 +149,12 @@
             font-size: 0.95rem;
             margin: 0;
             line-height: 1.6;
+            max-height: 5.2em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
           }
           .tag-pill {
             display: inline-block;
@@ -210,6 +216,9 @@
                 </div>
                 <div class="post-desc">
                   <xsl:value-of select="description" disable-output-escaping="yes"/>
+                </div>
+                <div style="margin-top: 0.35rem;">
+                  <a href="{link}" style="font-size: 0.85rem; font-weight: 600; color: #38bdf8;">Read full post &#x2192;</a>
                 </div>
                 <xsl:if test="category">
                   <div style="margin-top: 0.5rem;">

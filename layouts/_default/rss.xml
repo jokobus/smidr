@@ -21,7 +21,7 @@
 {{- end -}}
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 {{ printf "<?xml-stylesheet type=\"text/xsl\" href=%q ?>" ("rss-style.xsl" | relURL) | safeHTML }}
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>{{ if eq .Title .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{ . }} on {{ end }}{{ .Site.Title }}{{ end }}</title>
     <link>{{ .Permalink }}</link>
@@ -35,16 +35,32 @@
     {{ with .OutputFormats.Get "RSS" }}
       {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
     {{ end }}
+    {{- $baseURL := strings.TrimSuffix "/" $.Site.BaseURL -}}
     {{ range $pages }}
+    {{- $content := .Content -}}
+    {{- /* Make relative links and image sources absolute for external RSS readers */ -}}
+    {{- $content = $content | replaceRE `src="(/[^"]*)"` (printf `src="%s$1"` $baseURL) -}}
+    {{- $content = $content | replaceRE `src='(/[^']*)'` (printf `src='%s$1'` $baseURL) -}}
+    {{- $content = $content | replaceRE `href="(/[^"]*)"` (printf `href="%s$1"` $baseURL) -}}
+    {{- $content = $content | replaceRE `href='(/[^']*)'` (printf `href='%s$1'` $baseURL) -}}
+    {{- $cleanContent := replace $content "]]>" "]]&gt;" -}}
     <item>
       <title>{{ .Title }}</title>
       <link>{{ .Permalink }}</link>
       <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
       {{ with .Site.Params.author.email }}<author>{{ . }}{{ with $.Site.Params.author.name }} ({{ . }}){{ end }}</author>{{ end }}
       <guid>{{ .Permalink }}</guid>
-      <description>{{ .Summary | html }}</description>
+      <description>{{ (printf "<![CDATA[%s]]>" $cleanContent) | safeHTML }}</description>
+      <content:encoded>{{ (printf "<![CDATA[%s]]>" $cleanContent) | safeHTML }}</content:encoded>
       {{ range .Params.tags }}
       <category>{{ . }}</category>
+      {{ end }}
+      {{ with .Params.image }}
+        {{ $imgURL := . }}
+        {{ if not (or (hasPrefix $imgURL "http://") (hasPrefix $imgURL "https://")) }}
+          {{ $imgURL = printf "%s/%s" $baseURL (strings.TrimPrefix "/" $imgURL) }}
+        {{ end }}
+        <media:content url="{{ $imgURL }}" medium="image" />
       {{ end }}
     </item>
     {{ end }}

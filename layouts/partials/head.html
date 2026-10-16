@@ -52,5 +52,10 @@
 {{ partial "math.html" . }}
 {{ end }}
 
+{{- /* TikZ Vector Diagram Support (TikzJax WebAssembly) */}}
+{{ if or .Params.tikz .Site.Params.tikz }}
+{{ partial "tikz.html" . }}
+{{ end }}
+
 {{- /* Umami Analytics (Privacy friendly, zero Google trackers) */}}
 {{ partial "analytics.html" . }}

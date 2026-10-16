@@ -6,6 +6,7 @@ description: "A brief summary of this post (appears on social cards and post pre
 tags: ["robotics", "machine-learning"]
 categories: ["Engineering"]
 math: true
+tikz: false
 gardenGraph: true
 showBacklinks: true
 ---
@@ -15,7 +16,7 @@ showBacklinks: true
 💡 QUICK WRITING CHEATSHEET FOR SMIDR THEME
 ================================================================================
 1. Headings: Use ## for Section Title, ### for Subsection Title.
-2. Math Equations:
+2. Math Equations (KaTeX):
    - Inline: $E = mc^2$ or $\dot{x} = Ax + Bu$
    - Display: $$\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}$$
 3. Code Blocks: Standard markdown with language tag for automatic copy button:
@@ -33,11 +34,27 @@ showBacklinks: true
    {{</* /code-runner */>}}
 6. Interactive Dynamic System Sliders (PID / Oscillator):
    {{</* interactive-widget title="System Tuner" */>}}
-7. Secret Text (Hidden until selected or hovered):
+7. TikZ Vector Diagrams (WebAssembly TeX, set tikz: true in frontmatter):
+   {{</* tikz caption="Control Loop Diagram" */>}}
+   \begin{tikzpicture}
+     \draw[->, line width=1pt] (0,0) -- (3,0);
+   \end{tikzpicture}
+   {{</* /tikz */>}}
+8. BibTeX In-Text Citations & Bibliography:
+   - In text: As proven by {{</* cite "kalman1960" */>}}...
+   - At end of post:
+   {{</* bibliography */>}}
+   @article{kalman1960,
+     title = {A New Approach to Linear Filtering},
+     author = {Kalman, R. E.},
+     year = {1960}
+   }
+   {{</* /bibliography */>}}
+9. Secret Text (Hidden until selected or hovered):
    {{</* secret hint="Hover to reveal" */>}}Hidden secret text{{</* /secret */>}}
-8. Inline Footnote Popover (Hover to view without scrolling):
-   Here is a sentence with a note[^1].
-   [^1]: This footnote pops up directly on hover or tap!
+10. Inline Footnote Popover (Hover to view without scrolling):
+    Here is a sentence with a note[^1].
+    [^1]: This footnote pops up directly on hover or tap!
 ================================================================================
 -->
 

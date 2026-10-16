@@ -1,0 +1,12 @@
+{{- $id := printf "bibcard-%d" (now.UnixNano) -}}
+{{- $raw := .Inner | chomp -}}
+
+<div class="bibtex-card" id="{{ $id }}">
+  <div class="bibtex-card-header">
+    <span class="bibtex-badge">BIBTEX</span>
+    <button class="code-copy-btn bib-copy-btn" type="button" aria-label="Copy BibTeX code">
+      <span>📋</span> <span>Copy BibTeX</span>
+    </button>
+  </div>
+  <pre class="bibtex-code"><code>{{ $raw }}</code></pre>
+</div>

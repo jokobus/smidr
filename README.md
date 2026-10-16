@@ -236,7 +236,45 @@ print("Result:", math.sqrt(64))
 {{</* interactive-widget title="PID Step Response Tuner" */>}}
 ```
 
-### 6. Secret Text (`secret`)
+### 6. TikZ Vector Diagrams (`tikz`)
+Compile LaTeX TikZ code directly in the browser via WebAssembly (set `tikz: true` in your post frontmatter):
+```markdown
+{{</* tikz caption="Closed-loop quadrotor feedback architecture." */>}}
+\begin{tikzpicture}[auto, node distance=2cm, >=latex]
+  \draw[rounded corners, fill=cyan!10, draw=cyan!80, line width=1pt] (0,0) rectangle (2.5,1.2) node[pos=.5] {\textbf{Controller} $K$};
+  \draw[rounded corners, fill=purple!10, draw=purple!80, line width=1pt] (4.5,0) rectangle (7.0,1.2) node[pos=.5] {\textbf{Quadrotor} $G(s)$};
+  \draw[->, line width=1pt] (-1.5,0.6) -- node[above] {$r(t)$} (0,0.6);
+  \draw[->, line width=1pt] (2.5,0.6) -- node[above] {$u(t)$} (4.5,0.6);
+  \draw[->, line width=1pt] (7.0,0.6) -- node[above] {$x(t)$} (9.0,0.6);
+\end{tikzpicture}
+{{</* /tikz */>}}
+```
+
+### 7. BibTeX In-Text Citations & Bibliography (`cite` and `bibliography`)
+Cite references in your markdown text:
+```markdown
+As established by Kalman {{</* cite "kalman1960" */>}} in state-space theory...
+```
+At the end of your post, provide your BibTeX block (or link a `.bib` file):
+```markdown
+{{</* bibliography title="References & Citations" */>}}
+@article{kalman1960,
+  title = {A New Approach to Linear Filtering and Prediction Problems},
+  author = {Kalman, Rudolph Emil},
+  journal = {Journal of Basic Engineering},
+  volume = {82},
+  year = {1960},
+  doi = {10.1115/1.3662552}
+}
+{{</* /bibliography */>}}
+```
+Smidr automatically:
+- Assigns sequential citation numbers (`[1]`, `[2]`, ...) based on appearance in the text.
+- Generates hover tooltips on citation links.
+- Formats references in IEEE/ACM academic style with clickable DOI links.
+- Attaches an expandable BibTeX code drawer with a one-click **"📋 Copy BibTeX"** button!
+
+### 8. Secret Text (`secret`)
 ```markdown
 {{</* secret hint="Select to decrypt" */>}}
 CLASSIFIED-PAYLOAD-VECTOR

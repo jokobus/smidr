@@ -1005,3 +1005,240 @@ sup.footnote-ref a:hover {
   font-size: 0.85rem;
   color: var(--color-text-muted);
 }
+
+/* ==========================================================================
+   TikZ Vector Diagrams (TikzJax WebAssembly)
+   ========================================================================== */
+.tikz-container {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.tikz-wrapper {
+  display: inline-block;
+  padding: 1.5rem;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Invert or adapt TikZ SVGs for dark mode so lines and math text are crisp white */
+[data-theme="dark"] .tikz-wrapper svg {
+  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.2)) invert(0.93) hue-rotate(180deg);
+}
+
+.tikz-caption {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.tikz-caption-prefix {
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--color-primary);
+  font-style: normal;
+}
+
+/* ==========================================================================
+   BibTeX Citations & Bibliography
+   ========================================================================== */
+a.cite-ref {
+  position: relative;
+  display: inline-block;
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 700;
+  padding: 0 0.15rem;
+  border-radius: 3px;
+  transition: all var(--transition-fast);
+}
+
+a.cite-ref:hover {
+  background: var(--color-primary-dim);
+  box-shadow: 0 0 6px var(--color-primary);
+}
+
+.cite-tooltip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 280px;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  font-weight: 400;
+  color: var(--color-text);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+a.cite-ref:hover .cite-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.smidr-bibliography-section {
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.bib-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 1.25rem;
+}
+
+.bib-entries-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.bib-entry {
+  padding: 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
+  transition: border-color var(--transition-fast);
+  scroll-margin-top: 5rem;
+}
+
+.bib-entry:target {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-glow);
+}
+
+.bib-entry-main {
+  display: flex;
+  gap: 1rem;
+}
+
+.bib-num {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--color-primary);
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.bib-body {
+  flex: 1;
+}
+
+.bib-formatted {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  margin-bottom: 0.6rem;
+}
+
+.bib-authors {
+  font-weight: 600;
+}
+
+.bib-title {
+  color: var(--color-text);
+}
+
+.bib-venue {
+  color: var(--color-text-muted);
+}
+
+.bib-doi-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  text-decoration: none;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  background: var(--color-primary-dim);
+  margin-left: 0.4rem;
+}
+
+.bib-raw-details {
+  margin-top: 0.5rem;
+}
+
+.bib-raw-summary {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.bib-raw-box {
+  margin-top: 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--code-border);
+  background: var(--code-bg);
+  overflow: hidden;
+}
+
+.bib-raw-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.35rem 0.75rem;
+  background: var(--code-header-bg);
+  border-bottom: 1px solid var(--code-border);
+}
+
+.bibtex-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.bib-raw-code, .bibtex-code {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  overflow-x: auto;
+  color: #f8f8f2 !important;
+}
+
+/* Standalone BibTeX card */
+.bibtex-card {
+  margin: 1.5rem 0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--code-border);
+  background: var(--code-bg);
+  overflow: hidden;
+}
+
+.bibtex-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 1rem;
+  background: var(--code-header-bg);
+  border-bottom: 1px solid var(--code-border);
+}

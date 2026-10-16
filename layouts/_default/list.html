@@ -1,0 +1,43 @@
+{{ define "main" }}
+<div class="container">
+  <header class="article-header">
+    <div class="tag-badge" style="margin-bottom: 0.5rem;">
+      {{ if eq .Kind "taxonomy" }}
+        🏷️ {{ i18n "tags" | upper }}
+      {{ else if eq .Kind "term" }}
+        #{{ .Title | upper }}
+      {{ else }}
+        📂 {{ i18n "posts_title" | upper }}
+      {{ end }}
+    </div>
+    <h1 class="article-title">{{ .Title }}</h1>
+    {{ with .Description }}
+    <p style="color: var(--color-text-muted); font-size: 1.1rem; margin-top: 0.5rem;">{{ . }}</p>
+    {{ end }}
+  </header>
+
+  <div class="posts-grid">
+    {{ range .Pages }}
+    <article class="post-card">
+      <div class="post-card-date">{{ .Date.Format "02. Jan 2006" }}</div>
+      <h3 class="post-card-title">
+        <a href="{{ .RelPermalink }}" style="color: inherit; text-decoration: none;">{{ .Title }}</a>
+      </h3>
+      <p class="post-card-summary">
+        {{ with .Description }}{{ . | truncate 130 }}{{ else }}{{ .Summary | plainify | truncate 130 }}{{ end }}
+      </p>
+      <div class="post-card-meta">
+        <span>⏱️ {{ i18n "read_time" .ReadingTime }}</span>
+        {{ with .Params.tags }}
+        <div class="post-tags">
+          {{ range first 2 . }}
+          <span class="tag-badge">#{{ . }}</span>
+          {{ end }}
+        </div>
+        {{ end }}
+      </div>
+    </article>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

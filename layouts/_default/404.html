@@ -1,0 +1,44 @@
+{{ define "main" }}
+<div class="container" style="text-align: center; padding: 2rem 1rem;">
+  <div class="tag-badge" style="margin-bottom: 1rem; color: #ff007a; border-color: rgba(255, 0, 122, 0.3); background: rgba(255, 0, 122, 0.1);">
+    🛑 HTTP 404: VECTOR NOT IN MEMORY
+  </div>
+  
+  <h1 class="article-title" style="margin-bottom: 0.75rem;">
+    {{ i18n "error404_title" }}
+  </h1>
+  
+  <p style="color: var(--color-text-muted); max-width: 600px; margin: 0 auto 1.5rem; line-height: 1.6;">
+    {{ i18n "error404_subtitle" }}
+  </p>
+
+  <!-- Cyber Rover 404 Jump & Run Game -->
+  <div class="game404-container">
+    <div class="game-hud">
+      <div>
+        <span>{{ i18n "game_score" }}: </span>
+        <strong id="game-score-val" style="color: #00f0ff;">0</strong>
+      </div>
+      <div>
+        <span>🏆 {{ i18n "game_high_score" }}: </span>
+        <strong id="game-highscore-val" style="color: #f59e0b;">0</strong>
+      </div>
+    </div>
+
+    <canvas id="game404-canvas" class="game-canvas" width="640" height="240"></canvas>
+
+    <div class="game-instructions">
+      <kbd class="search-kbd">SPACE</kbd> or <kbd class="search-kbd">&uarr; ARROW</kbd> or <strong>TAP CANVAS</strong> to jump (Double-jump supported!)
+    </div>
+  </div>
+
+  <div style="margin-top: 2.5rem;">
+    <a href="{{ .Site.Home.RelPermalink }}" class="post-card-date tag-badge" style="padding: 0.75rem 1.75rem; font-size: 1rem; text-decoration: none; border-color: var(--color-primary);">
+      🚀 {{ i18n "game_return_home" }}
+    </a>
+  </div>
+</div>
+
+{{ $gameJs := resources.Get "js/game404.js" | resources.Minify | resources.Fingerprint }}
+<script defer src="{{ $gameJs.RelPermalink }}" integrity="{{ $gameJs.Data.Integrity }}"></script>
+{{ end }}

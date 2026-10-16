@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang }}" dir="ltr">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body data-tab-away-title="{{ i18n "tab_blurred_title" }}">
+  <!-- Accessible Skip to Content Link -->
+  <a href="#main-content" class="skip-link">{{ i18n "skip_to_content" }}</a>
+
+  {{ partial "header.html" . }}
+
+  <main id="main-content" class="site-main" role="main">
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  {{ partial "footer.html" . }}
+
+  {{ partial "command-palette.html" . }}
+
+  {{- /* JavaScript Assets Bundling */}}
+  {{ $mainJs := resources.Get "js/main.js" }}
+  {{ $searchJs := resources.Get "js/search.js" }}
+  {{ $footnotesJs := resources.Get "js/footnotes.js" }}
+  {{ $runnerJs := resources.Get "js/runner.js" }}
+  {{ $gardenJs := resources.Get "js/garden-graph.js" }}
+  
+  {{ $scriptsBundle := slice $mainJs $searchJs $footnotesJs $runnerJs $gardenJs | resources.Concat "js/smidr-bundle.js" | resources.Minify | resources.Fingerprint }}
+  <script defer src="{{ $scriptsBundle.RelPermalink }}" integrity="{{ $scriptsBundle.Data.Integrity }}"></script>
+</body>
+</html>

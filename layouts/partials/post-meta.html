@@ -1,0 +1,22 @@
+<div class="article-meta-bar">
+  {{ with .Date }}
+  <span class="meta-item">
+    <span>📅</span>
+    <time datetime="{{ .Format "2006-01-02T15:04:05Z07:00" }}">{{ .Format "02. Jan 2006" }}</time>
+  </span>
+  {{ end }}
+
+  <span class="meta-item">
+    <span>⏱️</span>
+    <span>{{ i18n "read_time" .ReadingTime }}</span>
+    <span class="meta-words">{{ i18n "word_count" .WordCount }}</span>
+  </span>
+
+  {{ with .Params.tags }}
+  <span class="meta-item post-tags">
+    {{ range . }}
+    <a href="{{ "tags/" | relLangURL }}{{ . | urlize }}" class="tag-badge">#{{ . }}</a>
+    {{ end }}
+  </span>
+  {{ end }}
+</div>

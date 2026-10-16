@@ -1,0 +1,29 @@
+{{- $currentPage := . -}}
+{{- $currentRelPermalink := $currentPage.RelPermalink -}}
+{{- $currentPermalink := $currentPage.Permalink -}}
+{{- $backlinks := slice -}}
+
+{{- range where .Site.RegularPages "RelPermalink" "ne" $currentRelPermalink -}}
+  {{- if or (in .RawContent $currentRelPermalink) (in .RawContent $currentPermalink) (in .RawContent $currentPage.File.BaseFileName) (in .Content $currentRelPermalink) -}}
+    {{- $backlinks = $backlinks | append . -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if gt (len $backlinks) 0 -}}
+<section class="backlinks-section" aria-label="{{ i18n "backlinks_title" }}">
+  <h3 class="backlinks-header">
+    <span>🔗</span>
+    <span>{{ i18n "backlinks_title" }}</span>
+  </h3>
+  <ul class="backlinks-list">
+    {{- range $backlinks -}}
+    <li>
+      <a href="{{ .RelPermalink }}" class="backlink-card">
+        <h4 class="backlink-title">{{ .Title }}</h4>
+        <p class="backlink-snippet">{{ with .Description }}{{ . | truncate 90 }}{{ else }}{{ .Summary | plainify | truncate 90 }}{{ end }}</p>
+      </a>
+    </li>
+    {{- end -}}
+  </ul>
+</section>
+{{- end -}}

@@ -1,0 +1,6 @@
+{{- with .Site.Params.umami -}}
+  {{- if and .websiteId .hostUrl -}}
+  <!-- Umami Analytics (Privacy-preserving, No Cookies, No Google Tracking) -->
+  <script defer src="{{ .hostUrl }}/script.js" data-website-id="{{ .websiteId }}"></script>
+  {{- end -}}
+{{- end -}}

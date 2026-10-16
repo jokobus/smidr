@@ -1,0 +1,29 @@
+{{- $lang := .Get "lang" | default "python" -}}
+{{- $title := .Get "title" | default (printf "Interactive %s Sandbox (Browser WASM)" ($lang | upper)) -}}
+
+<div class="code-runner-box" data-lang="{{ $lang }}">
+  <div class="runner-header">
+    <div class="code-lang-badge">
+      <span>⚡</span>
+      <span>{{ $title }}</span>
+    </div>
+    <div class="runner-actions">
+      <button class="code-copy-btn runner-btn-clear" type="button" aria-label="Clear output">
+        <span>🗑️</span>
+        <span>Clear</span>
+      </button>
+      <button class="runner-btn-run" type="button" aria-label="Execute code in browser">
+        <span>▶</span>
+        <span>Run (WASM)</span>
+      </button>
+    </div>
+  </div>
+  <div class="runner-editor-area">
+    <textarea class="runner-textarea" spellcheck="false" aria-label="Editable Code Area">{{ .Inner | chomp }}</textarea>
+  </div>
+  <div class="runner-output-area" aria-live="polite">
+    <div class="runner-output-title">Terminal Telemetry / Output</div>
+    <pre class="runner-stdout"></pre>
+    <pre class="runner-stderr"></pre>
+  </div>
+</div>

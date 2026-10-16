@@ -1,0 +1,20 @@
+# Hugo output and temporary files
+public/
+resources/_gen/
+.hugo_build.lock
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Node modules if any
+node_modules/
+dist/
+
+# Local editor configs
+.vscode/
+.idea/
+*.swp
+*.bak

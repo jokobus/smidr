@@ -1,0 +1,45 @@
+{{- $currentPage := . -}}
+{{- $nodes := slice -}}
+{{- $links := slice -}}
+
+{{- /* Add current node */}}
+{{- $nodes = $nodes | append (dict "id" $currentPage.RelPermalink "title" $currentPage.Title "url" $currentPage.RelPermalink "type" "post" "isCurrent" true) -}}
+
+{{- /* Add tags and link to current post */}}
+{{- range $currentPage.Params.tags -}}
+  {{- $tagId := printf "tag:%s" . -}}
+  {{- $tagUrl := printf "%s%s" ("tags/" | relLangURL) (. | urlize) -}}
+  {{- $nodes = $nodes | append (dict "id" $tagId "title" (printf "#%s" .) "url" $tagUrl "type" "tag" "isCurrent" false) -}}
+  {{- $links = $links | append (dict "source" $currentPage.RelPermalink "target" $tagId) -}}
+
+  {{- /* Find up to 3 related posts sharing this tag */}}
+  {{- range first 3 (where (where $.Site.RegularPages ".Params.tags" "intersect" (slice .)) "RelPermalink" "ne" $currentPage.RelPermalink) -}}
+    {{- $relatedId := .RelPermalink -}}
+    {{- $nodes = $nodes | append (dict "id" $relatedId "title" .Title "url" .RelPermalink "type" "post" "isCurrent" false) -}}
+    {{- $links = $links | append (dict "source" $tagId "target" $relatedId) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Deduplicate nodes by ID */}}
+{{- $uniqueNodes := slice -}}
+{{- $seen := slice -}}
+{{- range $nodes -}}
+  {{- if not (in $seen .id) -}}
+    {{- $seen = $seen | append .id -}}
+    {{- $uniqueNodes = $uniqueNodes | append . -}}
+  {{- end -}}
+{{- end -}}
+
+<div class="garden-graph-container" aria-label="{{ i18n "garden_graph_title" }}">
+  <div class="garden-graph-header">
+    <div class="garden-title-wrap">
+      <span class="garden-graph-icon">🕸️</span>
+      <strong>{{ i18n "garden_graph_title" }}</strong>
+    </div>
+    <span class="meta-words" style="font-size: 0.8rem; opacity: 0.8;">{{ i18n "garden_graph_subtitle" }}</span>
+  </div>
+  <canvas class="garden-canvas"></canvas>
+  <script type="application/json" class="garden-data">
+{{ dict "currentNodeId" $currentPage.RelPermalink "nodes" $uniqueNodes "links" $links | jsonify (dict "indent" "  ") | safeHTML }}
+  </script>
+</div>

@@ -1,0 +1,39 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="container-wide">
+    <div class="footer-grid">
+      <div class="footer-left">
+        <p class="footer-copyright">
+          &copy;
+          {{- with .Site.Params.since -}}
+            {{ . }}-{{ now.Year }}
+          {{- else -}}
+            {{ now.Year }}
+          {{- end }}
+          <strong>{{ with .Site.Params.author.name }}{{ . }}{{ else }}{{ .Site.Title }}{{ end }}</strong>.
+          {{ i18n "footer_copyright" }}
+        </p>
+        <p class="footer-credits">
+          {{ i18n "footer_powered_by" }}
+        </p>
+      </div>
+
+      <nav class="footer-right" aria-label="Footer Navigation">
+        <ul class="footer-links">
+          {{- with .Site.GetPage "/imprint" -}}
+          <li><a class="footer-link" href="{{ .RelPermalink }}">{{ i18n "imprint" }}</a></li>
+          {{- else -}}
+          <li><a class="footer-link" href="{{ "imprint" | relLangURL }}">{{ i18n "imprint" }}</a></li>
+          {{- end -}}
+
+          {{- with .Site.GetPage "/privacy" -}}
+          <li><a class="footer-link" href="{{ .RelPermalink }}">{{ i18n "privacy" }}</a></li>
+          {{- else -}}
+          <li><a class="footer-link" href="{{ "privacy" | relLangURL }}">{{ i18n "privacy" }}</a></li>
+          {{- end -}}
+
+          <li><a class="footer-link" href="{{ "index.xml" | relURL }}">{{ i18n "rss_feed" }}</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</footer>

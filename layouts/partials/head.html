@@ -1,0 +1,55 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+{{- /* Title & SEO Meta */}}
+<title>{{ if .IsHome }}{{ .Site.Title }}{{ with .Site.Params.subtitle }} - {{ . }}{{ end }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . | plainify | truncate 160 }}{{ else }}{{ .Site.Params.description }}{{ end }}{{ end }}">
+<link rel="canonical" href="{{ .Permalink }}">
+
+{{- /* OpenGraph & Twitter Card Semantic Metadata */}}
+<meta property="og:title" content="{{ with .Title }}{{ . }}{{ else }}{{ .Site.Title }}{{ end }}">
+<meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . | plainify | truncate 160 }}{{ else }}{{ .Site.Params.description }}{{ end }}{{ end }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ .Site.Title }}">
+{{ with .PublishDate }}<meta property="article:published_time" content="{{ .Format "2006-01-02T15:04:05Z07:00" }}">{{ end }}
+{{ with .Lastmod }}<meta property="article:modified_time" content="{{ .Format "2006-01-02T15:04:05Z07:00" }}">{{ end }}
+{{ range .Params.tags }}<meta property="article:tag" content="{{ . }}">{{ end }}
+
+{{- /* OpenGraph Image (Supports custom image or dynamic SVG banner) */}}
+{{ $ogImage := "" }}
+{{ with .Params.image }}
+  {{ $ogImage = . | absURL }}
+{{ else }}
+  {{ with .Site.Params.defaultOgImage }}
+    {{ $ogImage = . | absURL }}
+  {{ end }}
+{{ end }}
+{{ with $ogImage }}
+<meta property="og:image" content="{{ . }}">
+<meta name="twitter:image" content="{{ . }}">
+{{ end }}
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ with .Title }}{{ . }}{{ else }}{{ .Site.Title }}{{ end }}">
+<meta name="twitter:description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . | plainify | truncate 160 }}{{ else }}{{ .Site.Params.description }}{{ end }}{{ end }}">
+{{ with .Site.Params.social.twitter }}<meta name="twitter:site" content="@{{ . }}">{{ end }}
+
+{{- /* Favicon & App Icons */}}
+<link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
+<link rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" href="{{ "index.xml" | relURL }}">
+
+{{- /* CSS Assets Bundling */}}
+{{ $mainCss := resources.Get "css/main.css" }}
+{{ $compCss := resources.Get "css/components.css" }}
+{{ $bundleCss := slice $mainCss $compCss | resources.Concat "css/smidr-bundle.css" | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $bundleCss.RelPermalink }}" integrity="{{ $bundleCss.Data.Integrity }}">
+
+{{- /* LaTeX Math Mode (KaTeX) */}}
+{{ if or .Params.math .Site.Params.math }}
+{{ partial "math.html" . }}
+{{ end }}
+
+{{- /* Umami Analytics (Privacy friendly, zero Google trackers) */}}
+{{ partial "analytics.html" . }}

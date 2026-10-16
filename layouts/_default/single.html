@@ -1,0 +1,76 @@
+{{ define "main" }}
+<div class="container">
+  <article class="article-container" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="article-header">
+      <h1 class="article-title" itemprop="headline">{{ .Title }}</h1>
+      {{ partial "post-meta.html" . }}
+    </header>
+
+    {{ if and (gt .WordCount 400) (ne .Params.toc false) }}
+    <aside class="toc-container" style="margin-bottom: 2rem; padding: 1rem 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--color-border); background: var(--color-bg-surface);">
+      <details open>
+        <summary style="font-weight: 700; cursor: pointer; font-size: 0.95rem; color: var(--color-primary);">
+          📑 {{ i18n "table_of_contents" }}
+        </summary>
+        <div style="margin-top: 0.75rem; font-size: 0.9rem;">
+          {{ .TableOfContents }}
+        </div>
+      </details>
+    </aside>
+    {{ end }}
+
+    <div class="article-content" itemprop="articleBody">
+      {{ .Content }}
+    </div>
+
+    <!-- Article Bottom Sharing & Copy Link Action -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--color-border); flex-wrap: wrap; gap: 1rem;">
+      <div class="post-tags">
+        {{ range .Params.tags }}
+        <a href="{{ "tags/" | relLangURL }}{{ . | urlize }}" class="tag-badge">#{{ . }}</a>
+        {{ end }}
+      </div>
+      <button onclick="navigator.clipboard.writeText(window.location.href); alert('{{ i18n "link_copied" }}');" class="code-copy-btn" type="button" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+        <span>🔗</span>
+        <span>{{ i18n "copy_link" }}</span>
+      </button>
+    </div>
+
+    <!-- Contextual Backlinks (Digital Garden Mentions) -->
+    {{ if ne .Params.showBacklinks false }}
+      {{ partial "backlinks.html" . }}
+    {{ end }}
+
+    <!-- Digital Garden Interactive Graph -->
+    {{ if ne .Params.gardenGraph false }}
+      <section style="margin-top: 3rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: var(--color-text);">
+          🕸️ {{ i18n "garden_graph_title" }}
+        </h3>
+        {{ partial "garden-graph.html" . }}
+      </section>
+    {{ end }}
+
+    <!-- Prev / Next Post Navigation -->
+    <nav style="display: flex; justify-content: space-between; gap: 1rem; margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border);" aria-label="Adjacent Posts">
+      {{ with .PrevInSection }}
+      <a href="{{ .RelPermalink }}" class="backlink-card" style="flex: 1; text-align: left;">
+        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--color-primary); font-family: var(--font-mono);">&larr; {{ i18n "prev_post" }}</span>
+        <div style="font-weight: 600; margin-top: 0.25rem;">{{ .Title }}</div>
+      </a>
+      {{ else }}
+      <div style="flex: 1;"></div>
+      {{ end }}
+
+      {{ with .NextInSection }}
+      <a href="{{ .RelPermalink }}" class="backlink-card" style="flex: 1; text-align: right;">
+        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--color-primary); font-family: var(--font-mono);">{{ i18n "next_post" }} &rarr;</span>
+        <div style="font-weight: 600; margin-top: 0.25rem;">{{ .Title }}</div>
+      </a>
+      {{ else }}
+      <div style="flex: 1;"></div>
+      {{ end }}
+    </nav>
+  </article>
+</div>
+{{ end }}

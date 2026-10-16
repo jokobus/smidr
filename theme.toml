@@ -1,0 +1,27 @@
+name = "Smidr"
+license = "MIT"
+licenselink = "https://github.com/jokobus/smidr/blob/main/LICENSE"
+description = "A futuristic, cyber-tech Hugo theme for robotics, machine learning, and engineering blogs."
+homepage = "https://github.com/jokobus/smidr"
+tags = ["blog", "robotics", "machine-learning", "engineering", "cyberpunk", "dark-mode", "i18n", "search", "wasm", "katex", "digital-garden"]
+features = [
+  "dark-mode",
+  "command-palette",
+  "wasm-code-runner",
+  "katex-math",
+  "fuzzy-search",
+  "digital-garden-graph",
+  "popover-footnotes",
+  "callout-boxes",
+  "interactive-widgets",
+  "game-404",
+  "dynamic-tab-favicon",
+  "i18n-en-de",
+  "umami-analytics",
+  "backlinks"
+]
+min_version = "0.120.0"
+
+[author]
+  name = "Smidr Team"
+  homepage = "https://github.com/jokobus"

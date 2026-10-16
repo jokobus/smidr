@@ -1,0 +1,20 @@
+<!-- Command Palette Modal (Cmd+K / Ctrl+K) -->
+<div id="command-palette" class="command-palette-backdrop" aria-hidden="true" role="dialog" aria-modal="true" aria-label="{{ i18n "search_placeholder" }}">
+  <div class="command-palette-modal">
+    <div class="palette-input-wrap">
+      <span class="palette-input-icon">🔍</span>
+      <input
+        id="palette-search-input"
+        class="palette-input"
+        type="search"
+        placeholder="{{ i18n "search_placeholder" }}"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <kbd class="palette-esc-kbd">ESC</kbd>
+    </div>
+    <ul id="palette-results" class="palette-results" role="listbox">
+      <!-- Injected dynamically via search.js -->
+    </ul>
+  </div>
+</div>

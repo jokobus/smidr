@@ -1,0 +1,86 @@
+baseURL: "https://example.org/"
+title: "Smidr"
+theme: "smidr"
+defaultContentLanguage: "en"
+enableRobotsTXT: true
+
+# Enable JSON output for Home page so search.js can fetch /index.json
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+  page:
+    - HTML
+  section:
+    - HTML
+    - RSS
+
+# Multi-language configuration (English & German)
+languages:
+  en:
+    label: "English"
+    locale: "en-US"
+    weight: 1
+    title: "Smidr // Robotics & ML"
+    params:
+      description: "A futuristic robotics, machine learning, and engineering logbook."
+      subtitle: "Autonomous Systems & Cybernetics"
+    menus:
+      main:
+        - name: "Home"
+          url: "/"
+          weight: 10
+        - name: "Blog"
+          url: "/posts/"
+          weight: 20
+        - name: "Projects"
+          url: "/projects/"
+          weight: 30
+        - name: "Publications"
+          url: "/publications/"
+          weight: 40
+
+  de:
+    label: "Deutsch"
+    locale: "de-DE"
+    weight: 2
+    title: "Smidr // Robotik & ML"
+    params:
+      description: "Ein futuristisches Logbuch über Robotik, maschinelles Lernen und Ingenieurwesen."
+      subtitle: "Autonome Systeme & Kybernetik"
+    menus:
+      main:
+        - name: "Start"
+          url: "/de/"
+          weight: 10
+        - name: "Blog"
+          url: "/de/posts/"
+          weight: 20
+        - name: "Projekte"
+          url: "/de/projects/"
+          weight: 30
+        - name: "Publikationen"
+          url: "/de/publications/"
+          weight: 40
+
+params:
+  since: 2024
+  author:
+    name: "Smidr Engineer"
+    email: "contact@example.org"
+  math: true
+  
+  # Umami Analytics Configuration (Zero Google Trackers)
+  umami:
+    websiteId: "your-umami-website-id-here"
+    hostUrl: "https://cloud.umami.is"
+
+# Goldmark Markdown configuration
+markup:
+  goldmark:
+    renderer:
+      unsafe: true # Allows custom HTML inside shortcodes
+  highlight:
+    noClasses: false
+    style: "dracula"

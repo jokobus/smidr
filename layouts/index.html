@@ -1,0 +1,74 @@
+{{ define "main" }}
+<div class="container">
+  <!-- Futuristic Hero Section -->
+  <section class="hero-section" style="padding: 2.5rem 0 3rem; text-align: center;">
+    <div class="tag-badge" style="margin-bottom: 1.25rem; font-size: 0.8rem; letter-spacing: 0.08em;">
+      ⚡ ROBOTICS &bull; MACHINE LEARNING &bull; ENGINEERING
+    </div>
+    <h1 style="font-size: 3rem; font-weight: 900; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 1.25rem;">
+      <span class="logo-text">{{ .Site.Title }}</span>
+    </h1>
+    <p style="font-size: 1.2rem; color: var(--color-text-muted); max-width: 680px; margin: 0 auto 2rem; line-height: 1.6;">
+      {{ with .Site.Params.description }}{{ . }}{{ else }}Dispatches on cybernetics, autonomous systems, machine learning architectures, and modern engineering.{{ end }}
+    </p>
+    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+      <a href="{{ "posts/" | relLangURL }}" class="post-card-date tag-badge" style="padding: 0.6rem 1.4rem; font-size: 0.95rem; text-decoration: none;">
+        📂 {{ i18n "all_posts" }}
+      </a>
+      <button onclick="document.getElementById('search-trigger-btn').click()" class="post-card-date tag-badge" style="padding: 0.6rem 1.4rem; font-size: 0.95rem; background: var(--color-bg-surface); cursor: pointer; border-color: var(--color-border);">
+        🔍 {{ i18n "search_placeholder" }}
+      </button>
+    </div>
+  </section>
+
+  <!-- Latest Dispatches -->
+  <section class="posts-section" style="margin-top: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">
+      <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--color-text);">
+        {{ i18n "latest_posts" }}
+      </h2>
+      <a href="{{ "posts/" | relLangURL }}" style="font-size: 0.9rem; color: var(--color-primary); text-decoration: none; font-weight: 600;">
+        {{ i18n "all_posts" }} &rarr;
+      </a>
+    </div>
+
+    <div class="posts-grid">
+      {{- $posts := where .Site.RegularPages "Section" "posts" -}}
+      {{- if eq (len $posts) 0 -}}
+        {{- $posts = .Site.RegularPages -}}
+      {{- end -}}
+      {{- range first 6 $posts -}}
+      <article class="post-card">
+        <div class="post-card-date">{{ .Date.Format "02. Jan 2006" }}</div>
+        <h3 class="post-card-title">
+          <a href="{{ .RelPermalink }}" style="color: inherit; text-decoration: none;">{{ .Title }}</a>
+        </h3>
+        <p class="post-card-summary">
+          {{ with .Description }}{{ . | truncate 130 }}{{ else }}{{ .Summary | plainify | truncate 130 }}{{ end }}
+        </p>
+        <div class="post-card-meta">
+          <span>⏱️ {{ i18n "read_time" .ReadingTime }}</span>
+          {{ with .Params.tags }}
+          <div class="post-tags">
+            {{ range first 2 . }}
+            <span class="tag-badge">#{{ . }}</span>
+            {{ end }}
+          </div>
+          {{ end }}
+        </div>
+      </article>
+      {{- end -}}
+    </div>
+  </section>
+
+  <!-- Knowledge Graph Showcase -->
+  <section style="margin-top: 4rem;">
+    <div style="border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem; margin-bottom: 1rem;">
+      <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--color-text);">
+        🕸️ {{ i18n "garden_graph_title" }}
+      </h2>
+    </div>
+    {{ partial "garden-graph.html" . }}
+  </section>
+</div>
+{{ end }}

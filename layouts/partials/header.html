@@ -1,0 +1,52 @@
+<header class="site-header" role="banner">
+  <div class="container-wide header-inner">
+    <a href="{{ .Site.Home.RelPermalink }}" class="site-logo" aria-label="{{ .Site.Title }} Home">
+      <span class="logo-badge">⚡</span>
+      <span class="logo-text">{{ .Site.Title }}</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Main Navigation">
+      <ul class="nav-menu">
+        {{- range .Site.Menus.main -}}
+        <li>
+          <a class="nav-link{{ if or (eq $.RelPermalink .URL) (eq $.Section .Identifier) }} active{{ end }}" href="{{ .URL | relLangURL }}">
+            {{ .Name }}
+          </a>
+        </li>
+        {{- end -}}
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <!-- Search & Command Palette Trigger -->
+      <button id="search-trigger-btn" class="search-trigger-btn" type="button" aria-label="{{ i18n "search_prompt" }}">
+        <span>🔍</span>
+        <span class="search-btn-text">{{ i18n "search_placeholder" | truncate 12 "..." }}</span>
+        <kbd class="search-kbd">⌘K</kbd>
+      </button>
+
+      <!-- Language Switcher -->
+      {{ if .IsTranslated }}
+        {{ range .Translations }}
+          <a class="btn-icon" href="{{ .RelPermalink }}" title="{{ i18n "lang_toggle" }}: {{ with .Language.Label }}{{ . }}{{ else }}{{ .Language.Lang | upper }}{{ end }}" aria-label="{{ i18n "lang_toggle" }}: {{ with .Language.Label }}{{ . }}{{ else }}{{ .Language.Lang | upper }}{{ end }}">
+            {{ if eq .Language.Lang "de" }}🇩🇪{{ else }}🇬🇧{{ end }}
+          </a>
+        {{ end }}
+      {{ else if hugo.IsMultilingual }}
+        {{ $currentLang := .Site.Language.Lang }}
+        {{ range .Site.Home.AllTranslations }}
+          {{ if ne .Language.Lang $currentLang }}
+            <a class="btn-icon" href="{{ .RelPermalink }}" title="{{ i18n "lang_toggle" }}: {{ with .Language.Label }}{{ . }}{{ else }}{{ .Language.Lang | upper }}{{ end }}" aria-label="{{ i18n "lang_toggle" }}: {{ with .Language.Label }}{{ . }}{{ else }}{{ .Language.Lang | upper }}{{ end }}">
+              {{ if eq .Language.Lang "de" }}🇩🇪{{ else }}🇬🇧{{ end }}
+            </a>
+          {{ end }}
+        {{ end }}
+      {{ end }}
+
+      <!-- Theme Switcher (Dark/Light) -->
+      <button class="btn-icon" type="button" data-action="toggle-theme" aria-label="{{ i18n "theme_toggle" }}">
+        <span class="theme-icon">☀️</span>
+      </button>
+    </div>
+  </div>
+</header>

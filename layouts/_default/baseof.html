@@ -24,8 +24,9 @@
   {{ $runnerJs := resources.Get "js/runner.js" }}
   {{ $gardenJs := resources.Get "js/garden-graph.js" }}
   {{ $bibtexJs := resources.Get "js/bibtex.js" }}
+  {{ $filterJs := resources.Get "js/blog-filter.js" }}
   
-  {{ $scriptsBundle := slice $mainJs $searchJs $footnotesJs $runnerJs $gardenJs $bibtexJs | resources.Concat "js/smidr-bundle.js" | resources.Minify | resources.Fingerprint }}
-  <script defer src="{{ $scriptsBundle.RelPermalink }}" integrity="{{ $scriptsBundle.Data.Integrity }}"></script>
+  {{ $scriptsBundle := slice $mainJs $searchJs $footnotesJs $runnerJs $gardenJs $bibtexJs $filterJs | resources.Concat "js/smidr-bundle.js" | resources.Minify | resources.Fingerprint }}
+  <script defer src="{{ $scriptsBundle.RelPermalink }}"></script>
 </body>
 </html>

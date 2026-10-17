@@ -74,6 +74,11 @@ params:
     name: "Smidr Engineer"
     email: "contact@example.org"
   math: true
+
+  # Bibliography & Citation Configuration
+  citation_style: "numeric" # Default citation style: "numeric", "author-year", or "alphabetic"
+  bib_auto_load: true       # Automatically load any .bib file alongside the .md content file
+  bib_show_all: false       # Default to showing cited references (false) or entire library (true)
   
   # Umami Analytics Configuration (Zero Google Trackers)
   umami:

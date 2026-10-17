@@ -1,4 +1,22 @@
-{{- $key := .Get 0 | default (.Get "key") -}}
-<a class="cite-ref" href="#bib-{{ $key | urlize }}" data-cite-key="{{ $key }}" role="doc-biblioref" aria-label="Citation: {{ $key }}">
-  <span class="cite-num">[{{ $key }}]</span>
-</a>
+{{- $keys := slice -}}
+{{- if .IsNamedParams -}}
+  {{- with .Get "keys" -}}
+    {{- range (split . ",") -}}
+      {{- $k := trim . " \t\n\r" -}}
+      {{- if $k }}{{ $keys = $keys | append $k }}{{ end -}}
+    {{- end -}}
+  {{- else with .Get "key" -}}
+    {{- range (split . ",") -}}
+      {{- $k := trim . " \t\n\r" -}}
+      {{- if $k }}{{ $keys = $keys | append $k }}{{ end -}}
+    {{- end -}}
+  {{- end -}}
+{{- else -}}
+  {{- range .Params -}}
+    {{- range (split (string .) ",") -}}
+      {{- $k := trim . " \t\n\r" -}}
+      {{- if $k }}{{ $keys = $keys | append $k }}{{ end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+<span class="cite-group">{{- range $i, $k := $keys -}}<a class="cite-ref" href="#bib-{{ $k | lower | urlize }}" data-cite-key="{{ $k }}" role="doc-biblioref" aria-label="Citation: {{ $k }}"><span class="cite-num">[{{ $k }}]</span></a>{{- end -}}</span>

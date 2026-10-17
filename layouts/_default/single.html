@@ -16,6 +16,14 @@
 
     <div class="article-content" itemprop="articleBody">
       {{ .Content }}
+
+      {{- /* Auto-load .bib file next to .md if enabled and not explicitly included via shortcode */ -}}
+      {{- $bibAutoLoad := .Params.bib_auto_load | default site.Params.bib_auto_load | default true -}}
+      {{- if and $bibAutoLoad (not (findRE `(?s)\{\{<\s*bibliography` .RawContent)) -}}
+        {{- if gt (len (.Resources.Match "*.bib")) 0 -}}
+          {{- partial "bibliography.html" (dict "Page" . "Title" "References & Citations") -}}
+        {{- end -}}
+      {{- end -}}
     </div>
 
     {{- if $isPost -}}

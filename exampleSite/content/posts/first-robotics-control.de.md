@@ -66,8 +66,6 @@ Hier befindet sich eine verschlüsselte Nachricht:
 
 In unserem weiteren Beitrag untersuchen wir [WASM Client-seitige Code-Ausführung](/de/posts/deep-learning-wasm-runners/) für neuronale Netze direkt im Webbrowser!
 
-## Literaturverzeichnis & Referenzen
-
 {{< bibliography title="Literaturverzeichnis & Referenzen" >}}
 @article{kalman1960,
   title = {A New Approach to Linear Filtering and Prediction Problems},

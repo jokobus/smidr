@@ -93,8 +93,6 @@ print("Optimal LQR Gain Shape:", K.shape)
 
 In our companion article, we expand on [WASM Client-side Execution](/posts/deep-learning-wasm-runners/) to evaluate neural network controllers directly in the browser!
 
-## References & Bibliography
-
 {{< bibliography title="References & Citations" >}}
 @article{kalman1960,
   title = {A New Approach to Linear Filtering and Prediction Problems},

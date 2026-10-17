@@ -74,3 +74,7 @@ comments_title: "Diskussionen & Kommentare"
 pgp_fingerprint: "Fingerabdruck"
 pgp_download_key: "Schlüssel herunterladen (.asc)"
 pgp_copy_key: "Schlüssel kopieren"
+hero_badge: "ROBOTIK &bull; MASCHINELLES LERNEN &bull; INGENIEURWESEN"
+hero_subtitle: "Praxisnotizen zu Robotik, Embedded Systems & angewandter KI"
+hero_description: "Forschungs- und Ingenieursnotizen zu Robotik, autonomen Systemen, modernen KI-Architekturen und zukunftsweisenden Technologien."
+

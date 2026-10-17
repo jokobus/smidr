@@ -74,3 +74,7 @@ comments_title: "Discussions & Comments"
 pgp_fingerprint: "Fingerprint"
 pgp_download_key: "Download Key (.asc)"
 pgp_copy_key: "Copy Key"
+hero_badge: "ROBOTICS &bull; MACHINE LEARNING &bull; ENGINEERING"
+hero_subtitle: "Exploring Robotics, Embedded Systems & Applied Machine Learning"
+hero_description: "Research and engineering notes on robotics, autonomous systems, machine learning architectures, and modern technology."
+

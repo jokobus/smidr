@@ -11,7 +11,7 @@ y_{ee} &amp;= l_1 \sin(\theta_1) + l_2 \sin(\theta_1 + \theta_2)
 , representing these geometric transforms as homogeneous matrices provides computational uniformity for higher degrees of freedom.</p>
 <h2 id="2-kinematic-linkage-diagram-tikz">2. Kinematic Linkage Diagram (TikZ)</h2>
 <p>The following schematic is rendered entirely client-side using WebAssembly TeX (TikzJax):</p>
-<figure class="tikz-container" id="tikz-1792238779523221925">
+<figure class="tikz-container" id="tikz-1792239014924395058">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -163,7 +163,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
 
 <h2 id="5-real-time-parameter-response-tuner">5. Real-Time Parameter Response Tuner</h2>
 <p>Test closed-loop trajectory tracking response under variable damping ratios and natural frequencies:</p>
-<div class="interactive-widget-box" id="widget-1792238779532360154">
+<div class="interactive-widget-box" id="widget-1792239014936502589">
   <div class="widget-title">Robotic Trajectory Response Tuner</div>
   <div class="widget-desc">Adjust velocity gain and damping to observe step response oscillations.</div>
 
@@ -223,7 +223,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
 
 <hr>
 <h2 id="7-references--bibliography">7. References &amp; Bibliography</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792238779532517207" aria-label="References &amp; Citations" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
+<section class="smidr-bibliography-section" id="bib-sec-1792239014936664433" aria-label="References &amp; Citations" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
     <h2 class="bib-section-title">
       <span>📚</span> <span>References &amp; Citations</span>
     </h2>
@@ -275,7 +275,7 @@ y_{ee} &amp;= l_1 \sin(\theta_1) + l_2 \sin(\theta_1 + \theta_2)
 , representing these geometric transforms as homogeneous matrices provides computational uniformity for higher degrees of freedom.</p>
 <h2 id="2-kinematic-linkage-diagram-tikz">2. Kinematic Linkage Diagram (TikZ)</h2>
 <p>The following schematic is rendered entirely client-side using WebAssembly TeX (TikzJax):</p>
-<figure class="tikz-container" id="tikz-1792238779523221925">
+<figure class="tikz-container" id="tikz-1792239014924395058">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -427,7 +427,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
 
 <h2 id="5-real-time-parameter-response-tuner">5. Real-Time Parameter Response Tuner</h2>
 <p>Test closed-loop trajectory tracking response under variable damping ratios and natural frequencies:</p>
-<div class="interactive-widget-box" id="widget-1792238779532360154">
+<div class="interactive-widget-box" id="widget-1792239014936502589">
   <div class="widget-title">Robotic Trajectory Response Tuner</div>
   <div class="widget-desc">Adjust velocity gain and damping to observe step response oscillations.</div>
 
@@ -487,7 +487,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
 
 <hr>
 <h2 id="7-references--bibliography">7. References &amp; Bibliography</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792238779532517207" aria-label="References &amp; Citations" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
+<section class="smidr-bibliography-section" id="bib-sec-1792239014936664433" aria-label="References &amp; Citations" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
     <h2 class="bib-section-title">
       <span>📚</span> <span>References &amp; Citations</span>
     </h2>
@@ -526,53 +526,74 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
     </ol>
   </div>
 </section>
-]]></content:encoded><category>robotics</category><category>kinematics</category><category>python</category><category>wasm</category><category>simulation</category></item><item><title>Quick Start Guide: Writing &amp; Publishing with Smidr</title><link>https://jokobus.github.io/smidr/posts/quick-start-guide/</link><pubDate>Wed, 25 Mar 2026 12:00:00 +0000</pubDate><author>contact@example.org (Smidr Engineer)</author><guid>https://jokobus.github.io/smidr/posts/quick-start-guide/</guid><description><![CDATA[<p>Welcome to <strong>Smidr</strong>! This guide demonstrates how simple it is to compose and publish rich technical articles using native Markdown and Smidr&rsquo;s built-in shortcodes.</p>
-<h2 id="1-creating-a-new-article">1. Creating a New Article</h2>
-<p>To generate a new article with all archetypes and frontmatter preconfigured, simply run:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo new posts/my-first-simulation.md
-</span></span></code></pre></div><p>This creates a clean Markdown file in <code>content/posts/</code> with tags, categories, math mode, and backlink detection already enabled.</p>
-<h2 id="2-latex-mathematics">2. LaTeX Mathematics</h2>
-<p>Smidr includes client-side KaTeX for instantaneous rendering of mathematical formulations:</p>
+]]></content:encoded><category>robotics</category><category>kinematics</category><category>python</category><category>wasm</category><category>simulation</category></item><item><title>Quick Start Guide: Writing &amp; Publishing with Smidr</title><link>https://jokobus.github.io/smidr/posts/quick-start-guide/</link><pubDate>Wed, 25 Mar 2026 12:00:00 +0000</pubDate><author>contact@example.org (Smidr Engineer)</author><guid>https://jokobus.github.io/smidr/posts/quick-start-guide/</guid><description><![CDATA[<p>Welcome to <strong>Smidr</strong>—a fast, responsive, and feature-complete Hugo theme designed for researchers, roboticists, engineers, and technical writers. This guide serves as both an interactive tour and a copy-paste reference for all built-in capabilities.</p>
+<hr>
+<h2 id="1-creating-content--page-bundles">1. Creating Content &amp; Page Bundles</h2>
+<p>Create a new article bundle directly using the Hugo CLI:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo new posts/autonomous-navigation/index.en.md
+</span></span></code></pre></div><p>Using leaf bundles (<code>folder/index.en.md</code> and <code>folder/index.de.md</code>) keeps your images, local scripts, and companion <code>.bib</code> bibliography files neatly organized in the same folder.</p>
+<hr>
+<h2 id="2-dynamic-multilingual-hero--branding">2. Dynamic Multilingual Hero &amp; Branding</h2>
+<p>Smidr supports full internationalization across English and German. You can customize the landing page header badge, subtitle, and description per language in your <code>hugo.yaml</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">languages</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">en</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Jokobus&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">params</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">hero_badge</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;ROBOTICS &amp;bull; EMBEDDED SYSTEMS &amp;bull; APPLIED AI&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">subtitle</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Exploring Robotics, Embedded Systems &amp; Applied Machine Learning&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Field notes, interactive code, and technical deep-dives into modern engineering.&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">de</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Jokobus&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">params</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">hero_badge</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;ROBOTIK &amp;bull; EMBEDDED SYSTEMS &amp;bull; ANGEWANDTE KI&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">subtitle</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Praxisnotizen zu Robotik, Embedded Systems &amp; angewandter KI&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Praxiserprobte Einblicke, interaktiver Code und technische Notizen.&#34;</span><span class="w">
+</span></span></span></code></pre></div><p>If omitted, Smidr provides localized default fallbacks automatically.</p>
+<hr>
+<h2 id="3-latex-mathematics-katex">3. LaTeX Mathematics (KaTeX)</h2>
+<p>Smidr includes client-side KaTeX for instant, zero-latency mathematical typesetting:</p>
 <ul>
-<li><strong>Inline equations</strong>: Type <code>$f(x) = \sigma(W x + b)$</code> to render $f(x) = \sigma(W x + b)$.</li>
-<li><strong>Display equations</strong>: Wrap your formula in double dollar signs:</li>
+<li><strong>Inline formulas:</strong> Enclose in single dollar signs <code>$f(x) = \sigma(W x + b)$</code> to render $f(x) = \sigma(W x + b)$.</li>
+<li><strong>Display equations:</strong> Enclose in double dollar signs <code>$$...$$</code>:</li>
 </ul>
 <p>$$\mathcal{L}_{PID}(t) = K_p e(t) + K_i \int_0^t e(\tau) d\tau + K_d \frac{de(t)}{dt}$$</p>
-<h2 id="3-formatted-code-blocks">3. Formatted Code Blocks</h2>
-<p>Simply write standard markdown code fences. Smidr automatically detects the language, attaches a glowing tag, and provides an animated <strong>Copy to Clipboard</strong> button:</p>
+<hr>
+<h2 id="4-code-blocks-with-one-click-copy">4. Code Blocks with One-Click Copy</h2>
+<p>Standard Markdown code blocks automatically display syntax-highlighted code, language indicators, horizontal scroll containment, and an animated copy button:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-rust" data-lang="rust"><span class="line"><span class="cl"><span class="c1">// Rust kinematics controller loop
 </span></span></span><span class="line"><span class="cl"><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">step_controller</span><span class="p">(</span><span class="n">target</span>: <span class="kt">f64</span><span class="p">,</span><span class="w"> </span><span class="n">current</span>: <span class="kt">f64</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kt">f64</span> <span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">current</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">gain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.45</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">gain</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">error</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><p>Notice that code never line-breaks awkwardly; long lines scroll horizontally without breaking your page layout!</p>
-<h2 id="4-callout-boxes--admonitions">4. Callout Boxes &amp; Admonitions</h2>
-<p>Highlight crucial observations using the <code>alert</code> shortcode:</p>
-<div class="callout callout-tip" role="region" aria-label="Author Tip">
+</span></span></span></code></pre></div><hr>
+<h2 id="5-callouts--admonition-alerts">5. Callouts &amp; Admonition Alerts</h2>
+<p>Highlight critical warnings, pro tips, hardware advice, or theoretical notes using the <code>alert</code> shortcode (or shortcuts <code>tip</code>, <code>note</code>, <code>warning</code>, <code>caution</code>, <code>info</code>, <code>robotics</code>):</p>
+<div class="callout callout-tip" role="region" aria-label="Pro Tip">
   <div class="callout-icon" aria-hidden="true">💡</div>
   <div class="callout-body">
-    <div class="callout-title">Author Tip</div>
+    <div class="callout-title">Pro Tip</div>
     <div class="callout-content">
-      You can pick between 5 alert styles: <code>info</code>, <code>warning</code>, <code>caution</code>, <code>tip</code>, and <code>robotics</code>.
+      You can pick between 6 distinct alert styling presets: <code>info</code>, <code>note</code>, <code>tip</code>, <code>warning</code>, <code>caution</code>, and <code>robotics</code>.
     </div>
   </div>
 </div>
 
 
-<div class="callout callout-robotics" role="region" aria-label="Robotics Hardware Note">
+<div class="callout callout-robotics" role="region" aria-label="Robotics Hardware Safety">
   <div class="callout-icon" aria-hidden="true">🤖</div>
   <div class="callout-body">
-    <div class="callout-title">Robotics Hardware Note</div>
+    <div class="callout-title">Robotics Hardware Safety</div>
     <div class="callout-content">
-      Ensure motor current sensors are calibrated before closing the loop on real physical hardware.
+      Always engage hardware emergency-stop interlocks before enabling high-voltage motor drivers or closed-loop torque control.
     </div>
   </div>
 </div>
 
 
-<h2 id="5-client-side-wasm-code-runners">5. Client-Side WASM Code Runners</h2>
-<p>Want your readers to experiment with code right on the page? Embed a Pyodide WebAssembly runner:</p>
+<hr>
+<h2 id="6-client-side-webassembly-code-execution">6. Client-Side WebAssembly Code Execution</h2>
+<p>Enable readers to experiment with algorithms directly inside the browser using Pyodide-powered WebAssembly:</p>
 <div class="code-runner-box" data-lang="python">
   <div class="runner-header">
     <div class="code-lang-badge">
@@ -597,10 +618,14 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
   <div class="runner-editor-area">
     <div class="runner-line-numbers" aria-hidden="true"></div>
     <textarea class="runner-textarea" spellcheck="false" aria-label="Editable Code Area">
-# You can edit this code right now and click &#34;Run (WASM)&#34;!
-numbers = [1, 2, 3, 4, 5, 6, 7, 8]
-squares = [x**2 for x in numbers]
-print(&#34;Computed squares:&#34;, squares)</textarea>
+import math
+
+angles_deg = [0, 30, 45, 60, 90]
+radians = [math.radians(deg) for deg in angles_deg]
+sines = [round(math.sin(rad), 4) for rad in radians]
+
+print(&#34;Angles (deg):&#34;, angles_deg)
+print(&#34;Sine values :&#34;, sines)</textarea>
     <button class="runner-btn-fullscreen" type="button" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
       <svg class="fullscreen-icon-expand" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="15 3 21 3 21 9"></polyline>
@@ -624,11 +649,12 @@ print(&#34;Computed squares:&#34;, squares)</textarea>
 </div>
 
 
-<h2 id="6-embedded-parameter-sliders">6. Embedded Parameter Sliders</h2>
-<p>Allow readers to interact with real-time dynamic visualizations:</p>
-<div class="interactive-widget-box" id="widget-1792238779535839033">
-  <div class="widget-title">Interactive System Response Tuner</div>
-  <div class="widget-desc">Drag sliders to modify system parameters in real time.</div>
+<hr>
+<h2 id="7-interactive-parameter-widgets--sliders">7. Interactive Parameter Widgets &amp; Sliders</h2>
+<p>Embed interactive HTML5 Canvas visualizers with live parameter sliders to demonstrate dynamic systems and control responses in real time:</p>
+<div class="interactive-widget-box" id="widget-1792239014944482164">
+  <div class="widget-title">Dynamic System Response Tuner</div>
+  <div class="widget-desc">Adjust damping and natural frequency sliders in real time to observe the step response.</div>
 
   <div class="widget-controls">
     <div class="widget-control-group">
@@ -660,22 +686,151 @@ print(&#34;Computed squares:&#34;, squares)</textarea>
 </div>
 
 
-<h2 id="7-secret-text">7. Secret Text</h2>
-<p>Hide spoilers, puzzle solutions, or Easter eggs with the <code>secret</code> shortcode:</p>
-<p>Here is the secret passcode: <span class="smidr-secret" title="Select or hover to reveal hidden payload" role="note">CYBER-FORGE-2026</span>
-<br>
-<em>(Hover or select the space above to reveal the payload!)</em></p>
-<h2 id="8-popover-footnotes">8. Popover Footnotes</h2>
-<p>Footnotes in Smidr don&rsquo;t yank readers away to the bottom of the page<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
-<h2 id="9-ai-transparency--translation-badges">9. AI Transparency &amp; Translation Badges</h2>
-<p>Smidr includes built-in metadata badges for disclosing AI involvement and translation origin. Configure your front matter:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">used_ai</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="nt">original_language</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;de&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="nt">original_post_path</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;/de/posts/meine-notizen/&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="nt">ai_model</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Ollama / Llama 3&#34;</span><span class="w">
-</span></span></span></code></pre></div><p>This renders an automatic provenance banner at the top of the article.</p>
-<h2 id="10-openpgp-cryptographic-identity-verification">10. OpenPGP Cryptographic Identity Verification</h2>
-<p>Display your public key, fingerprint, and verification instructions with <code>pgp-card</code>:</p>
+<hr>
+<h2 id="8-interactive-3d-flashcards">8. Interactive 3D Flashcards</h2>
+<p>Engage learners with full-width memory flashcards that flip with a smooth 3D CSS rotation on click or tap:</p>
+<div class="flashcard-container" tabindex="0" role="button" aria-label="Interactive Flashcard. Click or tap to flip">
+  <div class="flashcard-flipper">
+    
+    <div class="flashcard-face flashcard-front">
+      <div class="flashcard-header">
+        <span class="flashcard-badge">
+          <span>💡</span>
+          <span>Flashcard</span>
+        </span>
+        <span class="flashcard-flip-indicator">
+          <span class="flip-icon">↻</span>
+          <span class="flip-text">Click or tap to flip</span>
+        </span>
+      </div>
+      <div class="flashcard-body">
+        What is the Nyquist-Shannon Sampling Theorem?
+      </div>
+    </div>
+
+    
+    <div class="flashcard-face flashcard-back">
+      <div class="flashcard-header">
+        <span class="flashcard-badge flashcard-badge-back">
+          <span>✓</span>
+          <span>Answer / Details</span>
+        </span>
+        <span class="flashcard-flip-indicator">
+          <span class="flip-icon">↻</span>
+          <span class="flip-text">Flip back</span>
+        </span>
+      </div>
+      <div class="flashcard-body">
+        <strong>Answer:</strong><br>
+A continuous-time bandlimited signal can be perfectly reconstructed from its discrete samples if and only if the sampling frequency exceeds twice the maximum frequency component:<br>
+$$f_s &gt; 2 B$$
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+<h2 id="9-collapsible-sections--expandable-bars">9. Collapsible Sections &amp; Expandable Bars</h2>
+<p>Keep long derivations, proofs, or optional exercises clean and organized using collapsible bars (aliases: <code>collapse</code>, <code>details</code>, <code>accordion</code>, <code>spoiler</code>):</p>
+<details class="smidr-collapse">
+  <summary class="smidr-collapse-summary">
+    <span class="smidr-collapse-title-wrap">
+      <span class="smidr-collapse-icon">▸</span>
+      <span class="smidr-collapse-title">Click to expand the Euler-Lagrange derivation</span>
+    </span>
+    <span class="smidr-collapse-chevron" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </span>
+  </summary>
+  <div class="smidr-collapse-content">
+    <p>Starting from Hamilton&rsquo;s principle of least action $\delta S = 0$, where the Lagrangian $\mathcal{L} = T - V$:</p>
+<p>$$\frac{d}{dt}\left(\frac{\partial \mathcal{L}}{\partial \dot{q}_i}\right) - \frac{\partial \mathcal{L}}{\partial q_i} = Q_i$$</p>
+<p>Here, generalized coordinates $q_i$ and non-conservative forces $Q_i$ define the full equation of motion for robotic manipulators.</p>
+
+  </div>
+</details>
+
+<hr>
+<h2 id="10-academic-citations--bibtex-bibliography-engine">10. Academic Citations &amp; BibTeX Bibliography Engine</h2>
+<p>Smidr includes a native bibliography engine supporting standard <code>.bib</code> files and inline BibTeX:</p>
+<ol>
+<li><strong>Automatic <code>.bib</code> Loading:</strong> Place a <code>references.bib</code> file inside your post directory. Smidr automatically detects, parses, and formats it.</li>
+<li><strong>In-Text Citation:</strong> Reference keys anywhere in your text using <code>{{&lt; cite &quot;key&quot; &gt;}}</code> or <code>{{&lt; cite &quot;key1,key2&quot; &gt;}}</code>.</li>
+<li><strong>Citation Popovers:</strong> Hovering over any citation badge reveals an instant bibliographic card with author, title, journal, and year.</li>
+<li><strong>Citation Styles:</strong> Switch styles globally in <code>params.yaml</code> or per post in frontmatter:
+<ul>
+<li><code>numeric</code>: <code>[1]</code></li>
+<li><code>author-year</code>: <code>(Kalman, 1960)</code></li>
+<li><code>alphanumeric</code>: <code>[Kal60]</code></li>
+</ul>
+</li>
+<li><strong>Direct BibTeX Export:</strong> Every bibliographic entry features a one-click <strong>Copy BibTeX</strong> button and direct DOI/URL links.</li>
+</ol>
+<h3 id="example-citation--bibliography">Example Citation &amp; Bibliography:</h3>
+<p>As shown in Kalman&rsquo;s seminal paper <span class="cite-group"><a class="cite-ref" href="#bib-kalman1960" data-cite-key="kalman1960" role="doc-biblioref" aria-label="Citation: kalman1960"><span class="cite-num">[kalman1960]</span></a></span>
+ and foundational feedback theory <span class="cite-group"><a class="cite-ref" href="#bib-astrom2010" data-cite-key="astrom2010" role="doc-biblioref" aria-label="Citation: astrom2010"><span class="cite-num">[astrom2010]</span></a></span>
+, optimal estimation requires minimal variance guarantees.</p>
+<section class="smidr-bibliography-section" id="bib-sec-1792239014944671101" aria-label="References &amp; Citations" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
+    <h2 class="bib-section-title">
+      <span>📚</span> <span>References &amp; Citations</span>
+    </h2>
+    <div class="bib-header-controls">
+      <div class="bib-style-switcher" role="group" aria-label="Citation Style">
+        <span class="bib-control-label">Style:</span>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="numeric" title="Numeric citation style [1]">Numeric</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="author-year" title="Author-Year citation style (Author, Year)">Author-Year</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="alphabetic" title="Alphabetic citation style [AutYY]">Alpha</button>
+      </div>
+      <div class="bib-filter-switcher" role="group" aria-label="Filter Bibliography">
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="cited" title="Show only citations cited in this article">Cited (<span class="bib-count-cited">0</span>)</button>
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="all" title="Show all entries in bibliography">All (<span class="bib-count-all">0</span>)</button>
+      </div>
+    </div>
+  </div><div class="smidr-bibliography">
+    <script type="text/bibtex" class="bibtex-source">
+
+@article{kalman1960,
+  title = {A New Approach to Linear Filtering and Prediction Problems},
+  author = {Kalman, Rudolph Emil},
+  journal = {Journal of Basic Engineering},
+  volume = {82},
+  number = {1},
+  pages = {35--45},
+  year = {1960},
+  doi = {10.1115/1.3662552}
+}
+
+@book{astrom2010,
+  title = {Feedback Systems: An Introduction for Scientists and Engineers},
+  author = {Astrom, Karl Johan and Murray, Richard M.},
+  publisher = {Princeton University Press},
+  year = {2010},
+  url = {https://www.cds.caltech.edu/~murray/amwiki}
+}
+
+    </script>
+    <ol class="bib-entries-list">
+      
+    </ol>
+  </div>
+</section>
+<hr>
+<h2 id="11-interactive-knowledge-graph-digital-garden">11. Interactive Knowledge Graph (Digital Garden)</h2>
+<p>Connect your thoughts visually! Set <code>gardenGraph: true</code> in your frontmatter or <code>params.yaml</code> to render an interactive physics-simulated network graph at the bottom of the page or on the homepage. Readers can zoom, pan, hover to highlight clusters, and click nodes to navigate directly between interconnected ideas.</p>
+<hr>
+<h2 id="12-contextual-backlinks">12. Contextual Backlinks</h2>
+<p>When <code>showBacklinks: true</code> is configured, Smidr automatically discovers and displays all incoming references from other articles in your knowledge base, turning your blog into a self-organizing digital garden.</p>
+<hr>
+<h2 id="13-popover-footnotes">13. Popover Footnotes</h2>
+<p>Standard Markdown footnotes in Smidr don&rsquo;t disrupt the reader&rsquo;s flow<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
+<hr>
+<h2 id="14-command-palette--instant-fuzzy-search">14. Command Palette &amp; Instant Fuzzy Search</h2>
+<p>Press <strong><code>Ctrl</code> + <code>K</code></strong> (or <strong><code>Cmd</code> + <code>K</code></strong> on macOS), or click the search button in the navigation bar or hero section. A modern cyberpunk modal appears instantly, allowing real-time fuzzy querying across article titles, headings, tags, and content snippets.</p>
+<hr>
+<h2 id="15-openpgp-cryptographic-identity-verification">15. OpenPGP Cryptographic Identity Verification</h2>
+<p>Display your public cryptographic key, fingerprint, and verification instructions with <code>pgp-card</code>:</p>
 <div class="pgp-card">
   <div class="pgp-card-header">
     <div class="pgp-badge">
@@ -689,7 +844,7 @@ print(&#34;Computed squares:&#34;, squares)</textarea>
     <div class="pgp-meta-grid">
       <div class="pgp-meta-item">
         <span class="pgp-label">UID / Identity:</span>
-        <span class="pgp-val"><strong>Smidr Engineer</strong> &lt;engineer@example.org&gt;</span>
+        <span class="pgp-val"><strong>Smidr Core Engineer</strong> &lt;engineer@example.org&gt;</span>
       </div>
       
       <div class="pgp-meta-item">
@@ -746,14 +901,212 @@ mQGNBGXx... [Your ASCII Armored Key Here] ...
   </div>
 </div>
 
-<h2 id="11-asciinema-terminal-replay">11. Asciinema Terminal Replay</h2>
-<p>Embed interactive CLI recordings without external video overhead:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">{{&lt; asciinema id=&#34;123456&#34; title=&#34;Installing PyTorch with CUDA in Conda&#34; &gt;}}
-</span></span></code></pre></div><h2 id="12-direct-file-based-code-inclusion">12. Direct File-Based Code Inclusion</h2>
-<p>Instead of copy-pasting code, reference source files directly from your repository:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">{{&lt; code-file source=&#34;scripts/train.py&#34; lang=&#34;python&#34; title=&#34;Training Loop&#34; &gt;}}
-</span></span></code></pre></div><h2 id="13-interactive-3d-flashcards">13. Interactive 3D Flashcards</h2>
-<p>Engage readers with full-width flip cards that reveal answers or detailed explanations with a 3D turning animation:</p>
+<hr>
+<h2 id="16-vector-tikz-diagrams">16. Vector TikZ Diagrams</h2>
+<p>Render publication-grade TikZ and PGF vector schematics directly in your browser:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">{{&lt; tikz caption=&#34;Closed-loop feedback control diagram.&#34; &gt;}}
+</span></span><span class="line"><span class="cl">\begin{tikzpicture}[auto, node distance=2cm, &gt;=latex]
+</span></span><span class="line"><span class="cl">  \node [input, name=input] {};
+</span></span><span class="line"><span class="cl">  \node [sum, right of=input] (sum) {};
+</span></span><span class="line"><span class="cl">  \node [block, right of=sum] (controller) {Controller};
+</span></span><span class="line"><span class="cl">  \draw [-&gt;] (input) -- node {$r(t)$} (sum);
+</span></span><span class="line"><span class="cl">  \draw [-&gt;] (sum) -- node {$e(t)$} (controller);
+</span></span><span class="line"><span class="cl">\end{tikzpicture}
+</span></span><span class="line"><span class="cl">{{&lt; /tikz &gt;}}
+</span></span></code></pre></div><hr>
+<h2 id="17-asciinema-terminal-replay--file-inclusion">17. Asciinema Terminal Replay &amp; File Inclusion</h2>
+<ul>
+<li><strong>Terminal Recordings:</strong> Embed interactive, lightweight terminal sessions without bulky video files:
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">{{&lt; asciinema id=&#34;123456&#34; title=&#34;Deploying Smidr with Hugo&#34; &gt;}}
+</span></span></code></pre></div></li>
+<li><strong>External Code Files:</strong> Reference source code files directly from your repository instead of copy-pasting:
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">{{&lt; code-file source=&#34;scripts/controller.py&#34; lang=&#34;python&#34; title=&#34;Controller Implementation&#34; &gt;}}
+</span></span></code></pre></div></li>
+</ul>
+<hr>
+<h2 id="18-secret--spoiler-reveals">18. Secret &amp; Spoiler Reveals</h2>
+<p>Conceal sensitive solutions or puzzle answers with the <code>secret</code> shortcode:</p>
+<p>Verification token: <span class="smidr-secret" title="Select or hover to reveal hidden payload" role="note">CYBER-SMIDR-2026</span>
+ <em>(Hover or tap to reveal)</em></p>
+<hr>
+<h2 id="19-ai-transparency--provenance-badges">19. AI Transparency &amp; Provenance Badges</h2>
+<p>Smidr champions transparent scientific communication. Add provenance metadata to your frontmatter:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">used_ai</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">original_language</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;de&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">original_post_path</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;/de/posts/mein-original/&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">ai_model</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Claude 3.7 / Ollama&#34;</span><span class="w">
+</span></span></span></code></pre></div><p>Smidr automatically renders an unobtrusive provenance notice informing readers whether a post was human-authored, translated, or refined with AI assistance.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Hovering or tapping this number opens a sleek popover right in place. Clicking the anchor smoothly jumps with dedicated viewport clearance.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></description><content:encoded><![CDATA[<p>Welcome to <strong>Smidr</strong>—a fast, responsive, and feature-complete Hugo theme designed for researchers, roboticists, engineers, and technical writers. This guide serves as both an interactive tour and a copy-paste reference for all built-in capabilities.</p>
+<hr>
+<h2 id="1-creating-content--page-bundles">1. Creating Content &amp; Page Bundles</h2>
+<p>Create a new article bundle directly using the Hugo CLI:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo new posts/autonomous-navigation/index.en.md
+</span></span></code></pre></div><p>Using leaf bundles (<code>folder/index.en.md</code> and <code>folder/index.de.md</code>) keeps your images, local scripts, and companion <code>.bib</code> bibliography files neatly organized in the same folder.</p>
+<hr>
+<h2 id="2-dynamic-multilingual-hero--branding">2. Dynamic Multilingual Hero &amp; Branding</h2>
+<p>Smidr supports full internationalization across English and German. You can customize the landing page header badge, subtitle, and description per language in your <code>hugo.yaml</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">languages</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">en</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Jokobus&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">params</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">hero_badge</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;ROBOTICS &amp;bull; EMBEDDED SYSTEMS &amp;bull; APPLIED AI&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">subtitle</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Exploring Robotics, Embedded Systems &amp; Applied Machine Learning&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Field notes, interactive code, and technical deep-dives into modern engineering.&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">de</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Jokobus&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">params</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">hero_badge</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;ROBOTIK &amp;bull; EMBEDDED SYSTEMS &amp;bull; ANGEWANDTE KI&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">subtitle</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Praxisnotizen zu Robotik, Embedded Systems &amp; angewandter KI&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Praxiserprobte Einblicke, interaktiver Code und technische Notizen.&#34;</span><span class="w">
+</span></span></span></code></pre></div><p>If omitted, Smidr provides localized default fallbacks automatically.</p>
+<hr>
+<h2 id="3-latex-mathematics-katex">3. LaTeX Mathematics (KaTeX)</h2>
+<p>Smidr includes client-side KaTeX for instant, zero-latency mathematical typesetting:</p>
+<ul>
+<li><strong>Inline formulas:</strong> Enclose in single dollar signs <code>$f(x) = \sigma(W x + b)$</code> to render $f(x) = \sigma(W x + b)$.</li>
+<li><strong>Display equations:</strong> Enclose in double dollar signs <code>$$...$$</code>:</li>
+</ul>
+<p>$$\mathcal{L}_{PID}(t) = K_p e(t) + K_i \int_0^t e(\tau) d\tau + K_d \frac{de(t)}{dt}$$</p>
+<hr>
+<h2 id="4-code-blocks-with-one-click-copy">4. Code Blocks with One-Click Copy</h2>
+<p>Standard Markdown code blocks automatically display syntax-highlighted code, language indicators, horizontal scroll containment, and an animated copy button:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-rust" data-lang="rust"><span class="line"><span class="cl"><span class="c1">// Rust kinematics controller loop
+</span></span></span><span class="line"><span class="cl"><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">step_controller</span><span class="p">(</span><span class="n">target</span>: <span class="kt">f64</span><span class="p">,</span><span class="w"> </span><span class="n">current</span>: <span class="kt">f64</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kt">f64</span> <span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">current</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">gain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.45</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">gain</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">error</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><hr>
+<h2 id="5-callouts--admonition-alerts">5. Callouts &amp; Admonition Alerts</h2>
+<p>Highlight critical warnings, pro tips, hardware advice, or theoretical notes using the <code>alert</code> shortcode (or shortcuts <code>tip</code>, <code>note</code>, <code>warning</code>, <code>caution</code>, <code>info</code>, <code>robotics</code>):</p>
+<div class="callout callout-tip" role="region" aria-label="Pro Tip">
+  <div class="callout-icon" aria-hidden="true">💡</div>
+  <div class="callout-body">
+    <div class="callout-title">Pro Tip</div>
+    <div class="callout-content">
+      You can pick between 6 distinct alert styling presets: <code>info</code>, <code>note</code>, <code>tip</code>, <code>warning</code>, <code>caution</code>, and <code>robotics</code>.
+    </div>
+  </div>
+</div>
+
+
+<div class="callout callout-robotics" role="region" aria-label="Robotics Hardware Safety">
+  <div class="callout-icon" aria-hidden="true">🤖</div>
+  <div class="callout-body">
+    <div class="callout-title">Robotics Hardware Safety</div>
+    <div class="callout-content">
+      Always engage hardware emergency-stop interlocks before enabling high-voltage motor drivers or closed-loop torque control.
+    </div>
+  </div>
+</div>
+
+
+<hr>
+<h2 id="6-client-side-webassembly-code-execution">6. Client-Side WebAssembly Code Execution</h2>
+<p>Enable readers to experiment with algorithms directly inside the browser using Pyodide-powered WebAssembly:</p>
+<div class="code-runner-box" data-lang="python">
+  <div class="runner-header">
+    <div class="code-lang-badge">
+      <span>🔨</span>
+      <span>Interactive Python Playground</span>
+    </div>
+    <div class="runner-actions">
+      <button class="code-copy-btn runner-btn-copy" type="button" aria-label="Copy code to clipboard">
+        <span>📋</span>
+        <span class="copy-text">Copy</span>
+      </button>
+      <button class="code-copy-btn runner-btn-clear" type="button" aria-label="Clear output">
+        <span>🗑️</span>
+        <span>Clear</span>
+      </button>
+      <button class="runner-btn-run" type="button" aria-label="Execute code in browser">
+        <span>▶</span>
+        <span>Run</span>
+      </button>
+    </div>
+  </div>
+  <div class="runner-editor-area">
+    <div class="runner-line-numbers" aria-hidden="true"></div>
+    <textarea class="runner-textarea" spellcheck="false" aria-label="Editable Code Area">
+import math
+
+angles_deg = [0, 30, 45, 60, 90]
+radians = [math.radians(deg) for deg in angles_deg]
+sines = [round(math.sin(rad), 4) for rad in radians]
+
+print(&#34;Angles (deg):&#34;, angles_deg)
+print(&#34;Sine values :&#34;, sines)</textarea>
+    <button class="runner-btn-fullscreen" type="button" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
+      <svg class="fullscreen-icon-expand" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <polyline points="9 21 3 21 3 15"></polyline>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+      <svg class="fullscreen-icon-compress" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+        <polyline points="4 14 10 14 10 20"></polyline>
+        <polyline points="20 10 14 10 14 4"></polyline>
+        <line x1="14" y1="10" x2="21" y2="3"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+    </button>
+  </div>
+  <div class="runner-output-area" aria-live="polite">
+    <div class="runner-output-title">Terminal Output</div>
+    <pre class="runner-stdout"></pre>
+    <pre class="runner-stderr"></pre>
+  </div>
+</div>
+
+
+<hr>
+<h2 id="7-interactive-parameter-widgets--sliders">7. Interactive Parameter Widgets &amp; Sliders</h2>
+<p>Embed interactive HTML5 Canvas visualizers with live parameter sliders to demonstrate dynamic systems and control responses in real time:</p>
+<div class="interactive-widget-box" id="widget-1792239014944482164">
+  <div class="widget-title">Dynamic System Response Tuner</div>
+  <div class="widget-desc">Adjust damping and natural frequency sliders in real time to observe the step response.</div>
+
+  <div class="widget-controls">
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Proportional Gain (<em>K<sub>p</sub></em>):</span>
+        <strong class="val-kp">2.5</strong>
+      </div>
+      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5" aria-label="Proportional Gain">
+    </div>
+
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Damping Ratio (<em>&zeta;</em>):</span>
+        <strong class="val-zeta">0.45</strong>
+      </div>
+      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45" aria-label="Damping Ratio">
+    </div>
+
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Natural Frequency (<em>&omega;<sub>n</sub></em>):</span>
+        <strong class="val-wn">3.0</strong>
+      </div>
+      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0" aria-label="Natural Frequency">
+    </div>
+  </div>
+
+  <canvas class="widget-display-canvas" width="600" height="180"></canvas>
+</div>
+
+
+<hr>
+<h2 id="8-interactive-3d-flashcards">8. Interactive 3D Flashcards</h2>
+<p>Engage learners with full-width memory flashcards that flip with a smooth 3D CSS rotation on click or tap:</p>
 <div class="flashcard-container" tabindex="0" role="button" aria-label="Interactive Flashcard. Click or tap to flip">
   <div class="flashcard-flipper">
     
@@ -786,19 +1139,22 @@ mQGNBGXx... [Your ASCII Armored Key Here] ...
         </span>
       </div>
       <div class="flashcard-body">
-        A continuous signal can be completely reconstructed if it is sampled at a frequency strictly greater than twice the highest frequency present: $f_s &gt; 2 B$.
+        <strong>Answer:</strong><br>
+A continuous-time bandlimited signal can be perfectly reconstructed from its discrete samples if and only if the sampling frequency exceeds twice the maximum frequency component:<br>
+$$f_s &gt; 2 B$$
       </div>
     </div>
   </div>
 </div>
 
-<h2 id="14-collapsible-expandable-bars-accordions">14. Collapsible Expandable Bars (Accordions)</h2>
-<p>Keep articles clean and hide technical proofs, derivation details, or spoilers under horizontal clickable bars that expand down:</p>
+<hr>
+<h2 id="9-collapsible-sections--expandable-bars">9. Collapsible Sections &amp; Expandable Bars</h2>
+<p>Keep long derivations, proofs, or optional exercises clean and organized using collapsible bars (aliases: <code>collapse</code>, <code>details</code>, <code>accordion</code>, <code>spoiler</code>):</p>
 <details class="smidr-collapse">
   <summary class="smidr-collapse-summary">
     <span class="smidr-collapse-title-wrap">
       <span class="smidr-collapse-icon">▸</span>
-      <span class="smidr-collapse-title">Click to expand mathematical derivation</span>
+      <span class="smidr-collapse-title">Click to expand the Euler-Lagrange derivation</span>
     </span>
     <span class="smidr-collapse-chevron" aria-hidden="true">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -807,170 +1163,92 @@ mQGNBGXx... [Your ASCII Armored Key Here] ...
     </span>
   </summary>
   <div class="smidr-collapse-content">
-    Starting from the Euler-Lagrange equations of motion:
-$$\frac{d}{dt}\left(\frac{\partial \mathcal{L}}{\partial \dot{q}_i}\right) - \frac{\partial \mathcal{L}}{\partial q_i} = Q_i$$
-We can directly compute the generalized torque required at each joint.
+    <p>Starting from Hamilton&rsquo;s principle of least action $\delta S = 0$, where the Lagrangian $\mathcal{L} = T - V$:</p>
+<p>$$\frac{d}{dt}\left(\frac{\partial \mathcal{L}}{\partial \dot{q}_i}\right) - \frac{\partial \mathcal{L}}{\partial q_i} = Q_i$$</p>
+<p>Here, generalized coordinates $q_i$ and non-conservative forces $Q_i$ define the full equation of motion for robotic manipulators.</p>
+
   </div>
 </details>
 
-<div class="footnotes" role="doc-endnotes">
 <hr>
+<h2 id="10-academic-citations--bibtex-bibliography-engine">10. Academic Citations &amp; BibTeX Bibliography Engine</h2>
+<p>Smidr includes a native bibliography engine supporting standard <code>.bib</code> files and inline BibTeX:</p>
 <ol>
-<li id="fn:1">
-<p>Hovering or tapping this note opens a popover right here! No losing your reading position.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-</ol>
-</div>
-]]></description><content:encoded><![CDATA[<p>Welcome to <strong>Smidr</strong>! This guide demonstrates how simple it is to compose and publish rich technical articles using native Markdown and Smidr&rsquo;s built-in shortcodes.</p>
-<h2 id="1-creating-a-new-article">1. Creating a New Article</h2>
-<p>To generate a new article with all archetypes and frontmatter preconfigured, simply run:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo new posts/my-first-simulation.md
-</span></span></code></pre></div><p>This creates a clean Markdown file in <code>content/posts/</code> with tags, categories, math mode, and backlink detection already enabled.</p>
-<h2 id="2-latex-mathematics">2. LaTeX Mathematics</h2>
-<p>Smidr includes client-side KaTeX for instantaneous rendering of mathematical formulations:</p>
+<li><strong>Automatic <code>.bib</code> Loading:</strong> Place a <code>references.bib</code> file inside your post directory. Smidr automatically detects, parses, and formats it.</li>
+<li><strong>In-Text Citation:</strong> Reference keys anywhere in your text using <code>{{&lt; cite &quot;key&quot; &gt;}}</code> or <code>{{&lt; cite &quot;key1,key2&quot; &gt;}}</code>.</li>
+<li><strong>Citation Popovers:</strong> Hovering over any citation badge reveals an instant bibliographic card with author, title, journal, and year.</li>
+<li><strong>Citation Styles:</strong> Switch styles globally in <code>params.yaml</code> or per post in frontmatter:
 <ul>
-<li><strong>Inline equations</strong>: Type <code>$f(x) = \sigma(W x + b)$</code> to render $f(x) = \sigma(W x + b)$.</li>
-<li><strong>Display equations</strong>: Wrap your formula in double dollar signs:</li>
+<li><code>numeric</code>: <code>[1]</code></li>
+<li><code>author-year</code>: <code>(Kalman, 1960)</code></li>
+<li><code>alphanumeric</code>: <code>[Kal60]</code></li>
 </ul>
-<p>$$\mathcal{L}_{PID}(t) = K_p e(t) + K_i \int_0^t e(\tau) d\tau + K_d \frac{de(t)}{dt}$$</p>
-<h2 id="3-formatted-code-blocks">3. Formatted Code Blocks</h2>
-<p>Simply write standard markdown code fences. Smidr automatically detects the language, attaches a glowing tag, and provides an animated <strong>Copy to Clipboard</strong> button:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-rust" data-lang="rust"><span class="line"><span class="cl"><span class="c1">// Rust kinematics controller loop
-</span></span></span><span class="line"><span class="cl"><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">step_controller</span><span class="p">(</span><span class="n">target</span>: <span class="kt">f64</span><span class="p">,</span><span class="w"> </span><span class="n">current</span>: <span class="kt">f64</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kt">f64</span> <span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">current</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">gain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.45</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">gain</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">error</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><p>Notice that code never line-breaks awkwardly; long lines scroll horizontally without breaking your page layout!</p>
-<h2 id="4-callout-boxes--admonitions">4. Callout Boxes &amp; Admonitions</h2>
-<p>Highlight crucial observations using the <code>alert</code> shortcode:</p>
-<div class="callout callout-tip" role="region" aria-label="Author Tip">
-  <div class="callout-icon" aria-hidden="true">💡</div>
-  <div class="callout-body">
-    <div class="callout-title">Author Tip</div>
-    <div class="callout-content">
-      You can pick between 5 alert styles: <code>info</code>, <code>warning</code>, <code>caution</code>, <code>tip</code>, and <code>robotics</code>.
-    </div>
-  </div>
-</div>
-
-
-<div class="callout callout-robotics" role="region" aria-label="Robotics Hardware Note">
-  <div class="callout-icon" aria-hidden="true">🤖</div>
-  <div class="callout-body">
-    <div class="callout-title">Robotics Hardware Note</div>
-    <div class="callout-content">
-      Ensure motor current sensors are calibrated before closing the loop on real physical hardware.
-    </div>
-  </div>
-</div>
-
-
-<h2 id="5-client-side-wasm-code-runners">5. Client-Side WASM Code Runners</h2>
-<p>Want your readers to experiment with code right on the page? Embed a Pyodide WebAssembly runner:</p>
-<div class="code-runner-box" data-lang="python">
-  <div class="runner-header">
-    <div class="code-lang-badge">
-      <span>🔨</span>
-      <span>Interactive Python Playground</span>
-    </div>
-    <div class="runner-actions">
-      <button class="code-copy-btn runner-btn-copy" type="button" aria-label="Copy code to clipboard">
-        <span>📋</span>
-        <span class="copy-text">Copy</span>
-      </button>
-      <button class="code-copy-btn runner-btn-clear" type="button" aria-label="Clear output">
-        <span>🗑️</span>
-        <span>Clear</span>
-      </button>
-      <button class="runner-btn-run" type="button" aria-label="Execute code in browser">
-        <span>▶</span>
-        <span>Run</span>
-      </button>
-    </div>
-  </div>
-  <div class="runner-editor-area">
-    <div class="runner-line-numbers" aria-hidden="true"></div>
-    <textarea class="runner-textarea" spellcheck="false" aria-label="Editable Code Area">
-# You can edit this code right now and click &#34;Run (WASM)&#34;!
-numbers = [1, 2, 3, 4, 5, 6, 7, 8]
-squares = [x**2 for x in numbers]
-print(&#34;Computed squares:&#34;, squares)</textarea>
-    <button class="runner-btn-fullscreen" type="button" aria-label="Toggle Fullscreen" title="Toggle Fullscreen">
-      <svg class="fullscreen-icon-expand" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="15 3 21 3 21 9"></polyline>
-        <polyline points="9 21 3 21 3 15"></polyline>
-        <line x1="21" y1="3" x2="14" y2="10"></line>
-        <line x1="3" y1="21" x2="10" y2="14"></line>
-      </svg>
-      <svg class="fullscreen-icon-compress" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-        <polyline points="4 14 10 14 10 20"></polyline>
-        <polyline points="20 10 14 10 14 4"></polyline>
-        <line x1="14" y1="10" x2="21" y2="3"></line>
-        <line x1="3" y1="21" x2="10" y2="14"></line>
-      </svg>
-    </button>
-  </div>
-  <div class="runner-output-area" aria-live="polite">
-    <div class="runner-output-title">Terminal Output</div>
-    <pre class="runner-stdout"></pre>
-    <pre class="runner-stderr"></pre>
-  </div>
-</div>
-
-
-<h2 id="6-embedded-parameter-sliders">6. Embedded Parameter Sliders</h2>
-<p>Allow readers to interact with real-time dynamic visualizations:</p>
-<div class="interactive-widget-box" id="widget-1792238779535839033">
-  <div class="widget-title">Interactive System Response Tuner</div>
-  <div class="widget-desc">Drag sliders to modify system parameters in real time.</div>
-
-  <div class="widget-controls">
-    <div class="widget-control-group">
-      <div class="widget-label-row">
-        <span>Proportional Gain (<em>K<sub>p</sub></em>):</span>
-        <strong class="val-kp">2.5</strong>
+</li>
+<li><strong>Direct BibTeX Export:</strong> Every bibliographic entry features a one-click <strong>Copy BibTeX</strong> button and direct DOI/URL links.</li>
+</ol>
+<h3 id="example-citation--bibliography">Example Citation &amp; Bibliography:</h3>
+<p>As shown in Kalman&rsquo;s seminal paper <span class="cite-group"><a class="cite-ref" href="#bib-kalman1960" data-cite-key="kalman1960" role="doc-biblioref" aria-label="Citation: kalman1960"><span class="cite-num">[kalman1960]</span></a></span>
+ and foundational feedback theory <span class="cite-group"><a class="cite-ref" href="#bib-astrom2010" data-cite-key="astrom2010" role="doc-biblioref" aria-label="Citation: astrom2010"><span class="cite-num">[astrom2010]</span></a></span>
+, optimal estimation requires minimal variance guarantees.</p>
+<section class="smidr-bibliography-section" id="bib-sec-1792239014944671101" aria-label="References &amp; Citations" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
+    <h2 class="bib-section-title">
+      <span>📚</span> <span>References &amp; Citations</span>
+    </h2>
+    <div class="bib-header-controls">
+      <div class="bib-style-switcher" role="group" aria-label="Citation Style">
+        <span class="bib-control-label">Style:</span>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="numeric" title="Numeric citation style [1]">Numeric</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="author-year" title="Author-Year citation style (Author, Year)">Author-Year</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="alphabetic" title="Alphabetic citation style [AutYY]">Alpha</button>
       </div>
-      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5" aria-label="Proportional Gain">
-    </div>
-
-    <div class="widget-control-group">
-      <div class="widget-label-row">
-        <span>Damping Ratio (<em>&zeta;</em>):</span>
-        <strong class="val-zeta">0.45</strong>
+      <div class="bib-filter-switcher" role="group" aria-label="Filter Bibliography">
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="cited" title="Show only citations cited in this article">Cited (<span class="bib-count-cited">0</span>)</button>
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="all" title="Show all entries in bibliography">All (<span class="bib-count-all">0</span>)</button>
       </div>
-      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45" aria-label="Damping Ratio">
     </div>
+  </div><div class="smidr-bibliography">
+    <script type="text/bibtex" class="bibtex-source">
 
-    <div class="widget-control-group">
-      <div class="widget-label-row">
-        <span>Natural Frequency (<em>&omega;<sub>n</sub></em>):</span>
-        <strong class="val-wn">3.0</strong>
-      </div>
-      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0" aria-label="Natural Frequency">
-    </div>
+@article{kalman1960,
+  title = {A New Approach to Linear Filtering and Prediction Problems},
+  author = {Kalman, Rudolph Emil},
+  journal = {Journal of Basic Engineering},
+  volume = {82},
+  number = {1},
+  pages = {35--45},
+  year = {1960},
+  doi = {10.1115/1.3662552}
+}
+
+@book{astrom2010,
+  title = {Feedback Systems: An Introduction for Scientists and Engineers},
+  author = {Astrom, Karl Johan and Murray, Richard M.},
+  publisher = {Princeton University Press},
+  year = {2010},
+  url = {https://www.cds.caltech.edu/~murray/amwiki}
+}
+
+    </script>
+    <ol class="bib-entries-list">
+      
+    </ol>
   </div>
-
-  <canvas class="widget-display-canvas" width="600" height="180"></canvas>
-</div>
-
-
-<h2 id="7-secret-text">7. Secret Text</h2>
-<p>Hide spoilers, puzzle solutions, or Easter eggs with the <code>secret</code> shortcode:</p>
-<p>Here is the secret passcode: <span class="smidr-secret" title="Select or hover to reveal hidden payload" role="note">CYBER-FORGE-2026</span>
-<br>
-<em>(Hover or select the space above to reveal the payload!)</em></p>
-<h2 id="8-popover-footnotes">8. Popover Footnotes</h2>
-<p>Footnotes in Smidr don&rsquo;t yank readers away to the bottom of the page<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
-<h2 id="9-ai-transparency--translation-badges">9. AI Transparency &amp; Translation Badges</h2>
-<p>Smidr includes built-in metadata badges for disclosing AI involvement and translation origin. Configure your front matter:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">used_ai</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="nt">original_language</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;de&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="nt">original_post_path</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;/de/posts/meine-notizen/&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="nt">ai_model</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Ollama / Llama 3&#34;</span><span class="w">
-</span></span></span></code></pre></div><p>This renders an automatic provenance banner at the top of the article.</p>
-<h2 id="10-openpgp-cryptographic-identity-verification">10. OpenPGP Cryptographic Identity Verification</h2>
-<p>Display your public key, fingerprint, and verification instructions with <code>pgp-card</code>:</p>
+</section>
+<hr>
+<h2 id="11-interactive-knowledge-graph-digital-garden">11. Interactive Knowledge Graph (Digital Garden)</h2>
+<p>Connect your thoughts visually! Set <code>gardenGraph: true</code> in your frontmatter or <code>params.yaml</code> to render an interactive physics-simulated network graph at the bottom of the page or on the homepage. Readers can zoom, pan, hover to highlight clusters, and click nodes to navigate directly between interconnected ideas.</p>
+<hr>
+<h2 id="12-contextual-backlinks">12. Contextual Backlinks</h2>
+<p>When <code>showBacklinks: true</code> is configured, Smidr automatically discovers and displays all incoming references from other articles in your knowledge base, turning your blog into a self-organizing digital garden.</p>
+<hr>
+<h2 id="13-popover-footnotes">13. Popover Footnotes</h2>
+<p>Standard Markdown footnotes in Smidr don&rsquo;t disrupt the reader&rsquo;s flow<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
+<hr>
+<h2 id="14-command-palette--instant-fuzzy-search">14. Command Palette &amp; Instant Fuzzy Search</h2>
+<p>Press <strong><code>Ctrl</code> + <code>K</code></strong> (or <strong><code>Cmd</code> + <code>K</code></strong> on macOS), or click the search button in the navigation bar or hero section. A modern cyberpunk modal appears instantly, allowing real-time fuzzy querying across article titles, headings, tags, and content snippets.</p>
+<hr>
+<h2 id="15-openpgp-cryptographic-identity-verification">15. OpenPGP Cryptographic Identity Verification</h2>
+<p>Display your public cryptographic key, fingerprint, and verification instructions with <code>pgp-card</code>:</p>
 <div class="pgp-card">
   <div class="pgp-card-header">
     <div class="pgp-badge">
@@ -984,7 +1262,7 @@ print(&#34;Computed squares:&#34;, squares)</textarea>
     <div class="pgp-meta-grid">
       <div class="pgp-meta-item">
         <span class="pgp-label">UID / Identity:</span>
-        <span class="pgp-val"><strong>Smidr Engineer</strong> &lt;engineer@example.org&gt;</span>
+        <span class="pgp-val"><strong>Smidr Core Engineer</strong> &lt;engineer@example.org&gt;</span>
       </div>
       
       <div class="pgp-meta-item">
@@ -1041,82 +1319,50 @@ mQGNBGXx... [Your ASCII Armored Key Here] ...
   </div>
 </div>
 
-<h2 id="11-asciinema-terminal-replay">11. Asciinema Terminal Replay</h2>
-<p>Embed interactive CLI recordings without external video overhead:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">{{&lt; asciinema id=&#34;123456&#34; title=&#34;Installing PyTorch with CUDA in Conda&#34; &gt;}}
-</span></span></code></pre></div><h2 id="12-direct-file-based-code-inclusion">12. Direct File-Based Code Inclusion</h2>
-<p>Instead of copy-pasting code, reference source files directly from your repository:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">{{&lt; code-file source=&#34;scripts/train.py&#34; lang=&#34;python&#34; title=&#34;Training Loop&#34; &gt;}}
-</span></span></code></pre></div><h2 id="13-interactive-3d-flashcards">13. Interactive 3D Flashcards</h2>
-<p>Engage readers with full-width flip cards that reveal answers or detailed explanations with a 3D turning animation:</p>
-<div class="flashcard-container" tabindex="0" role="button" aria-label="Interactive Flashcard. Click or tap to flip">
-  <div class="flashcard-flipper">
-    
-    <div class="flashcard-face flashcard-front">
-      <div class="flashcard-header">
-        <span class="flashcard-badge">
-          <span>💡</span>
-          <span>Flashcard</span>
-        </span>
-        <span class="flashcard-flip-indicator">
-          <span class="flip-icon">↻</span>
-          <span class="flip-text">Click or tap to flip</span>
-        </span>
-      </div>
-      <div class="flashcard-body">
-        What is the Nyquist-Shannon Sampling Theorem?
-      </div>
-    </div>
-
-    
-    <div class="flashcard-face flashcard-back">
-      <div class="flashcard-header">
-        <span class="flashcard-badge flashcard-badge-back">
-          <span>✓</span>
-          <span>Answer / Details</span>
-        </span>
-        <span class="flashcard-flip-indicator">
-          <span class="flip-icon">↻</span>
-          <span class="flip-text">Flip back</span>
-        </span>
-      </div>
-      <div class="flashcard-body">
-        A continuous signal can be completely reconstructed if it is sampled at a frequency strictly greater than twice the highest frequency present: $f_s &gt; 2 B$.
-      </div>
-    </div>
-  </div>
-</div>
-
-<h2 id="14-collapsible-expandable-bars-accordions">14. Collapsible Expandable Bars (Accordions)</h2>
-<p>Keep articles clean and hide technical proofs, derivation details, or spoilers under horizontal clickable bars that expand down:</p>
-<details class="smidr-collapse">
-  <summary class="smidr-collapse-summary">
-    <span class="smidr-collapse-title-wrap">
-      <span class="smidr-collapse-icon">▸</span>
-      <span class="smidr-collapse-title">Click to expand mathematical derivation</span>
-    </span>
-    <span class="smidr-collapse-chevron" aria-hidden="true">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="6 9 12 15 18 9"></polyline>
-      </svg>
-    </span>
-  </summary>
-  <div class="smidr-collapse-content">
-    Starting from the Euler-Lagrange equations of motion:
-$$\frac{d}{dt}\left(\frac{\partial \mathcal{L}}{\partial \dot{q}_i}\right) - \frac{\partial \mathcal{L}}{\partial q_i} = Q_i$$
-We can directly compute the generalized torque required at each joint.
-  </div>
-</details>
-
+<hr>
+<h2 id="16-vector-tikz-diagrams">16. Vector TikZ Diagrams</h2>
+<p>Render publication-grade TikZ and PGF vector schematics directly in your browser:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">{{&lt; tikz caption=&#34;Closed-loop feedback control diagram.&#34; &gt;}}
+</span></span><span class="line"><span class="cl">\begin{tikzpicture}[auto, node distance=2cm, &gt;=latex]
+</span></span><span class="line"><span class="cl">  \node [input, name=input] {};
+</span></span><span class="line"><span class="cl">  \node [sum, right of=input] (sum) {};
+</span></span><span class="line"><span class="cl">  \node [block, right of=sum] (controller) {Controller};
+</span></span><span class="line"><span class="cl">  \draw [-&gt;] (input) -- node {$r(t)$} (sum);
+</span></span><span class="line"><span class="cl">  \draw [-&gt;] (sum) -- node {$e(t)$} (controller);
+</span></span><span class="line"><span class="cl">\end{tikzpicture}
+</span></span><span class="line"><span class="cl">{{&lt; /tikz &gt;}}
+</span></span></code></pre></div><hr>
+<h2 id="17-asciinema-terminal-replay--file-inclusion">17. Asciinema Terminal Replay &amp; File Inclusion</h2>
+<ul>
+<li><strong>Terminal Recordings:</strong> Embed interactive, lightweight terminal sessions without bulky video files:
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">{{&lt; asciinema id=&#34;123456&#34; title=&#34;Deploying Smidr with Hugo&#34; &gt;}}
+</span></span></code></pre></div></li>
+<li><strong>External Code Files:</strong> Reference source code files directly from your repository instead of copy-pasting:
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">{{&lt; code-file source=&#34;scripts/controller.py&#34; lang=&#34;python&#34; title=&#34;Controller Implementation&#34; &gt;}}
+</span></span></code></pre></div></li>
+</ul>
+<hr>
+<h2 id="18-secret--spoiler-reveals">18. Secret &amp; Spoiler Reveals</h2>
+<p>Conceal sensitive solutions or puzzle answers with the <code>secret</code> shortcode:</p>
+<p>Verification token: <span class="smidr-secret" title="Select or hover to reveal hidden payload" role="note">CYBER-SMIDR-2026</span>
+ <em>(Hover or tap to reveal)</em></p>
+<hr>
+<h2 id="19-ai-transparency--provenance-badges">19. AI Transparency &amp; Provenance Badges</h2>
+<p>Smidr champions transparent scientific communication. Add provenance metadata to your frontmatter:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">used_ai</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">original_language</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;de&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">original_post_path</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;/de/posts/mein-original/&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">ai_model</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Claude 3.7 / Ollama&#34;</span><span class="w">
+</span></span></span></code></pre></div><p>Smidr automatically renders an unobtrusive provenance notice informing readers whether a post was human-authored, translated, or refined with AI assistance.</p>
 <div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
 <li id="fn:1">
-<p>Hovering or tapping this note opens a popover right here! No losing your reading position.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>Hovering or tapping this number opens a sleek popover right in place. Clicking the anchor smoothly jumps with dedicated viewport clearance.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </div>
-]]></content:encoded><category>guide</category><category>markdown</category><category>quickstart</category><category>hugo</category></item><item><title>Interactive Client-Side Code Runners with WebAssembly</title><link>https://jokobus.github.io/smidr/posts/deep-learning-wasm-runners/</link><pubDate>Fri, 20 Mar 2026 14:30:00 +0000</pubDate><author>contact@example.org (Smidr Engineer)</author><guid>https://jokobus.github.io/smidr/posts/deep-learning-wasm-runners/</guid><description><![CDATA[<p>One of the defining innovations of modern technical blogging is allowing readers to tweak parameters, verify equations, and run algorithms directly on the page.</p>
+]]></content:encoded><category>guide</category><category>markdown</category><category>quickstart</category><category>hugo</category><category>features</category></item><item><title>Interactive Client-Side Code Runners with WebAssembly</title><link>https://jokobus.github.io/smidr/posts/deep-learning-wasm-runners/</link><pubDate>Fri, 20 Mar 2026 14:30:00 +0000</pubDate><author>contact@example.org (Smidr Engineer)</author><guid>https://jokobus.github.io/smidr/posts/deep-learning-wasm-runners/</guid><description><![CDATA[<p>One of the defining innovations of modern technical blogging is allowing readers to tweak parameters, verify equations, and run algorithms directly on the page.</p>
 <p>In this dispatch, we demonstrate how Smidr utilizes <strong>WebAssembly (Pyodide)</strong> to execute code exclusively in the reader&rsquo;s local web browser.</p>
 <div class="callout callout-tip" role="region" aria-label="Server Security &amp; Resilience Guarantee">
   <div class="callout-icon" aria-hidden="true">💡</div>
@@ -1407,7 +1653,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <h2 id="control-architecture-vector-tikz-diagram">Control Architecture (Vector TikZ Diagram)</h2>
 <p>Below is the closed-loop feedback architecture rendered in vectorized SVG directly in your browser using <strong>TikZ WebAssembly</strong>:</p>
-<figure class="tikz-container" id="tikz-1792238779532743628">
+<figure class="tikz-container" id="tikz-1792239014938191026">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -1431,7 +1677,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <h2 id="interactive-control-tuner">Interactive Control Tuner</h2>
 <p>You can adjust the damping ratio $\zeta$ and proportional gain $K_p$ in the live system simulator below to observe the pole placement and step response settling time:</p>
-<div class="interactive-widget-box" id="widget-1792238779532773944">
+<div class="interactive-widget-box" id="widget-1792239014938257799">
   <div class="widget-title">Second-Order Closed-Loop Step Response</div>
   <div class="widget-desc">Drag the sliders below to witness closed-loop damping and transient oscillations in real time.</div>
 
@@ -1493,7 +1739,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 </span></span><span class="line"><span class="cl"><span class="n">K</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">compute_lqr_gain</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Optimal LQR Gain Shape:&#34;</span><span class="p">,</span> <span class="n">K</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </span></span></code></pre></div><p>In our companion article, we expand on <a href="https://jokobus.github.io/smidr/smidr/posts/deep-learning-wasm-runners/">WASM Client-side Execution</a> to evaluate neural network controllers directly in the browser!</p>
-<section class="smidr-bibliography-section" id="bib-sec-1792238779532830357" aria-label="References &amp; Citations" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
+<section class="smidr-bibliography-section" id="bib-sec-1792239014938332330" aria-label="References &amp; Citations" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
     <h2 class="bib-section-title">
       <span>📚</span> <span>References &amp; Citations</span>
     </h2>
@@ -1570,7 +1816,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <h2 id="control-architecture-vector-tikz-diagram">Control Architecture (Vector TikZ Diagram)</h2>
 <p>Below is the closed-loop feedback architecture rendered in vectorized SVG directly in your browser using <strong>TikZ WebAssembly</strong>:</p>
-<figure class="tikz-container" id="tikz-1792238779532743628">
+<figure class="tikz-container" id="tikz-1792239014938191026">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -1594,7 +1840,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <h2 id="interactive-control-tuner">Interactive Control Tuner</h2>
 <p>You can adjust the damping ratio $\zeta$ and proportional gain $K_p$ in the live system simulator below to observe the pole placement and step response settling time:</p>
-<div class="interactive-widget-box" id="widget-1792238779532773944">
+<div class="interactive-widget-box" id="widget-1792239014938257799">
   <div class="widget-title">Second-Order Closed-Loop Step Response</div>
   <div class="widget-desc">Drag the sliders below to witness closed-loop damping and transient oscillations in real time.</div>
 
@@ -1656,7 +1902,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 </span></span><span class="line"><span class="cl"><span class="n">K</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">compute_lqr_gain</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Optimal LQR Gain Shape:&#34;</span><span class="p">,</span> <span class="n">K</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </span></span></code></pre></div><p>In our companion article, we expand on <a href="https://jokobus.github.io/smidr/smidr/posts/deep-learning-wasm-runners/">WASM Client-side Execution</a> to evaluate neural network controllers directly in the browser!</p>
-<section class="smidr-bibliography-section" id="bib-sec-1792238779532830357" aria-label="References &amp; Citations" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
+<section class="smidr-bibliography-section" id="bib-sec-1792239014938332330" aria-label="References &amp; Citations" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
     <h2 class="bib-section-title">
       <span>📚</span> <span>References &amp; Citations</span>
     </h2>

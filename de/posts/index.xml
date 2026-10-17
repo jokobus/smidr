@@ -7,13 +7,11 @@ y_1 &amp;= l_1 \sin(\theta_1) \
 x_{ee} &amp;= l_1 \cos(\theta_1) + l_2 \cos(\theta_1 + \theta_2) \
 y_{ee} &amp;= l_1 \sin(\theta_1) + l_2 \sin(\theta_1 + \theta_2)
 \end{aligned}$$</p>
-<p>Wie von John J. Craig in seinem Standardwerk <a class="cite-ref" href="#bib-craig2005" data-cite-key="craig2005" role="doc-biblioref" aria-label="Citation: craig2005">
-  <span class="cite-num">[craig2005]</span>
-</a>
+<p>Wie von John J. Craig in seinem Standardwerk <span class="cite-group"><a class="cite-ref" href="#bib-craig2005" data-cite-key="craig2005" role="doc-biblioref" aria-label="Citation: craig2005"><span class="cite-num">[craig2005]</span></a></span>
  beschrieben, bildet die Darstellung über homogene Transformationsmatrizen das Fundament für Manipulatoren mit höheren Freiheitsgraden.</p>
 <h2 id="2-kinematische-skizze-tikz">2. Kinematische Skizze (TikZ)</h2>
 <p>Das folgende Schema wird vollständig clientseitig im Browser mittels WebAssembly-TeX (TikzJax) gerendert:</p>
-<figure class="tikz-container" id="tikz-1792235642902367251">
+<figure class="tikz-container" id="tikz-1792236206800679674">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -153,7 +151,7 @@ print(f&#34;Reichweite:     R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)
 </span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;End-Effector Position: x=</span><span class="si">{</span><span class="n">ee</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> m, y=</span><span class="si">{</span><span class="n">ee</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> m&#34;</span><span class="p">)</span></span></span></code></pre></div>
   </div>
 <h2 id="5-echtzeit-parameterregler">5. Echtzeit-Parameterregler</h2>
-<div class="interactive-widget-box" id="widget-1792235642906586367">
+<div class="interactive-widget-box" id="widget-1792236206802737010">
   <div class="widget-title">Robotik-Trajektorien-Regler</div>
   <div class="widget-desc">Passe Geschwindigkeitsverstärkung und Dämpfung an, um das Einschwingverhalten zu testen.</div>
 
@@ -213,11 +211,23 @@ print(f&#34;Reichweite:     R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)
 
 <hr>
 <h2 id="7-literaturverzeichnis">7. Literaturverzeichnis</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792235642906679251" aria-label="References">
-  <h2 class="bib-section-title">
-    <span>📚</span> <span>References</span>
-  </h2>
-  <div class="smidr-bibliography">
+<section class="smidr-bibliography-section" id="bib-sec-1792236206802822619" aria-label="References &amp; Citations" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
+    <h2 class="bib-section-title">
+      <span>📚</span> <span>References &amp; Citations</span>
+    </h2>
+    <div class="bib-header-controls">
+      <div class="bib-style-switcher" role="group" aria-label="Citation Style">
+        <span class="bib-control-label">Style:</span>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="numeric" title="Numeric citation style [1]">Numeric</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="author-year" title="Author-Year citation style (Author, Year)">Author-Year</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="alphabetic" title="Alphabetic citation style [AutYY]">Alpha</button>
+      </div>
+      <div class="bib-filter-switcher" role="group" aria-label="Filter Bibliography">
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="cited" title="Show only citations cited in this article">Cited (<span class="bib-count-cited">0</span>)</button>
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="all" title="Show all entries in bibliography">All (<span class="bib-count-all">0</span>)</button>
+      </div>
+    </div>
+  </div><div class="smidr-bibliography">
     <script type="text/bibtex" class="bibtex-source">
 
 @book{craig2005,
@@ -240,7 +250,6 @@ print(f&#34;Reichweite:     R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)
     </ol>
   </div>
 </section>
-
 ]]></description><content:encoded><![CDATA[<p>Roboter-Manipulatoren transformieren Gelenkwinkel in räumliche Werkzeugkoordinaten. In dieser interaktiven Anleitung analysieren wir die Vorwärtskinematik eines zweigliedrigen planaren Roboterarms anhand mathematischer Herleitungen, Vektordiagrammen und <strong>Echtzeit-Codeausführung im Browser</strong>.</p>
 <h2 id="1-mathematische-formulierung">1. Mathematische Formulierung</h2>
 <p>Betrachten wir einen planaren Roboterarm mit den Gelenkwinkeln $\theta_1, \theta_2$ und den Armlängen $l_1, l_2$. Die kartesischen Koordinaten $(x_1, y_1)$ des Ellbogengelenks und $(x_{ee}, y_{ee})$ des Endeffektors ergeben sich trigonometrisch:</p>
@@ -250,13 +259,11 @@ y_1 &amp;= l_1 \sin(\theta_1) \
 x_{ee} &amp;= l_1 \cos(\theta_1) + l_2 \cos(\theta_1 + \theta_2) \
 y_{ee} &amp;= l_1 \sin(\theta_1) + l_2 \sin(\theta_1 + \theta_2)
 \end{aligned}$$</p>
-<p>Wie von John J. Craig in seinem Standardwerk <a class="cite-ref" href="#bib-craig2005" data-cite-key="craig2005" role="doc-biblioref" aria-label="Citation: craig2005">
-  <span class="cite-num">[craig2005]</span>
-</a>
+<p>Wie von John J. Craig in seinem Standardwerk <span class="cite-group"><a class="cite-ref" href="#bib-craig2005" data-cite-key="craig2005" role="doc-biblioref" aria-label="Citation: craig2005"><span class="cite-num">[craig2005]</span></a></span>
  beschrieben, bildet die Darstellung über homogene Transformationsmatrizen das Fundament für Manipulatoren mit höheren Freiheitsgraden.</p>
 <h2 id="2-kinematische-skizze-tikz">2. Kinematische Skizze (TikZ)</h2>
 <p>Das folgende Schema wird vollständig clientseitig im Browser mittels WebAssembly-TeX (TikzJax) gerendert:</p>
-<figure class="tikz-container" id="tikz-1792235642902367251">
+<figure class="tikz-container" id="tikz-1792236206800679674">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -396,7 +403,7 @@ print(f&#34;Reichweite:     R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)
 </span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;End-Effector Position: x=</span><span class="si">{</span><span class="n">ee</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> m, y=</span><span class="si">{</span><span class="n">ee</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> m&#34;</span><span class="p">)</span></span></span></code></pre></div>
   </div>
 <h2 id="5-echtzeit-parameterregler">5. Echtzeit-Parameterregler</h2>
-<div class="interactive-widget-box" id="widget-1792235642906586367">
+<div class="interactive-widget-box" id="widget-1792236206802737010">
   <div class="widget-title">Robotik-Trajektorien-Regler</div>
   <div class="widget-desc">Passe Geschwindigkeitsverstärkung und Dämpfung an, um das Einschwingverhalten zu testen.</div>
 
@@ -456,11 +463,23 @@ print(f&#34;Reichweite:     R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)
 
 <hr>
 <h2 id="7-literaturverzeichnis">7. Literaturverzeichnis</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792235642906679251" aria-label="References">
-  <h2 class="bib-section-title">
-    <span>📚</span> <span>References</span>
-  </h2>
-  <div class="smidr-bibliography">
+<section class="smidr-bibliography-section" id="bib-sec-1792236206802822619" aria-label="References &amp; Citations" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
+    <h2 class="bib-section-title">
+      <span>📚</span> <span>References &amp; Citations</span>
+    </h2>
+    <div class="bib-header-controls">
+      <div class="bib-style-switcher" role="group" aria-label="Citation Style">
+        <span class="bib-control-label">Style:</span>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="numeric" title="Numeric citation style [1]">Numeric</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="author-year" title="Author-Year citation style (Author, Year)">Author-Year</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="alphabetic" title="Alphabetic citation style [AutYY]">Alpha</button>
+      </div>
+      <div class="bib-filter-switcher" role="group" aria-label="Filter Bibliography">
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="cited" title="Show only citations cited in this article">Cited (<span class="bib-count-cited">0</span>)</button>
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="all" title="Show all entries in bibliography">All (<span class="bib-count-all">0</span>)</button>
+      </div>
+    </div>
+  </div><div class="smidr-bibliography">
     <script type="text/bibtex" class="bibtex-source">
 
 @book{craig2005,
@@ -483,7 +502,6 @@ print(f&#34;Reichweite:     R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)
     </ol>
   </div>
 </section>
-
 ]]></content:encoded><category>robotics</category><category>kinematik</category><category>python</category><category>wasm</category><category>simulation</category></item><item><title>Schnellstartanleitung: Verfassen und Veröffentlichen mit Smidr</title><link>https://jokobus.github.io/smidr/de/posts/quick-start-guide/</link><pubDate>Wed, 25 Mar 2026 12:00:00 +0000</pubDate><author>contact@example.org (Smidr Engineer)</author><guid>https://jokobus.github.io/smidr/de/posts/quick-start-guide/</guid><description><![CDATA[<p>Willkommen bei <strong>Smidr</strong>! Diese Anleitung zeigt, wie einfach es ist, ansprechende technische Artikel mit nativem Markdown und den integrierten Shortcodes von Smidr zu verfassen.</p>
 <h2 id="1-neuen-beitrag-anlegen">1. Neuen Beitrag anlegen</h2>
 <p>Um einen neuen Beitrag mit vorkonfiguriertem Frontmatter zu erstellen, genügt ein einfacher Befehl im Terminal:</p>
@@ -567,7 +585,7 @@ print(&#34;Berechnete Quadrate:&#34;, quadrate)</textarea>
 
 
 <h2 id="6-interaktive-schieberegler">6. Interaktive Schieberegler</h2>
-<div class="interactive-widget-box" id="widget-1792235642908862217">
+<div class="interactive-widget-box" id="widget-1792236206804508873">
   <div class="widget-title">Interaktiver Systemregler</div>
   <div class="widget-desc">Bewege die Schieberegler, um das Regelverhalten in Echtzeit zu prüfen.</div>
 
@@ -843,7 +861,7 @@ print(&#34;Berechnete Quadrate:&#34;, quadrate)</textarea>
 
 
 <h2 id="6-interaktive-schieberegler">6. Interaktive Schieberegler</h2>
-<div class="interactive-widget-box" id="widget-1792235642908862217">
+<div class="interactive-widget-box" id="widget-1792236206804508873">
   <div class="widget-title">Interaktiver Systemregler</div>
   <div class="widget-desc">Bewege die Schieberegler, um das Regelverhalten in Echtzeit zu prüfen.</div>
 
@@ -1194,12 +1212,8 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
 
 <h2 id="digital-garden-verknüpfung">Digital-Garden-Verknüpfung</h2>
 <p>Dieser Beitrag verweist direkt auf unseren Artikel <a href="https://jokobus.github.io/smidr/de/posts/first-robotics-control/">Autonome Quadrotor-Trajektorienoptimierung mit LQR</a>. Der Wissensgraph unten spiegelt dies wider!</p>
-]]></content:encoded><category>machine-learning</category><category>wasm</category><category>python</category><category>pyodide</category><category>cybernetics</category></item><item><title>Autonome Quadrotor-Trajektorienoptimierung mit LQR</title><link>https://jokobus.github.io/smidr/de/posts/first-robotics-control/</link><pubDate>Sun, 15 Mar 2026 10:00:00 +0000</pubDate><author>contact@example.org (Smidr Engineer)</author><guid>https://jokobus.github.io/smidr/de/posts/first-robotics-control/</guid><description><![CDATA[<p>Der Entwurf von Trajektorienreglern für autonome Flugroboter erfordert eine exakte Balance zwischen Agilität und dynamischer Stabilität. Aufbauend auf den Grundlagen der Zustandsschätzung von Kalman <a class="cite-ref" href="#bib-kalman1960" data-cite-key="kalman1960" role="doc-biblioref" aria-label="Citation: kalman1960">
-  <span class="cite-num">[kalman1960]</span>
-</a>
- und der klassischen Regelungstheorie <a class="cite-ref" href="#bib-astrom2010" data-cite-key="astrom2010" role="doc-biblioref" aria-label="Citation: astrom2010">
-  <span class="cite-num">[astrom2010]</span>
-</a>
+]]></content:encoded><category>machine-learning</category><category>wasm</category><category>python</category><category>pyodide</category><category>cybernetics</category></item><item><title>Autonome Quadrotor-Trajektorienoptimierung mit LQR</title><link>https://jokobus.github.io/smidr/de/posts/first-robotics-control/</link><pubDate>Sun, 15 Mar 2026 10:00:00 +0000</pubDate><author>contact@example.org (Smidr Engineer)</author><guid>https://jokobus.github.io/smidr/de/posts/first-robotics-control/</guid><description><![CDATA[<p>Der Entwurf von Trajektorienreglern für autonome Flugroboter erfordert eine exakte Balance zwischen Agilität und dynamischer Stabilität. Aufbauend auf den Grundlagen der Zustandsschätzung von Kalman <span class="cite-group"><a class="cite-ref" href="#bib-kalman1960" data-cite-key="kalman1960" role="doc-biblioref" aria-label="Citation: kalman1960"><span class="cite-num">[kalman1960]</span></a></span>
+ und der klassischen Regelungstheorie <span class="cite-group"><a class="cite-ref" href="#bib-astrom2010" data-cite-key="astrom2010" role="doc-biblioref" aria-label="Citation: astrom2010"><span class="cite-num">[astrom2010]</span></a></span>
  formulieren wir einen Linear-Quadratischen Regler (LQR)<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
 <h2 id="mathematische-formulierung">Mathematische Formulierung</h2>
 <p>Die linearisierte kontinuierliche Fehlerdynamik um den Schwebepunkt wird im Zustandsraum beschrieben:</p>
@@ -1223,7 +1237,7 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
 
 <h2 id="regelungsarchitektur-vektorielles-tikz-diagramm">Regelungsarchitektur (Vektorielles TikZ-Diagramm)</h2>
 <p>Hier ist das Blockschaltbild des Regelkreises, direkt im Browser mittels <strong>TikZ WebAssembly</strong> kompiliert:</p>
-<figure class="tikz-container" id="tikz-1792235642903993437">
+<figure class="tikz-container" id="tikz-1792236206801540402">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -1247,7 +1261,7 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
 
 <h2 id="interaktiver-regler-simulator">Interaktiver Regler-Simulator</h2>
 <p>Passe die Dämpfung $\zeta$ und die Kreisverstärkung $K_p$ direkt im untenstehenden Systemsimulator an:</p>
-<div class="interactive-widget-box" id="widget-1792235642904034975">
+<div class="interactive-widget-box" id="widget-1792236206801561314">
   <div class="widget-title">Sprungantwort eines Systems zweiter Ordnung</div>
   <div class="widget-desc">Bewege die Schieberegler, um das Einschwingverhalten und Dämpfung in Echtzeit zu beobachten.</div>
 
@@ -1287,12 +1301,23 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
 
 <em>(Dieser Text wird erst sichtbar, wenn du ihn markierst oder mit der Maus darüberfährst!)</em></p>
 <p>In unserem weiteren Beitrag untersuchen wir <a href="https://jokobus.github.io/smidr/de/posts/deep-learning-wasm-runners/">WASM Client-seitige Code-Ausführung</a> für neuronale Netze direkt im Webbrowser!</p>
-<h2 id="literaturverzeichnis--referenzen">Literaturverzeichnis &amp; Referenzen</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792235642904086261" aria-label="Literaturverzeichnis &amp; Referenzen">
-  <h2 class="bib-section-title">
-    <span>📚</span> <span>Literaturverzeichnis &amp; Referenzen</span>
-  </h2>
-  <div class="smidr-bibliography">
+<section class="smidr-bibliography-section" id="bib-sec-1792236206801623368" aria-label="Literaturverzeichnis &amp; Referenzen" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
+    <h2 class="bib-section-title">
+      <span>📚</span> <span>Literaturverzeichnis &amp; Referenzen</span>
+    </h2>
+    <div class="bib-header-controls">
+      <div class="bib-style-switcher" role="group" aria-label="Citation Style">
+        <span class="bib-control-label">Style:</span>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="numeric" title="Numeric citation style [1]">Numeric</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="author-year" title="Author-Year citation style (Author, Year)">Author-Year</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="alphabetic" title="Alphabetic citation style [AutYY]">Alpha</button>
+      </div>
+      <div class="bib-filter-switcher" role="group" aria-label="Filter Bibliography">
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="cited" title="Show only citations cited in this article">Cited (<span class="bib-count-cited">0</span>)</button>
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="all" title="Show all entries in bibliography">All (<span class="bib-count-all">0</span>)</button>
+      </div>
+    </div>
+  </div><div class="smidr-bibliography">
     <script type="text/bibtex" class="bibtex-source">
 
 @article{kalman1960,
@@ -1320,7 +1345,6 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
     </ol>
   </div>
 </section>
-
 <div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
@@ -1329,12 +1353,8 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
 </li>
 </ol>
 </div>
-]]></description><content:encoded><![CDATA[<p>Der Entwurf von Trajektorienreglern für autonome Flugroboter erfordert eine exakte Balance zwischen Agilität und dynamischer Stabilität. Aufbauend auf den Grundlagen der Zustandsschätzung von Kalman <a class="cite-ref" href="#bib-kalman1960" data-cite-key="kalman1960" role="doc-biblioref" aria-label="Citation: kalman1960">
-  <span class="cite-num">[kalman1960]</span>
-</a>
- und der klassischen Regelungstheorie <a class="cite-ref" href="#bib-astrom2010" data-cite-key="astrom2010" role="doc-biblioref" aria-label="Citation: astrom2010">
-  <span class="cite-num">[astrom2010]</span>
-</a>
+]]></description><content:encoded><![CDATA[<p>Der Entwurf von Trajektorienreglern für autonome Flugroboter erfordert eine exakte Balance zwischen Agilität und dynamischer Stabilität. Aufbauend auf den Grundlagen der Zustandsschätzung von Kalman <span class="cite-group"><a class="cite-ref" href="#bib-kalman1960" data-cite-key="kalman1960" role="doc-biblioref" aria-label="Citation: kalman1960"><span class="cite-num">[kalman1960]</span></a></span>
+ und der klassischen Regelungstheorie <span class="cite-group"><a class="cite-ref" href="#bib-astrom2010" data-cite-key="astrom2010" role="doc-biblioref" aria-label="Citation: astrom2010"><span class="cite-num">[astrom2010]</span></a></span>
  formulieren wir einen Linear-Quadratischen Regler (LQR)<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
 <h2 id="mathematische-formulierung">Mathematische Formulierung</h2>
 <p>Die linearisierte kontinuierliche Fehlerdynamik um den Schwebepunkt wird im Zustandsraum beschrieben:</p>
@@ -1358,7 +1378,7 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
 
 <h2 id="regelungsarchitektur-vektorielles-tikz-diagramm">Regelungsarchitektur (Vektorielles TikZ-Diagramm)</h2>
 <p>Hier ist das Blockschaltbild des Regelkreises, direkt im Browser mittels <strong>TikZ WebAssembly</strong> kompiliert:</p>
-<figure class="tikz-container" id="tikz-1792235642903993437">
+<figure class="tikz-container" id="tikz-1792236206801540402">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -1382,7 +1402,7 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
 
 <h2 id="interaktiver-regler-simulator">Interaktiver Regler-Simulator</h2>
 <p>Passe die Dämpfung $\zeta$ und die Kreisverstärkung $K_p$ direkt im untenstehenden Systemsimulator an:</p>
-<div class="interactive-widget-box" id="widget-1792235642904034975">
+<div class="interactive-widget-box" id="widget-1792236206801561314">
   <div class="widget-title">Sprungantwort eines Systems zweiter Ordnung</div>
   <div class="widget-desc">Bewege die Schieberegler, um das Einschwingverhalten und Dämpfung in Echtzeit zu beobachten.</div>
 
@@ -1422,12 +1442,23 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
 
 <em>(Dieser Text wird erst sichtbar, wenn du ihn markierst oder mit der Maus darüberfährst!)</em></p>
 <p>In unserem weiteren Beitrag untersuchen wir <a href="https://jokobus.github.io/smidr/de/posts/deep-learning-wasm-runners/">WASM Client-seitige Code-Ausführung</a> für neuronale Netze direkt im Webbrowser!</p>
-<h2 id="literaturverzeichnis--referenzen">Literaturverzeichnis &amp; Referenzen</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792235642904086261" aria-label="Literaturverzeichnis &amp; Referenzen">
-  <h2 class="bib-section-title">
-    <span>📚</span> <span>Literaturverzeichnis &amp; Referenzen</span>
-  </h2>
-  <div class="smidr-bibliography">
+<section class="smidr-bibliography-section" id="bib-sec-1792236206801623368" aria-label="Literaturverzeichnis &amp; Referenzen" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
+    <h2 class="bib-section-title">
+      <span>📚</span> <span>Literaturverzeichnis &amp; Referenzen</span>
+    </h2>
+    <div class="bib-header-controls">
+      <div class="bib-style-switcher" role="group" aria-label="Citation Style">
+        <span class="bib-control-label">Style:</span>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="numeric" title="Numeric citation style [1]">Numeric</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="author-year" title="Author-Year citation style (Author, Year)">Author-Year</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="alphabetic" title="Alphabetic citation style [AutYY]">Alpha</button>
+      </div>
+      <div class="bib-filter-switcher" role="group" aria-label="Filter Bibliography">
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="cited" title="Show only citations cited in this article">Cited (<span class="bib-count-cited">0</span>)</button>
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="all" title="Show all entries in bibliography">All (<span class="bib-count-all">0</span>)</button>
+      </div>
+    </div>
+  </div><div class="smidr-bibliography">
     <script type="text/bibtex" class="bibtex-source">
 
 @article{kalman1960,
@@ -1455,7 +1486,6 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
     </ol>
   </div>
 </section>
-
 <div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>

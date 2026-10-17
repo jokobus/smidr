@@ -7,13 +7,11 @@ y_1 &amp;= l_1 \sin(\theta_1) \
 x_{ee} &amp;= l_1 \cos(\theta_1) + l_2 \cos(\theta_1 + \theta_2) \
 y_{ee} &amp;= l_1 \sin(\theta_1) + l_2 \sin(\theta_1 + \theta_2)
 \end{aligned}$$</p>
-<p>As established by John J. Craig in his foundational robotics treatise <a class="cite-ref" href="#bib-craig2005" data-cite-key="craig2005" role="doc-biblioref" aria-label="Citation: craig2005">
-  <span class="cite-num">[craig2005]</span>
-</a>
+<p>As established by John J. Craig in his foundational robotics treatise <span class="cite-group"><a class="cite-ref" href="#bib-craig2005" data-cite-key="craig2005" role="doc-biblioref" aria-label="Citation: craig2005"><span class="cite-num">[craig2005]</span></a></span>
 , representing these geometric transforms as homogeneous matrices provides computational uniformity for higher degrees of freedom.</p>
 <h2 id="2-kinematic-linkage-diagram-tikz">2. Kinematic Linkage Diagram (TikZ)</h2>
 <p>The following schematic is rendered entirely client-side using WebAssembly TeX (TikzJax):</p>
-<figure class="tikz-container" id="tikz-1792235642861238258">
+<figure class="tikz-container" id="tikz-1792236206780341672">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -165,7 +163,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
 
 <h2 id="5-real-time-parameter-response-tuner">5. Real-Time Parameter Response Tuner</h2>
 <p>Test closed-loop trajectory tracking response under variable damping ratios and natural frequencies:</p>
-<div class="interactive-widget-box" id="widget-1792235642872374560">
+<div class="interactive-widget-box" id="widget-1792236206784730163">
   <div class="widget-title">Robotic Trajectory Response Tuner</div>
   <div class="widget-desc">Adjust velocity gain and damping to observe step response oscillations.</div>
 
@@ -225,11 +223,23 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
 
 <hr>
 <h2 id="7-references--bibliography">7. References &amp; Bibliography</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792235642872443449" aria-label="References">
-  <h2 class="bib-section-title">
-    <span>📚</span> <span>References</span>
-  </h2>
-  <div class="smidr-bibliography">
+<section class="smidr-bibliography-section" id="bib-sec-1792236206784809784" aria-label="References &amp; Citations" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
+    <h2 class="bib-section-title">
+      <span>📚</span> <span>References &amp; Citations</span>
+    </h2>
+    <div class="bib-header-controls">
+      <div class="bib-style-switcher" role="group" aria-label="Citation Style">
+        <span class="bib-control-label">Style:</span>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="numeric" title="Numeric citation style [1]">Numeric</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="author-year" title="Author-Year citation style (Author, Year)">Author-Year</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="alphabetic" title="Alphabetic citation style [AutYY]">Alpha</button>
+      </div>
+      <div class="bib-filter-switcher" role="group" aria-label="Filter Bibliography">
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="cited" title="Show only citations cited in this article">Cited (<span class="bib-count-cited">0</span>)</button>
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="all" title="Show all entries in bibliography">All (<span class="bib-count-all">0</span>)</button>
+      </div>
+    </div>
+  </div><div class="smidr-bibliography">
     <script type="text/bibtex" class="bibtex-source">
 
 @book{craig2005,
@@ -252,7 +262,6 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
     </ol>
   </div>
 </section>
-
 ]]></description><content:encoded><![CDATA[<p>Robotic manipulators transform actuator joint angles into spatial tool coordinates. In this interactive guide, we analyze the forward kinematics of a two-link planar robotic manipulator using mathematical derivations, vector diagrams, and <strong>real-time in-browser code execution</strong>.</p>
 <h2 id="1-mathematical-formulation">1. Mathematical Formulation</h2>
 <p>Consider a two-link planar arm with joint angles $\theta_1, \theta_2$ and link lengths $l_1, l_2$. The Cartesian coordinates $(x_1, y_1)$ of the elbow joint and $(x_{ee}, y_{ee})$ of the end-effector are governed by trigonometric projection:</p>
@@ -262,13 +271,11 @@ y_1 &amp;= l_1 \sin(\theta_1) \
 x_{ee} &amp;= l_1 \cos(\theta_1) + l_2 \cos(\theta_1 + \theta_2) \
 y_{ee} &amp;= l_1 \sin(\theta_1) + l_2 \sin(\theta_1 + \theta_2)
 \end{aligned}$$</p>
-<p>As established by John J. Craig in his foundational robotics treatise <a class="cite-ref" href="#bib-craig2005" data-cite-key="craig2005" role="doc-biblioref" aria-label="Citation: craig2005">
-  <span class="cite-num">[craig2005]</span>
-</a>
+<p>As established by John J. Craig in his foundational robotics treatise <span class="cite-group"><a class="cite-ref" href="#bib-craig2005" data-cite-key="craig2005" role="doc-biblioref" aria-label="Citation: craig2005"><span class="cite-num">[craig2005]</span></a></span>
 , representing these geometric transforms as homogeneous matrices provides computational uniformity for higher degrees of freedom.</p>
 <h2 id="2-kinematic-linkage-diagram-tikz">2. Kinematic Linkage Diagram (TikZ)</h2>
 <p>The following schematic is rendered entirely client-side using WebAssembly TeX (TikzJax):</p>
-<figure class="tikz-container" id="tikz-1792235642861238258">
+<figure class="tikz-container" id="tikz-1792236206780341672">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -420,7 +427,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
 
 <h2 id="5-real-time-parameter-response-tuner">5. Real-Time Parameter Response Tuner</h2>
 <p>Test closed-loop trajectory tracking response under variable damping ratios and natural frequencies:</p>
-<div class="interactive-widget-box" id="widget-1792235642872374560">
+<div class="interactive-widget-box" id="widget-1792236206784730163">
   <div class="widget-title">Robotic Trajectory Response Tuner</div>
   <div class="widget-desc">Adjust velocity gain and damping to observe step response oscillations.</div>
 
@@ -480,11 +487,23 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
 
 <hr>
 <h2 id="7-references--bibliography">7. References &amp; Bibliography</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792235642872443449" aria-label="References">
-  <h2 class="bib-section-title">
-    <span>📚</span> <span>References</span>
-  </h2>
-  <div class="smidr-bibliography">
+<section class="smidr-bibliography-section" id="bib-sec-1792236206784809784" aria-label="References &amp; Citations" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
+    <h2 class="bib-section-title">
+      <span>📚</span> <span>References &amp; Citations</span>
+    </h2>
+    <div class="bib-header-controls">
+      <div class="bib-style-switcher" role="group" aria-label="Citation Style">
+        <span class="bib-control-label">Style:</span>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="numeric" title="Numeric citation style [1]">Numeric</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="author-year" title="Author-Year citation style (Author, Year)">Author-Year</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="alphabetic" title="Alphabetic citation style [AutYY]">Alpha</button>
+      </div>
+      <div class="bib-filter-switcher" role="group" aria-label="Filter Bibliography">
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="cited" title="Show only citations cited in this article">Cited (<span class="bib-count-cited">0</span>)</button>
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="all" title="Show all entries in bibliography">All (<span class="bib-count-all">0</span>)</button>
+      </div>
+    </div>
+  </div><div class="smidr-bibliography">
     <script type="text/bibtex" class="bibtex-source">
 
 @book{craig2005,
@@ -507,7 +526,6 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
     </ol>
   </div>
 </section>
-
 ]]></content:encoded><category>robotics</category><category>kinematics</category><category>python</category><category>wasm</category><category>simulation</category></item><item><title>Quick Start Guide: Writing &amp; Publishing with Smidr</title><link>https://jokobus.github.io/smidr/posts/quick-start-guide/</link><pubDate>Wed, 25 Mar 2026 12:00:00 +0000</pubDate><author>contact@example.org (Smidr Engineer)</author><guid>https://jokobus.github.io/smidr/posts/quick-start-guide/</guid><description><![CDATA[<p>Welcome to <strong>Smidr</strong>! This guide demonstrates how simple it is to compose and publish rich technical articles using native Markdown and Smidr&rsquo;s built-in shortcodes.</p>
 <h2 id="1-creating-a-new-article">1. Creating a New Article</h2>
 <p>To generate a new article with all archetypes and frontmatter preconfigured, simply run:</p>
@@ -608,7 +626,7 @@ print(&#34;Computed squares:&#34;, squares)</textarea>
 
 <h2 id="6-embedded-parameter-sliders">6. Embedded Parameter Sliders</h2>
 <p>Allow readers to interact with real-time dynamic visualizations:</p>
-<div class="interactive-widget-box" id="widget-1792235642879374110">
+<div class="interactive-widget-box" id="widget-1792236206788720656">
   <div class="widget-title">Interactive System Response Tuner</div>
   <div class="widget-desc">Drag sliders to modify system parameters in real time.</div>
 
@@ -903,7 +921,7 @@ print(&#34;Computed squares:&#34;, squares)</textarea>
 
 <h2 id="6-embedded-parameter-sliders">6. Embedded Parameter Sliders</h2>
 <p>Allow readers to interact with real-time dynamic visualizations:</p>
-<div class="interactive-widget-box" id="widget-1792235642879374110">
+<div class="interactive-widget-box" id="widget-1792236206788720656">
   <div class="widget-title">Interactive System Response Tuner</div>
   <div class="widget-desc">Drag sliders to modify system parameters in real time.</div>
 
@@ -1364,12 +1382,8 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <h2 id="digital-garden-connection">Digital Garden Connection</h2>
 <p>Notice how this post links directly with our previous work on <a href="https://jokobus.github.io/smidr/smidr/posts/first-robotics-control/">Autonomous Quadrotor Trajectory Optimization with LQR</a>. The bidirectional link detector below discovers and displays this relationship automatically!</p>
-]]></content:encoded><category>machine-learning</category><category>wasm</category><category>python</category><category>pyodide</category><category>cybernetics</category></item><item><title>Autonomous Quadrotor Trajectory Optimization with LQR</title><link>https://jokobus.github.io/smidr/posts/first-robotics-control/</link><pubDate>Sun, 15 Mar 2026 10:00:00 +0000</pubDate><author>contact@example.org (Smidr Engineer)</author><guid>https://jokobus.github.io/smidr/posts/first-robotics-control/</guid><description><![CDATA[<p>Designing trajectory controllers for autonomous aerial robotics requires balancing agile maneuverability with dynamic stability. As established in foundational optimal estimation theory by Kalman <a class="cite-ref" href="#bib-kalman1960" data-cite-key="kalman1960" role="doc-biblioref" aria-label="Citation: kalman1960">
-  <span class="cite-num">[kalman1960]</span>
-</a>
- and classical feedback principles <a class="cite-ref" href="#bib-astrom2010" data-cite-key="astrom2010" role="doc-biblioref" aria-label="Citation: astrom2010">
-  <span class="cite-num">[astrom2010]</span>
-</a>
+]]></content:encoded><category>machine-learning</category><category>wasm</category><category>python</category><category>pyodide</category><category>cybernetics</category></item><item><title>Autonomous Quadrotor Trajectory Optimization with LQR</title><link>https://jokobus.github.io/smidr/posts/first-robotics-control/</link><pubDate>Sun, 15 Mar 2026 10:00:00 +0000</pubDate><author>contact@example.org (Smidr Engineer)</author><guid>https://jokobus.github.io/smidr/posts/first-robotics-control/</guid><description><![CDATA[<p>Designing trajectory controllers for autonomous aerial robotics requires balancing agile maneuverability with dynamic stability. As established in foundational optimal estimation theory by Kalman <span class="cite-group"><a class="cite-ref" href="#bib-kalman1960" data-cite-key="kalman1960" role="doc-biblioref" aria-label="Citation: kalman1960"><span class="cite-num">[kalman1960]</span></a></span>
+ and classical feedback principles <span class="cite-group"><a class="cite-ref" href="#bib-astrom2010" data-cite-key="astrom2010" role="doc-biblioref" aria-label="Citation: astrom2010"><span class="cite-num">[astrom2010]</span></a></span>
 , we formulate a linear quadratic regulator (LQR) for a 6-DOF multi-rotor system<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
 <h2 id="mathematical-formulation">Mathematical Formulation</h2>
 <p>The linearized continuous-time error dynamics around the hover equilibrium point are expressed via state-space representation:</p>
@@ -1393,7 +1407,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <h2 id="control-architecture-vector-tikz-diagram">Control Architecture (Vector TikZ Diagram)</h2>
 <p>Below is the closed-loop feedback architecture rendered in vectorized SVG directly in your browser using <strong>TikZ WebAssembly</strong>:</p>
-<figure class="tikz-container" id="tikz-1792235642874423292">
+<figure class="tikz-container" id="tikz-1792236206785980171">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -1417,7 +1431,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <h2 id="interactive-control-tuner">Interactive Control Tuner</h2>
 <p>You can adjust the damping ratio $\zeta$ and proportional gain $K_p$ in the live system simulator below to observe the pole placement and step response settling time:</p>
-<div class="interactive-widget-box" id="widget-1792235642874450032">
+<div class="interactive-widget-box" id="widget-1792236206786007231">
   <div class="widget-title">Second-Order Closed-Loop Step Response</div>
   <div class="widget-desc">Drag the sliders below to witness closed-loop damping and transient oscillations in real time.</div>
 
@@ -1479,12 +1493,23 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 </span></span><span class="line"><span class="cl"><span class="n">K</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">compute_lqr_gain</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Optimal LQR Gain Shape:&#34;</span><span class="p">,</span> <span class="n">K</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </span></span></code></pre></div><p>In our companion article, we expand on <a href="https://jokobus.github.io/smidr/smidr/posts/deep-learning-wasm-runners/">WASM Client-side Execution</a> to evaluate neural network controllers directly in the browser!</p>
-<h2 id="references--bibliography">References &amp; Bibliography</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792235642874480529" aria-label="References &amp; Citations">
-  <h2 class="bib-section-title">
-    <span>📚</span> <span>References &amp; Citations</span>
-  </h2>
-  <div class="smidr-bibliography">
+<section class="smidr-bibliography-section" id="bib-sec-1792236206786071549" aria-label="References &amp; Citations" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
+    <h2 class="bib-section-title">
+      <span>📚</span> <span>References &amp; Citations</span>
+    </h2>
+    <div class="bib-header-controls">
+      <div class="bib-style-switcher" role="group" aria-label="Citation Style">
+        <span class="bib-control-label">Style:</span>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="numeric" title="Numeric citation style [1]">Numeric</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="author-year" title="Author-Year citation style (Author, Year)">Author-Year</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="alphabetic" title="Alphabetic citation style [AutYY]">Alpha</button>
+      </div>
+      <div class="bib-filter-switcher" role="group" aria-label="Filter Bibliography">
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="cited" title="Show only citations cited in this article">Cited (<span class="bib-count-cited">0</span>)</button>
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="all" title="Show all entries in bibliography">All (<span class="bib-count-all">0</span>)</button>
+      </div>
+    </div>
+  </div><div class="smidr-bibliography">
     <script type="text/bibtex" class="bibtex-source">
 
 @article{kalman1960,
@@ -1512,7 +1537,6 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
     </ol>
   </div>
 </section>
-
 <div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
@@ -1521,12 +1545,8 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 </li>
 </ol>
 </div>
-]]></description><content:encoded><![CDATA[<p>Designing trajectory controllers for autonomous aerial robotics requires balancing agile maneuverability with dynamic stability. As established in foundational optimal estimation theory by Kalman <a class="cite-ref" href="#bib-kalman1960" data-cite-key="kalman1960" role="doc-biblioref" aria-label="Citation: kalman1960">
-  <span class="cite-num">[kalman1960]</span>
-</a>
- and classical feedback principles <a class="cite-ref" href="#bib-astrom2010" data-cite-key="astrom2010" role="doc-biblioref" aria-label="Citation: astrom2010">
-  <span class="cite-num">[astrom2010]</span>
-</a>
+]]></description><content:encoded><![CDATA[<p>Designing trajectory controllers for autonomous aerial robotics requires balancing agile maneuverability with dynamic stability. As established in foundational optimal estimation theory by Kalman <span class="cite-group"><a class="cite-ref" href="#bib-kalman1960" data-cite-key="kalman1960" role="doc-biblioref" aria-label="Citation: kalman1960"><span class="cite-num">[kalman1960]</span></a></span>
+ and classical feedback principles <span class="cite-group"><a class="cite-ref" href="#bib-astrom2010" data-cite-key="astrom2010" role="doc-biblioref" aria-label="Citation: astrom2010"><span class="cite-num">[astrom2010]</span></a></span>
 , we formulate a linear quadratic regulator (LQR) for a 6-DOF multi-rotor system<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
 <h2 id="mathematical-formulation">Mathematical Formulation</h2>
 <p>The linearized continuous-time error dynamics around the hover equilibrium point are expressed via state-space representation:</p>
@@ -1550,7 +1570,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <h2 id="control-architecture-vector-tikz-diagram">Control Architecture (Vector TikZ Diagram)</h2>
 <p>Below is the closed-loop feedback architecture rendered in vectorized SVG directly in your browser using <strong>TikZ WebAssembly</strong>:</p>
-<figure class="tikz-container" id="tikz-1792235642874423292">
+<figure class="tikz-container" id="tikz-1792236206785980171">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -1574,7 +1594,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <h2 id="interactive-control-tuner">Interactive Control Tuner</h2>
 <p>You can adjust the damping ratio $\zeta$ and proportional gain $K_p$ in the live system simulator below to observe the pole placement and step response settling time:</p>
-<div class="interactive-widget-box" id="widget-1792235642874450032">
+<div class="interactive-widget-box" id="widget-1792236206786007231">
   <div class="widget-title">Second-Order Closed-Loop Step Response</div>
   <div class="widget-desc">Drag the sliders below to witness closed-loop damping and transient oscillations in real time.</div>
 
@@ -1636,12 +1656,23 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 </span></span><span class="line"><span class="cl"><span class="n">K</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">compute_lqr_gain</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Optimal LQR Gain Shape:&#34;</span><span class="p">,</span> <span class="n">K</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </span></span></code></pre></div><p>In our companion article, we expand on <a href="https://jokobus.github.io/smidr/smidr/posts/deep-learning-wasm-runners/">WASM Client-side Execution</a> to evaluate neural network controllers directly in the browser!</p>
-<h2 id="references--bibliography">References &amp; Bibliography</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792235642874480529" aria-label="References &amp; Citations">
-  <h2 class="bib-section-title">
-    <span>📚</span> <span>References &amp; Citations</span>
-  </h2>
-  <div class="smidr-bibliography">
+<section class="smidr-bibliography-section" id="bib-sec-1792236206786071549" aria-label="References &amp; Citations" data-default-style="numeric" data-show-all="false"><div class="bib-section-header">
+    <h2 class="bib-section-title">
+      <span>📚</span> <span>References &amp; Citations</span>
+    </h2>
+    <div class="bib-header-controls">
+      <div class="bib-style-switcher" role="group" aria-label="Citation Style">
+        <span class="bib-control-label">Style:</span>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="numeric" title="Numeric citation style [1]">Numeric</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="author-year" title="Author-Year citation style (Author, Year)">Author-Year</button>
+        <button type="button" class="bib-ctrl-btn bib-style-btn" data-style="alphabetic" title="Alphabetic citation style [AutYY]">Alpha</button>
+      </div>
+      <div class="bib-filter-switcher" role="group" aria-label="Filter Bibliography">
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="cited" title="Show only citations cited in this article">Cited (<span class="bib-count-cited">0</span>)</button>
+        <button type="button" class="bib-ctrl-btn bib-filter-btn" data-filter="all" title="Show all entries in bibliography">All (<span class="bib-count-all">0</span>)</button>
+      </div>
+    </div>
+  </div><div class="smidr-bibliography">
     <script type="text/bibtex" class="bibtex-source">
 
 @article{kalman1960,
@@ -1669,7 +1700,6 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
     </ol>
   </div>
 </section>
-
 <div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>

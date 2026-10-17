@@ -40,6 +40,10 @@
 <link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
 <link rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" href="{{ "index.xml" | relURL }}">
 
+{{- /* Early Theme Initialization (Zero FOUC) */}}
+{{ $themeInitJs := resources.Get "js/theme-init.js" | resources.Minify | resources.Fingerprint }}
+<script src="{{ $themeInitJs.RelPermalink }}"></script>
+
 {{- /* CSS Assets Bundling */}}
 {{ $mainCss := resources.Get "css/main.css" }}
 {{ $compCss := resources.Get "css/components.css" }}

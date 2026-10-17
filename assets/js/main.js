@@ -123,7 +123,7 @@
     
     codeBlocks.forEach(code => {
       const pre = code.closest('pre');
-      if (!pre || pre.closest('.highlight-wrapper') || pre.closest('.code-runner-box')) return;
+      if (!pre || pre.closest('.highlight-wrapper') || pre.closest('.code-runner-box') || pre.closest('.pgp-card') || pre.closest('.pgp-armored-block')) return;
 
       // Extract language from class (e.g. language-python, language-rust)
       let lang = 'CODE';
@@ -176,10 +176,54 @@
     });
   }
 
+  // --- OpenPGP Card Copy Handlers ---
+  function setupPgpCopy() {
+    document.addEventListener('click', async (e) => {
+      const copyPgpBtn = e.target.closest('[data-action="copy-pgp"]');
+      if (copyPgpBtn) {
+        const block = copyPgpBtn.closest('.pgp-armored-block') || copyPgpBtn.closest('.pgp-card');
+        const codeEl = block ? block.querySelector('.pgp-armored-code') : null;
+        if (codeEl) {
+          try {
+            await navigator.clipboard.writeText(codeEl.innerText.trim());
+            copyPgpBtn.classList.add('copied');
+            copyPgpBtn.innerHTML = `<span>✓</span> <span class="copy-text">Copied!</span>`;
+            setTimeout(() => {
+              copyPgpBtn.classList.remove('copied');
+              copyPgpBtn.innerHTML = `<span>📋</span> <span class="copy-text">Copy Key</span>`;
+            }, 2000);
+          } catch (err) {
+            console.error('Failed to copy PGP key:', err);
+          }
+        }
+        return;
+      }
+
+      const copyFpBtn = e.target.closest('[data-action="copy-fp"]');
+      if (copyFpBtn) {
+        const fpVal = copyFpBtn.dataset.fp || copyFpBtn.closest('.pgp-fp-value-row')?.querySelector('.pgp-fp-code')?.innerText;
+        if (fpVal) {
+          try {
+            await navigator.clipboard.writeText(fpVal.replace(/\s+/g, ''));
+            copyFpBtn.classList.add('copied');
+            copyFpBtn.innerHTML = `<span>✓</span> <span class="copy-text">Copied!</span>`;
+            setTimeout(() => {
+              copyFpBtn.classList.remove('copied');
+              copyFpBtn.innerHTML = `<span>📋</span> <span class="copy-text">Copy</span>`;
+            }, 2000);
+          } catch (err) {
+            console.error('Failed to copy fingerprint:', err);
+          }
+        }
+      }
+    });
+  }
+
   // --- DOM Ready Hook ---
   document.addEventListener('DOMContentLoaded', () => {
     enhanceCodeBlocks();
     setupMobileMenu();
+    setupPgpCopy();
     
     // Bind theme buttons
     document.querySelectorAll('[data-action="toggle-theme"]').forEach(btn => {

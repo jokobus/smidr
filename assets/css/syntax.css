@@ -11,7 +11,7 @@ pre, pre code, .chroma {
 [data-theme="light"] pre code,
 [data-theme="light"] .chroma {
   color: #1e293b !important;
-  background-color: #f1f5f9 !important;
+  background-color: var(--code-bg) !important;
 }
 
 /* Chroma Syntax Highlighting Classes (Dark Mode Default) */

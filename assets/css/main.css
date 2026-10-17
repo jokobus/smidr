@@ -76,9 +76,9 @@
   --shadow-glow: 0 0 20px rgba(2, 132, 199, 0.15);
   --shadow-glow-purple: 0 0 20px rgba(126, 34, 206, 0.15);
   
-  --code-bg: #0f172a;
-  --code-header-bg: #1e293b;
-  --code-border: #cbd5e1;
+  --code-bg: #ffffff;
+  --code-header-bg: #f8fafc;
+  --code-border: #e2e8f0;
   
   --card-bg: var(--gradient-light-card);
   --grid-pattern: radial-gradient(rgba(2, 132, 199, 0.08) 1px, transparent 1px);

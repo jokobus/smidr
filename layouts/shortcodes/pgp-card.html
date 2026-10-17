@@ -59,8 +59,8 @@
       <div class="pgp-fp-label">{{ i18n "pgp_fingerprint" }}:</div>
       <div class="pgp-fp-value-row">
         <code class="pgp-fp-code">{{ $formattedFp }}</code>
-        <button class="code-copy-btn" type="button" onclick="navigator.clipboard.writeText('{{ $cleanFp }}'); this.innerHTML='<span>✓</span> Copied!'; var b=this; setTimeout(function(){ b.innerHTML='<span>📋</span> Copy'; }, 2000);" aria-label="Copy fingerprint">
-          <span>📋</span> Copy
+        <button class="code-copy-btn" type="button" data-action="copy-fp" data-fp="{{ $cleanFp }}" aria-label="Copy fingerprint">
+          <span>📋</span> <span class="copy-text">Copy</span>
         </button>
       </div>
     </div>
@@ -70,8 +70,8 @@
     <div class="pgp-armored-block">
       <div class="pgp-armored-header">
         <span>ASCII Armored Public Key</span>
-        <button class="code-copy-btn" type="button" onclick="navigator.clipboard.writeText(this.closest('.pgp-armored-block').querySelector('pre').innerText); this.innerHTML='<span>✓</span> Copied!'; var b=this; setTimeout(function(){ b.innerHTML='<span>📋</span> Copy'; }, 2000);">
-          <span>📋</span> Copy Key
+        <button class="code-copy-btn" type="button" data-action="copy-pgp" aria-label="Copy public key">
+          <span>📋</span> <span class="copy-text">Copy Key</span>
         </button>
       </div>
       <pre class="pgp-armored-code"><code>{{ . | chomp }}</code></pre>

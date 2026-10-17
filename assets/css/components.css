@@ -51,7 +51,7 @@
   padding: 0.25rem 0.6rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--color-bg-secondary);
   color: var(--color-text-muted);
   font-size: 0.75rem;
   font-family: var(--font-mono);
@@ -60,7 +60,7 @@
 }
 
 .code-copy-btn:hover {
-  color: var(--color-text);
+  color: var(--color-primary);
   border-color: var(--color-primary);
   background: var(--color-primary-dim);
 }
@@ -583,6 +583,12 @@ body.runner-fs-active {
   color: var(--color-text-muted);
 }
 
+[data-theme="light"] .runner-output-area {
+  background: #f8fafc;
+  color: #334155;
+  border-top-color: var(--code-border);
+}
+
 .runner-output-title {
   font-size: 0.72rem;
   text-transform: uppercase;
@@ -595,6 +601,10 @@ body.runner-fs-active {
 .runner-stdout {
   white-space: pre-wrap;
   color: var(--color-accent);
+}
+
+[data-theme="light"] .runner-stdout {
+  color: #047857;
 }
 
 .runner-stderr {
@@ -1570,8 +1580,8 @@ details.taxonomies-accordion[open] .chevron-icon {
 }
 
 .tax-checkbox-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--color-text);
+  background: var(--color-primary-dim);
+  color: var(--color-primary);
 }
 
 .tax-checkbox-btn.active {
@@ -1589,7 +1599,7 @@ details.taxonomies-accordion[open] .chevron-icon {
   height: 1.1rem;
   border-radius: 4px;
   border: 1.5px solid var(--color-border);
-  background: var(--color-bg);
+  background: var(--color-bg-surface);
   flex-shrink: 0;
   transition: all var(--transition-fast);
 }
@@ -1601,7 +1611,7 @@ details.taxonomies-accordion[open] .chevron-icon {
 .tax-checkbox-btn.active .custom-checkbox {
   background: var(--color-primary);
   border-color: var(--color-primary);
-  box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+  box-shadow: 0 0 8px var(--color-border-glow);
 }
 
 .custom-checkbox .check-mark {
@@ -1610,6 +1620,10 @@ details.taxonomies-accordion[open] .chevron-icon {
   font-weight: 900;
   color: #090d16;
   line-height: 1;
+}
+
+[data-theme="light"] .custom-checkbox .check-mark {
+  color: #ffffff;
 }
 
 .tax-checkbox-btn.active .custom-checkbox .check-mark {
@@ -1627,7 +1641,7 @@ details.taxonomies-accordion[open] .chevron-icon {
   font-size: 0.7rem;
   padding: 0.05rem 0.4rem;
   border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--color-bg-secondary);
   color: var(--color-text-dim);
   flex-shrink: 0;
 }
@@ -1636,6 +1650,10 @@ details.taxonomies-accordion[open] .chevron-icon {
   background: var(--color-primary);
   color: #090d16;
   font-weight: 800;
+}
+
+[data-theme="light"] .tax-checkbox-btn.active .tax-count {
+  color: #ffffff;
 }
 
 /* Filter Controls Row (AND / OR Mode & Clear) */
@@ -2119,7 +2137,7 @@ details.taxonomies-accordion[open] .chevron-icon {
 .pgp-fp-code {
   font-family: var(--font-mono);
   font-size: 0.88rem;
-  color: #f1f5f9;
+  color: var(--color-text);
   letter-spacing: 0.04em;
   word-break: break-all;
 }
@@ -2149,7 +2167,8 @@ details.taxonomies-accordion[open] .chevron-icon {
   padding: 0.85rem 1rem;
   font-family: var(--font-mono);
   font-size: 0.78rem;
-  color: #f8f8f2 !important;
+  color: var(--color-text) !important;
+  background-color: var(--code-bg) !important;
   max-height: 240px;
   overflow-y: auto;
 }

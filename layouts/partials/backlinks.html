@@ -1,11 +1,98 @@
 {{- $currentPage := . -}}
-{{- $currentRelPermalink := $currentPage.RelPermalink -}}
-{{- $currentPermalink := $currentPage.Permalink -}}
-{{- $backlinks := slice -}}
+{{- $currentRel := $currentPage.RelPermalink -}}
+{{- $currentPerm := $currentPage.Permalink -}}
 
-{{- range where .Site.RegularPages "RelPermalink" "ne" $currentRelPermalink -}}
-  {{- if or (in .RawContent $currentRelPermalink) (in .RawContent $currentPermalink) (in .RawContent $currentPage.File.BaseFileName) (in .Content $currentRelPermalink) -}}
-    {{- $backlinks = $backlinks | append . -}}
+{{- /* Prepare target match patterns */ -}}
+{{- $targetPatterns := slice -}}
+
+{{- /* RelPermalink with and without trailing slash */ -}}
+{{- $relNoSlash := strings.TrimSuffix "/" $currentRel -}}
+{{- $relWithSlash := printf "%s/" $relNoSlash -}}
+{{- $targetPatterns = $targetPatterns | append (printf "href=\"%s\"" $relWithSlash) -}}
+{{- $targetPatterns = $targetPatterns | append (printf "href=\"%s\"" $relNoSlash) -}}
+{{- $targetPatterns = $targetPatterns | append (printf "href=\"%s#" $relWithSlash) -}}
+{{- $targetPatterns = $targetPatterns | append (printf "href=\"%s#" $relNoSlash) -}}
+{{- $targetPatterns = $targetPatterns | append (printf "href='%s'" $relWithSlash) -}}
+{{- $targetPatterns = $targetPatterns | append (printf "href='%s'" $relNoSlash) -}}
+{{- $targetPatterns = $targetPatterns | append (printf "href='%s#" $relWithSlash) -}}
+{{- $targetPatterns = $targetPatterns | append (printf "href='%s#" $relNoSlash) -}}
+
+{{- /* Full Permalink with and without trailing slash */ -}}
+{{- $permNoSlash := strings.TrimSuffix "/" $currentPerm -}}
+{{- $permWithSlash := printf "%s/" $permNoSlash -}}
+{{- $targetPatterns = $targetPatterns | append (printf "href=\"%s\"" $permWithSlash) -}}
+{{- $targetPatterns = $targetPatterns | append (printf "href=\"%s\"" $permNoSlash) -}}
+{{- $targetPatterns = $targetPatterns | append (printf "href=\"%s#" $permWithSlash) -}}
+{{- $targetPatterns = $targetPatterns | append (printf "href=\"%s#" $permNoSlash) -}}
+{{- $targetPatterns = $targetPatterns | append (printf "href='%s'" $permWithSlash) -}}
+{{- $targetPatterns = $targetPatterns | append (printf "href='%s'" $permNoSlash) -}}
+{{- $targetPatterns = $targetPatterns | append (printf "href='%s#" $permWithSlash) -}}
+{{- $targetPatterns = $targetPatterns | append (printf "href='%s#" $permNoSlash) -}}
+
+{{- /* Aliases if defined */ -}}
+{{- range $currentPage.Aliases -}}
+  {{- $aliasNoSlash := strings.TrimSuffix "/" . -}}
+  {{- $aliasWithSlash := printf "%s/" $aliasNoSlash -}}
+  {{- $targetPatterns = $targetPatterns | append (printf "href=\"%s\"" $aliasWithSlash) -}}
+  {{- $targetPatterns = $targetPatterns | append (printf "href=\"%s\"" $aliasNoSlash) -}}
+  {{- $targetPatterns = $targetPatterns | append (printf "href=\"%s#" $aliasWithSlash) -}}
+  {{- $targetPatterns = $targetPatterns | append (printf "href=\"%s#" $aliasNoSlash) -}}
+  {{- $targetPatterns = $targetPatterns | append (printf "href='%s'" $aliasWithSlash) -}}
+  {{- $targetPatterns = $targetPatterns | append (printf "href='%s'" $aliasNoSlash) -}}
+  {{- $targetPatterns = $targetPatterns | append (printf "href='%s#" $aliasWithSlash) -}}
+  {{- $targetPatterns = $targetPatterns | append (printf "href='%s#" $aliasNoSlash) -}}
+{{- end -}}
+
+{{- /* Current Page Slug / Folder Name */ -}}
+{{- $slug := "" -}}
+{{- with $currentPage.File -}}
+  {{- if and (ne .Dir "") (ne .Dir ".") -}}
+    {{- $slug = path.Base .Dir -}}
+  {{- else -}}
+    {{- $slug = .TranslationBaseName -}}
+  {{- end -}}
+{{- end -}}
+{{- with $currentPage.Slug -}}
+  {{- $slug = . -}}
+{{- end -}}
+
+{{- if and $slug (ne $slug "posts") (ne $slug "content") (ne $slug ".") -}}
+  {{- $targetPatterns = $targetPatterns | append (printf "href=\"../%s/\"" $slug) -}}
+  {{- $targetPatterns = $targetPatterns | append (printf "href=\"../%s\"" $slug) -}}
+  {{- $targetPatterns = $targetPatterns | append (printf "href=\"./%s/\"" $slug) -}}
+  {{- $targetPatterns = $targetPatterns | append (printf "href=\"./%s\"" $slug) -}}
+{{- end -}}
+
+{{- /* Collect self and translations to avoid linking to own language variants as backlinks */ -}}
+{{- $selfUrls := slice $currentRel -}}
+{{- range $currentPage.AllTranslations -}}
+  {{- $selfUrls = $selfUrls | append .RelPermalink -}}
+{{- end -}}
+
+{{- /* Scan RegularPages */ -}}
+{{- $backlinks := slice -}}
+{{- range where .Site.RegularPages "RelPermalink" "ne" $currentRel -}}
+  {{- if not (in $selfUrls .RelPermalink) -}}
+    {{- $isMatch := false -}}
+    {{- $pageContent := .Content -}}
+
+    {{- /* Check rendered HTML href attributes */ -}}
+    {{- range $targetPatterns -}}
+      {{- if in $pageContent . -}}
+        {{- $isMatch = true -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- /* Check markdown wikilinks [[slug]] or Hugo ref shortcodes in RawContent */ -}}
+    {{- if and (not $isMatch) $slug (ne $slug "posts") (ne $slug "content") (ne $slug ".") -}}
+      {{- if or (in .RawContent (printf "[[%s]]" $slug)) (in .RawContent (printf "[[%s|" $slug)) (in .RawContent (printf "ref \"%s\"" $slug)) (in .RawContent (printf "ref \"posts/%s\"" $slug)) -}}
+        {{- $isMatch = true -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- if $isMatch -}}
+      {{- $backlinks = $backlinks | append . -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}
 
@@ -16,7 +103,7 @@
       <span class="backlink-icon">🔗</span>
       <span>{{ i18n "backlinks_title" }}</span>
     </h3>
-    <span class="backlink-count-badge">{{ len $backlinks }} {{ if eq (len $backlinks) 1 }}reference{{ else }}references{{ end }}</span>
+    <span class="backlink-count-badge">{{ len $backlinks }} {{ if eq (len $backlinks) 1 }}{{ i18n "reference_single" | default "reference" }}{{ else }}{{ i18n "reference_plural" | default "references" }}{{ end }}</span>
   </div>
 
   <div class="backlinks-grid">

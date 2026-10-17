@@ -26,8 +26,9 @@
   {{ $bibtexJs := resources.Get "js/bibtex.js" }}
   {{ $filterJs := resources.Get "js/blog-filter.js" }}
   {{ $mathJs := resources.Get "js/math.js" }}
+  {{ $widgetJs := resources.Get "js/interactive-widget.js" }}
   
-  {{ $scriptsBundle := slice $mainJs $searchJs $footnotesJs $runnerJs $gardenJs $bibtexJs $filterJs $mathJs | resources.Concat "js/smidr-bundle.js" | resources.Minify | resources.Fingerprint }}
+  {{ $scriptsBundle := slice $mainJs $searchJs $footnotesJs $runnerJs $gardenJs $bibtexJs $filterJs $mathJs $widgetJs | resources.Concat "js/smidr-bundle.js" | resources.Minify | resources.Fingerprint }}
   <script defer src="{{ $scriptsBundle.RelPermalink }}"></script>
 </body>
 </html>

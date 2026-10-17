@@ -1,0 +1,2 @@
+{{- $title := .Get "title" | default (.Get 0) | default "Warning" -}}
+{{ partial "callout.html" (dict "type" "warning" "title" $title "content" .Inner) }}

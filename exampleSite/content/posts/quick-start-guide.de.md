@@ -109,3 +109,22 @@ Statt Code per Copy-Paste einzufügen, binde Quelldateien direkt ein:
 ```markdown
 {{</* code-file source="scripts/train.py" lang="python" title="Trainingsschleife" */>}}
 ```
+
+## 13. Interaktive 3D-Lernkarten (Flashcards)
+
+Fessle Leser mit responsiven Lernkarten in voller Textbreite, die bei Klick oder Berührung mit einer 3D-Drehanimation die Rückseite enthüllen:
+
+{{< flashcard front="Was besagt das Abtasttheorem von Shannon-Nyquist?" hint="Klicken zum Wenden" >}}
+Ein kontinuierliches Signal kann vollständig rekonstruiert werden, wenn die Abtastfrequenz mehr als doppelt so hoch wie die höchste Signalfrequenz ist: $f_s > 2 B$.
+{{< /flashcard >}}
+
+## 14. Aufklappbare Balken (Accordions / Details)
+
+Halte Beiträge übersichtlich und verstecke lange Ableitungen, technische Details oder Lösungen unter horizontalen, einklappbaren Leisten:
+
+{{< collapse title="Klicken für mathematische Herleitung" open="false" >}}
+Ausgehend von den Euler-Lagrange-Bewegungsgleichungen:
+$$\frac{d}{dt}\left(\frac{\partial \mathcal{L}}{\partial \dot{q}_i}\right) - \frac{\partial \mathcal{L}}{\partial q_i} = Q_i$$
+kann das erforderliche Gelenkmoment direkt berechnet werden.
+{{< /collapse >}}
+

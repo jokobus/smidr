@@ -1,0 +1,28 @@
+{{- $type := .type | default "info" -}}
+{{- $title := .title | default ($type | title) -}}
+{{- $content := .content | default "" -}}
+{{- $icon := "ℹ️" -}}
+
+{{- if or (eq $type "warning") (eq $type "warn") -}}
+  {{- $icon = "⚠️" -}}
+{{- else if or (eq $type "caution") (eq $type "danger") -}}
+  {{- $icon = "🛑" -}}
+{{- else if or (eq $type "tip") (eq $type "hint") -}}
+  {{- $icon = "💡" -}}
+{{- else if eq $type "note" -}}
+  {{- $icon = "📝" -}}
+{{- else if eq $type "robotics" -}}
+  {{- $icon = "🤖" -}}
+{{- else if or (eq $type "success") (eq $type "check") -}}
+  {{- $icon = "✅" -}}
+{{- end -}}
+
+<div class="callout callout-{{ $type }}" role="region" aria-label="{{ $title }}">
+  <div class="callout-icon" aria-hidden="true">{{ $icon }}</div>
+  <div class="callout-body">
+    <div class="callout-title">{{ $title }}</div>
+    <div class="callout-content">
+      {{ $content | markdownify }}
+    </div>
+  </div>
+</div>

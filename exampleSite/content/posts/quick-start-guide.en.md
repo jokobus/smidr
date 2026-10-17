@@ -129,3 +129,22 @@ Instead of copy-pasting code, reference source files directly from your reposito
 {{</* code-file source="scripts/train.py" lang="python" title="Training Loop" */>}}
 ```
 
+## 13. Interactive 3D Flashcards
+
+Engage readers with full-width flip cards that reveal answers or detailed explanations with a 3D turning animation:
+
+{{< flashcard front="What is the Nyquist-Shannon Sampling Theorem?" hint="Click or tap to flip" >}}
+A continuous signal can be completely reconstructed if it is sampled at a frequency strictly greater than twice the highest frequency present: $f_s > 2 B$.
+{{< /flashcard >}}
+
+## 14. Collapsible Expandable Bars (Accordions)
+
+Keep articles clean and hide technical proofs, derivation details, or spoilers under horizontal clickable bars that expand down:
+
+{{< collapse title="Click to expand mathematical derivation" open="false" >}}
+Starting from the Euler-Lagrange equations of motion:
+$$\frac{d}{dt}\left(\frac{\partial \mathcal{L}}{\partial \dot{q}_i}\right) - \frac{\partial \mathcal{L}}{\partial q_i} = Q_i$$
+We can directly compute the generalized torque required at each joint.
+{{< /collapse >}}
+
+

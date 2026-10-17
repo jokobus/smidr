@@ -1,0 +1,3 @@
+{{- $lang := .Get "lang" | default (.Get 0) | default "python" -}}
+{{- $title := .Get "title" | default (.Get 1) | default "Interactive Code Cell" -}}
+{{ partial "code-runner.html" (dict "lang" $lang "title" $title "code" .Inner) }}

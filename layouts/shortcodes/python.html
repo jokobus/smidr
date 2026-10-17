@@ -1,0 +1,2 @@
+{{- $title := .Get "title" | default (.Get 0) | default "Interactive Python (WASM)" -}}
+{{ partial "code-runner.html" (dict "lang" "python" "title" $title "code" .Inner) }}

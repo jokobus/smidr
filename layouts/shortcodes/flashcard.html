@@ -1,0 +1,44 @@
+{{- $front := .Get "front" | default (.Get 0) | default "Click or tap to flip" -}}
+{{- $back := .Get "back" | default (.Get 1) | default .Inner -}}
+{{- $hint := .Get "hint" | default "Click or tap to flip" -}}
+{{- $title := .Get "title" | default "Flashcard" -}}
+{{- $backTitle := .Get "backTitle" | default "Answer / Details" -}}
+{{- $icon := .Get "icon" | default "💡" -}}
+
+<div class="flashcard-container" tabindex="0" role="button" aria-label="Interactive Flashcard. {{ $hint }}">
+  <div class="flashcard-flipper">
+    <!-- Front Face -->
+    <div class="flashcard-face flashcard-front">
+      <div class="flashcard-header">
+        <span class="flashcard-badge">
+          <span>{{ $icon }}</span>
+          <span>{{ $title }}</span>
+        </span>
+        <span class="flashcard-flip-indicator">
+          <span class="flip-icon">↻</span>
+          <span class="flip-text">{{ $hint }}</span>
+        </span>
+      </div>
+      <div class="flashcard-body">
+        {{ $front | markdownify }}
+      </div>
+    </div>
+
+    <!-- Back Face -->
+    <div class="flashcard-face flashcard-back">
+      <div class="flashcard-header">
+        <span class="flashcard-badge flashcard-badge-back">
+          <span>✓</span>
+          <span>{{ $backTitle }}</span>
+        </span>
+        <span class="flashcard-flip-indicator">
+          <span class="flip-icon">↻</span>
+          <span class="flip-text">Flip back</span>
+        </span>
+      </div>
+      <div class="flashcard-body">
+        {{ $back | markdownify }}
+      </div>
+    </div>
+  </div>
+</div>

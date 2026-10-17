@@ -1,0 +1,36 @@
+{{- $id := printf "widget-%d" (now.UnixNano) -}}
+{{- $title := .title | default "Interactive Dynamic System Visualizer" -}}
+{{- $desc := .desc | default "Adjust parameters in real-time to observe dynamic harmonic response (PID / 2nd-order harmonic oscillation)." -}}
+
+<div class="interactive-widget-box" id="{{ $id }}">
+  <div class="widget-title">{{ $title }}</div>
+  <div class="widget-desc">{{ $desc }}</div>
+
+  <div class="widget-controls">
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Proportional Gain (<em>K<sub>p</sub></em>):</span>
+        <strong class="val-kp">2.5</strong>
+      </div>
+      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5" aria-label="Proportional Gain">
+    </div>
+
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Damping Ratio (<em>&zeta;</em>):</span>
+        <strong class="val-zeta">0.45</strong>
+      </div>
+      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45" aria-label="Damping Ratio">
+    </div>
+
+    <div class="widget-control-group">
+      <div class="widget-label-row">
+        <span>Natural Frequency (<em>&omega;<sub>n</sub></em>):</span>
+        <strong class="val-wn">3.0</strong>
+      </div>
+      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0" aria-label="Natural Frequency">
+    </div>
+  </div>
+
+  <canvas class="widget-display-canvas" width="600" height="180"></canvas>
+</div>

@@ -219,11 +219,29 @@
     });
   }
 
+  // --- Flashcard Interaction Handler ---
+  function setupFlashcards() {
+    document.addEventListener('click', (e) => {
+      const card = e.target.closest('.flashcard-container');
+      if (card && !e.target.closest('a, button, input, textarea')) {
+        card.classList.toggle('is-flipped');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === 'Enter' || e.key === ' ') && e.target.classList?.contains('flashcard-container')) {
+        e.preventDefault();
+        e.target.classList.toggle('is-flipped');
+      }
+    });
+  }
+
   // --- DOM Ready Hook ---
   document.addEventListener('DOMContentLoaded', () => {
     enhanceCodeBlocks();
     setupMobileMenu();
     setupPgpCopy();
+    setupFlashcards();
     
     // Bind theme buttons
     document.querySelectorAll('[data-action="toggle-theme"]').forEach(btn => {

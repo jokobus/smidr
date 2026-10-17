@@ -62,7 +62,7 @@
     <!-- Header Actions (Search, Language, Theme, Mobile Hamburger) -->
     <div class="header-actions">
       <!-- Search Trigger (Cmd+K) -->
-      <button id="search-trigger-btn" class="search-trigger-btn" type="button" aria-label="{{ i18n "search_prompt" }}">
+      <button id="search-trigger-btn" class="search-trigger-btn" type="button" data-action="open-search" aria-label="{{ i18n "search_prompt" }}">
         <span>🔍</span>
         <span class="search-btn-text">{{ i18n "search_placeholder" | truncate 12 "..." }}</span>
         <kbd class="search-kbd">⌘K</kbd>
@@ -123,6 +123,12 @@
         </li>
         {{- end -}}
         <li class="mobile-menu-divider"></li>
+        <li>
+          <button type="button" class="mobile-nav-link" data-action="open-search" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; font-family: inherit; font-size: inherit; color: inherit; padding: 0.75rem 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span>🔍</span>
+            <span>{{ i18n "search_placeholder" }}</span>
+          </button>
+        </li>
         <li>
           <a class="mobile-nav-link" href="{{ "categories/" | relLangURL }}">📂 {{ i18n "categories" }}</a>
         </li>

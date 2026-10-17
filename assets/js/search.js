@@ -21,8 +21,29 @@
   function openPalette() {
     backdrop.classList.add('active');
     backdrop.setAttribute('aria-hidden', 'false');
+
+    // Close mobile nav drawer if open
+    const mobileDrawer = document.getElementById('mobile-nav-drawer');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    if (mobileDrawer && mobileDrawer.classList.contains('active')) {
+      mobileDrawer.classList.remove('active');
+      mobileDrawer.setAttribute('aria-hidden', 'true');
+      if (mobileMenuBtn) {
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+      }
+    }
+
     input.value = '';
-    input.focus();
+    
+    // Focus immediately on touch/click gesture so mobile OS brings up virtual keyboard
+    input.focus({ preventScroll: true });
+    requestAnimationFrame(() => {
+      input.focus({ preventScroll: true });
+    });
+    setTimeout(() => {
+      input.focus({ preventScroll: true });
+    }, 60);
+
     renderDefaultActions();
     loadSearchIndex();
   }
@@ -47,10 +68,22 @@
     }
   });
 
-  // Trigger button click
-  if (triggerBtn) {
-    triggerBtn.addEventListener('click', openPalette);
-  }
+  // Open trigger on click or touch for any button marked with data-action="open-search" or #search-trigger-btn
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-action="open-search"], #search-trigger-btn');
+    if (trigger) {
+      e.preventDefault();
+      openPalette();
+    }
+  });
+
+  document.addEventListener('touchend', (e) => {
+    const trigger = e.target.closest('[data-action="open-search"], #search-trigger-btn');
+    if (trigger) {
+      e.preventDefault();
+      openPalette();
+    }
+  }, { passive: false });
 
   // Click outside modal to close
   backdrop.addEventListener('click', (e) => {

@@ -15,7 +15,7 @@
       <a href="{{ "posts/" | relLangURL }}" class="post-card-date tag-badge" style="padding: 0.6rem 1.4rem; font-size: 0.95rem; text-decoration: none;">
         📂 {{ i18n "all_posts" }}
       </a>
-      <button onclick="document.getElementById('search-trigger-btn').click()" class="post-card-date tag-badge" style="padding: 0.6rem 1.4rem; font-size: 0.95rem; background: var(--color-bg-surface); cursor: pointer; border-color: var(--color-border);">
+      <button type="button" data-action="open-search" class="post-card-date tag-badge search-open-btn" style="padding: 0.6rem 1.4rem; font-size: 0.95rem; background: var(--color-bg-surface); cursor: pointer; border-color: var(--color-border);">
         🔍 {{ i18n "search_placeholder" }}
       </button>
     </div>

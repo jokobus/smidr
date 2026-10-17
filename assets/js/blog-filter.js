@@ -180,6 +180,16 @@
       });
     }
 
+    // Set default accordion state: open on desktop (>= 1024px), closed on small screens
+    const accordion = document.querySelector('.taxonomies-accordion');
+    if (accordion) {
+      if (window.innerWidth >= 1024) {
+        accordion.setAttribute('open', '');
+      } else {
+        accordion.removeAttribute('open');
+      }
+    }
+
     // Run initial sorting and filtering
     sortCards();
     updateUI();

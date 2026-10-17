@@ -1,0 +1,1 @@
+(function(){try{var n="smidr_theme_preference",t=localStorage.getItem(n),e=t;e||(e=window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"),document.documentElement.setAttribute("data-theme",e)}catch{}})()

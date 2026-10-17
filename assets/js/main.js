@@ -79,7 +79,7 @@
     
     codeBlocks.forEach(code => {
       const pre = code.closest('pre');
-      if (!pre || pre.closest('.highlight-wrapper') || pre.closest('.code-runner-box') || pre.closest('.pgp-card') || pre.closest('.pgp-armored-block')) return;
+      if (!pre || pre.closest('.highlight-wrapper') || pre.closest('.code-runner-box') || pre.closest('.pgp-card') || pre.closest('.pgp-armored-block') || pre.closest('.cell-output')) return;
 
       // Extract language from class (e.g. language-python, language-rust)
       let lang = 'CODE';

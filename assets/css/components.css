@@ -2689,3 +2689,103 @@ details.taxonomies-accordion[open] .chevron-icon {
 .smidr-collapse-content p:last-child {
   margin-bottom: 0;
 }
+
+/* ==========================================================================
+   Quarto / Computational Notebook & Report Styling
+   ========================================================================== */
+.cell {
+  margin: 1.75rem 0;
+}
+
+details.code-fold {
+  margin: 1.25rem 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-secondary);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+details.code-fold summary {
+  padding: 0.6rem 1rem;
+  background: var(--color-bg-surface);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background var(--transition-fast);
+}
+
+details.code-fold summary:hover {
+  background: var(--color-primary-dim);
+}
+
+details.code-fold summary::-webkit-details-marker {
+  display: none;
+}
+
+details.code-fold summary::before {
+  content: "▶";
+  display: inline-block;
+  font-size: 0.65rem;
+  transition: transform 0.2s ease;
+  color: var(--color-primary);
+}
+
+details.code-fold[open] summary {
+  border-bottom: 1px solid var(--color-border);
+}
+
+details.code-fold[open] summary::before {
+  transform: rotate(90deg);
+}
+
+details.code-fold pre {
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.cell-output {
+  margin: 0.75rem 0 1.25rem 0;
+}
+
+.cell-output pre {
+  background: var(--color-bg-surface) !important;
+  border: 1px solid var(--color-border) !important;
+  border-left: 3px solid var(--color-primary) !important;
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1.15rem !important;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.cell-output-display img {
+  display: block;
+  margin: 1.5rem auto;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  max-width: 100%;
+  height: auto;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+/* Leaflet Container Enhancements */
+.leaflet-container {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-sans) !important;
+}
+

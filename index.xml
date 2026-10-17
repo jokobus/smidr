@@ -13,7 +13,7 @@ y_{ee} &amp;= l_1 \sin(\theta_1) + l_2 \sin(\theta_1 + \theta_2)
 , representing these geometric transforms as homogeneous matrices provides computational uniformity for higher degrees of freedom.</p>
 <h2 id="2-kinematic-linkage-diagram-tikz">2. Kinematic Linkage Diagram (TikZ)</h2>
 <p>The following schematic is rendered entirely client-side using WebAssembly TeX (TikzJax):</p>
-<figure class="tikz-container" id="tikz-1792190887830458791">
+<figure class="tikz-container" id="tikz-1792225373060296113">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -163,7 +163,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
 
 <h2 id="5-real-time-parameter-response-tuner">5. Real-Time Parameter Response Tuner</h2>
 <p>Test closed-loop trajectory tracking response under variable damping ratios and natural frequencies:</p>
-<div class="interactive-widget-box" id="widget-1792190887840583350">
+<div class="interactive-widget-box" id="widget-1792225373070102447">
   <div class="widget-title">Robotic Trajectory Response Tuner</div>
   <div class="widget-desc">Adjust velocity gain and damping to observe step response oscillations.</div>
 
@@ -198,7 +198,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
 
 <script>
 (function() {
-  const root = document.getElementById("widget-1792190887840583350");
+  const root = document.getElementById("widget-1792225373070102447");
   if (!root) return;
 
   const canvas = root.querySelector(".widget-display-canvas");
@@ -313,7 +313,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
 
 <hr>
 <h2 id="7-references--bibliography">7. References &amp; Bibliography</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792190887840758578" aria-label="References">
+<section class="smidr-bibliography-section" id="bib-sec-1792225373070168950" aria-label="References">
   <h2 class="bib-section-title">
     <span>📚</span> <span>References</span>
   </h2>
@@ -356,7 +356,7 @@ y_{ee} &amp;= l_1 \sin(\theta_1) + l_2 \sin(\theta_1 + \theta_2)
 , representing these geometric transforms as homogeneous matrices provides computational uniformity for higher degrees of freedom.</p>
 <h2 id="2-kinematic-linkage-diagram-tikz">2. Kinematic Linkage Diagram (TikZ)</h2>
 <p>The following schematic is rendered entirely client-side using WebAssembly TeX (TikzJax):</p>
-<figure class="tikz-container" id="tikz-1792190887830458791">
+<figure class="tikz-container" id="tikz-1792225373060296113">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -506,7 +506,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
 
 <h2 id="5-real-time-parameter-response-tuner">5. Real-Time Parameter Response Tuner</h2>
 <p>Test closed-loop trajectory tracking response under variable damping ratios and natural frequencies:</p>
-<div class="interactive-widget-box" id="widget-1792190887840583350">
+<div class="interactive-widget-box" id="widget-1792225373070102447">
   <div class="widget-title">Robotic Trajectory Response Tuner</div>
   <div class="widget-desc">Adjust velocity gain and damping to observe step response oscillations.</div>
 
@@ -541,7 +541,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
 
 <script>
 (function() {
-  const root = document.getElementById("widget-1792190887840583350");
+  const root = document.getElementById("widget-1792225373070102447");
   if (!root) return;
 
   const canvas = root.querySelector(".widget-display-canvas");
@@ -656,7 +656,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
 
 <hr>
 <h2 id="7-references--bibliography">7. References &amp; Bibliography</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792190887840758578" aria-label="References">
+<section class="smidr-bibliography-section" id="bib-sec-1792225373070168950" aria-label="References">
   <h2 class="bib-section-title">
     <span>📚</span> <span>References</span>
   </h2>
@@ -781,7 +781,7 @@ print(&#34;Computed squares:&#34;, squares)</textarea>
 
 <h2 id="6-embedded-parameter-sliders">6. Embedded Parameter Sliders</h2>
 <p>Allow readers to interact with real-time dynamic visualizations:</p>
-<div class="interactive-widget-box" id="widget-1792190887847969732">
+<div class="interactive-widget-box" id="widget-1792225373077257469">
   <div class="widget-title">Interactive System Response Tuner</div>
   <div class="widget-desc">Drag sliders to modify system parameters in real time.</div>
 
@@ -816,7 +816,7 @@ print(&#34;Computed squares:&#34;, squares)</textarea>
 
 <script>
 (function() {
-  const root = document.getElementById("widget-1792190887847969732");
+  const root = document.getElementById("widget-1792225373077257469");
   if (!root) return;
 
   const canvas = root.querySelector(".widget-display-canvas");
@@ -1102,7 +1102,7 @@ print(&#34;Computed squares:&#34;, squares)</textarea>
 
 <h2 id="6-embedded-parameter-sliders">6. Embedded Parameter Sliders</h2>
 <p>Allow readers to interact with real-time dynamic visualizations:</p>
-<div class="interactive-widget-box" id="widget-1792190887847969732">
+<div class="interactive-widget-box" id="widget-1792225373077257469">
   <div class="widget-title">Interactive System Response Tuner</div>
   <div class="widget-desc">Drag sliders to modify system parameters in real time.</div>
 
@@ -1137,7 +1137,7 @@ print(&#34;Computed squares:&#34;, squares)</textarea>
 
 <script>
 (function() {
-  const root = document.getElementById("widget-1792190887847969732");
+  const root = document.getElementById("widget-1792225373077257469");
   if (!root) return;
 
   const canvas = root.querySelector(".widget-display-canvas");
@@ -1614,7 +1614,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <h2 id="control-architecture-vector-tikz-diagram">Control Architecture (Vector TikZ Diagram)</h2>
 <p>Below is the closed-loop feedback architecture rendered in vectorized SVG directly in your browser using <strong>TikZ WebAssembly</strong>:</p>
-<figure class="tikz-container" id="tikz-1792190887843916607">
+<figure class="tikz-container" id="tikz-1792225373072613340">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -1638,7 +1638,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <h2 id="interactive-control-tuner">Interactive Control Tuner</h2>
 <p>You can adjust the damping ratio $\zeta$ and proportional gain $K_p$ in the live system simulator below to observe the pole placement and step response settling time:</p>
-<div class="interactive-widget-box" id="widget-1792190887843956181">
+<div class="interactive-widget-box" id="widget-1792225373072628559">
   <div class="widget-title">Second-Order Closed-Loop Step Response</div>
   <div class="widget-desc">Drag the sliders below to witness closed-loop damping and transient oscillations in real time.</div>
 
@@ -1673,7 +1673,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <script>
 (function() {
-  const root = document.getElementById("widget-1792190887843956181");
+  const root = document.getElementById("widget-1792225373072628559");
   if (!root) return;
 
   const canvas = root.querySelector(".widget-display-canvas");
@@ -1791,7 +1791,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Optimal LQR Gain Shape:&#34;</span><span class="p">,</span> <span class="n">K</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </span></span></code></pre></div><p>In our companion article, we expand on <a href="https://jokobus.github.io/smidr/smidr/posts/deep-learning-wasm-runners/">WASM Client-side Execution</a> to evaluate neural network controllers directly in the browser!</p>
 <h2 id="references--bibliography">References &amp; Bibliography</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792190887844020652" aria-label="References &amp; Citations">
+<section class="smidr-bibliography-section" id="bib-sec-1792225373072662962" aria-label="References &amp; Citations">
   <h2 class="bib-section-title">
     <span>📚</span> <span>References &amp; Citations</span>
   </h2>
@@ -1860,7 +1860,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <h2 id="control-architecture-vector-tikz-diagram">Control Architecture (Vector TikZ Diagram)</h2>
 <p>Below is the closed-loop feedback architecture rendered in vectorized SVG directly in your browser using <strong>TikZ WebAssembly</strong>:</p>
-<figure class="tikz-container" id="tikz-1792190887843916607">
+<figure class="tikz-container" id="tikz-1792225373072613340">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -1884,7 +1884,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <h2 id="interactive-control-tuner">Interactive Control Tuner</h2>
 <p>You can adjust the damping ratio $\zeta$ and proportional gain $K_p$ in the live system simulator below to observe the pole placement and step response settling time:</p>
-<div class="interactive-widget-box" id="widget-1792190887843956181">
+<div class="interactive-widget-box" id="widget-1792225373072628559">
   <div class="widget-title">Second-Order Closed-Loop Step Response</div>
   <div class="widget-desc">Drag the sliders below to witness closed-loop damping and transient oscillations in real time.</div>
 
@@ -1919,7 +1919,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <script>
 (function() {
-  const root = document.getElementById("widget-1792190887843956181");
+  const root = document.getElementById("widget-1792225373072628559");
   if (!root) return;
 
   const canvas = root.querySelector(".widget-display-canvas");
@@ -2037,7 +2037,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Optimal LQR Gain Shape:&#34;</span><span class="p">,</span> <span class="n">K</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </span></span></code></pre></div><p>In our companion article, we expand on <a href="https://jokobus.github.io/smidr/smidr/posts/deep-learning-wasm-runners/">WASM Client-side Execution</a> to evaluate neural network controllers directly in the browser!</p>
 <h2 id="references--bibliography">References &amp; Bibliography</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792190887844020652" aria-label="References &amp; Citations">
+<section class="smidr-bibliography-section" id="bib-sec-1792225373072662962" aria-label="References &amp; Citations">
   <h2 class="bib-section-title">
     <span>📚</span> <span>References &amp; Citations</span>
   </h2>

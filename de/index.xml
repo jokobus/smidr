@@ -13,7 +13,7 @@ y_{ee} &amp;= l_1 \sin(\theta_1) + l_2 \sin(\theta_1 + \theta_2)
  beschrieben, bildet die Darstellung über homogene Transformationsmatrizen das Fundament für Manipulatoren mit höheren Freiheitsgraden.</p>
 <h2 id="2-kinematische-skizze-tikz">2. Kinematische Skizze (TikZ)</h2>
 <p>Das folgende Schema wird vollständig clientseitig im Browser mittels WebAssembly-TeX (TikzJax) gerendert:</p>
-<figure class="tikz-container" id="tikz-1792190887866967403">
+<figure class="tikz-container" id="tikz-1792225373099763092">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -152,7 +152,7 @@ print(f&#34;Reichweite:     R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)
 </span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;End-Effector Position: x=</span><span class="si">{</span><span class="n">ee</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> m, y=</span><span class="si">{</span><span class="n">ee</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> m&#34;</span><span class="p">)</span></span></span></code></pre></div>
   </div>
 <h2 id="5-echtzeit-parameterregler">5. Echtzeit-Parameterregler</h2>
-<div class="interactive-widget-box" id="widget-1792190887872062416">
+<div class="interactive-widget-box" id="widget-1792225373103658041">
   <div class="widget-title">Robotik-Trajektorien-Regler</div>
   <div class="widget-desc">Passe Geschwindigkeitsverstärkung und Dämpfung an, um das Einschwingverhalten zu testen.</div>
 
@@ -187,7 +187,7 @@ print(f&#34;Reichweite:     R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)
 
 <script>
 (function() {
-  const root = document.getElementById("widget-1792190887872062416");
+  const root = document.getElementById("widget-1792225373103658041");
   if (!root) return;
 
   const canvas = root.querySelector(".widget-display-canvas");
@@ -302,7 +302,7 @@ print(f&#34;Reichweite:     R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)
 
 <hr>
 <h2 id="7-literaturverzeichnis">7. Literaturverzeichnis</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792190887872239267" aria-label="References">
+<section class="smidr-bibliography-section" id="bib-sec-1792225373103777132" aria-label="References">
   <h2 class="bib-section-title">
     <span>📚</span> <span>References</span>
   </h2>
@@ -345,7 +345,7 @@ y_{ee} &amp;= l_1 \sin(\theta_1) + l_2 \sin(\theta_1 + \theta_2)
  beschrieben, bildet die Darstellung über homogene Transformationsmatrizen das Fundament für Manipulatoren mit höheren Freiheitsgraden.</p>
 <h2 id="2-kinematische-skizze-tikz">2. Kinematische Skizze (TikZ)</h2>
 <p>Das folgende Schema wird vollständig clientseitig im Browser mittels WebAssembly-TeX (TikzJax) gerendert:</p>
-<figure class="tikz-container" id="tikz-1792190887866967403">
+<figure class="tikz-container" id="tikz-1792225373099763092">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -484,7 +484,7 @@ print(f&#34;Reichweite:     R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)
 </span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;End-Effector Position: x=</span><span class="si">{</span><span class="n">ee</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> m, y=</span><span class="si">{</span><span class="n">ee</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> m&#34;</span><span class="p">)</span></span></span></code></pre></div>
   </div>
 <h2 id="5-echtzeit-parameterregler">5. Echtzeit-Parameterregler</h2>
-<div class="interactive-widget-box" id="widget-1792190887872062416">
+<div class="interactive-widget-box" id="widget-1792225373103658041">
   <div class="widget-title">Robotik-Trajektorien-Regler</div>
   <div class="widget-desc">Passe Geschwindigkeitsverstärkung und Dämpfung an, um das Einschwingverhalten zu testen.</div>
 
@@ -519,7 +519,7 @@ print(f&#34;Reichweite:     R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)
 
 <script>
 (function() {
-  const root = document.getElementById("widget-1792190887872062416");
+  const root = document.getElementById("widget-1792225373103658041");
   if (!root) return;
 
   const canvas = root.querySelector(".widget-display-canvas");
@@ -634,7 +634,7 @@ print(f&#34;Reichweite:     R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)
 
 <hr>
 <h2 id="7-literaturverzeichnis">7. Literaturverzeichnis</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792190887872239267" aria-label="References">
+<section class="smidr-bibliography-section" id="bib-sec-1792225373103777132" aria-label="References">
   <h2 class="bib-section-title">
     <span>📚</span> <span>References</span>
   </h2>
@@ -743,7 +743,7 @@ print(&#34;Berechnete Quadrate:&#34;, quadrate)</textarea>
 </div>
 
 <h2 id="6-interaktive-schieberegler">6. Interaktive Schieberegler</h2>
-<div class="interactive-widget-box" id="widget-1792190887876100796">
+<div class="interactive-widget-box" id="widget-1792225373107311142">
   <div class="widget-title">Interaktiver Systemregler</div>
   <div class="widget-desc">Bewege die Schieberegler, um das Regelverhalten in Echtzeit zu prüfen.</div>
 
@@ -778,7 +778,7 @@ print(&#34;Berechnete Quadrate:&#34;, quadrate)</textarea>
 
 <script>
 (function() {
-  const root = document.getElementById("widget-1792190887876100796");
+  const root = document.getElementById("widget-1792225373107311142");
   if (!root) return;
 
   const canvas = root.querySelector(".widget-display-canvas");
@@ -1046,7 +1046,7 @@ print(&#34;Berechnete Quadrate:&#34;, quadrate)</textarea>
 </div>
 
 <h2 id="6-interaktive-schieberegler">6. Interaktive Schieberegler</h2>
-<div class="interactive-widget-box" id="widget-1792190887876100796">
+<div class="interactive-widget-box" id="widget-1792225373107311142">
   <div class="widget-title">Interaktiver Systemregler</div>
   <div class="widget-desc">Bewege die Schieberegler, um das Regelverhalten in Echtzeit zu prüfen.</div>
 
@@ -1081,7 +1081,7 @@ print(&#34;Berechnete Quadrate:&#34;, quadrate)</textarea>
 
 <script>
 (function() {
-  const root = document.getElementById("widget-1792190887876100796");
+  const root = document.getElementById("widget-1792225373107311142");
   if (!root) return;
 
   const canvas = root.querySelector(".widget-display-canvas");
@@ -1450,7 +1450,7 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
 
 <h2 id="regelungsarchitektur-vektorielles-tikz-diagramm">Regelungsarchitektur (Vektorielles TikZ-Diagramm)</h2>
 <p>Hier ist das Blockschaltbild des Regelkreises, direkt im Browser mittels <strong>TikZ WebAssembly</strong> kompiliert:</p>
-<figure class="tikz-container" id="tikz-1792190887871213302">
+<figure class="tikz-container" id="tikz-1792225373102847147">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -1474,7 +1474,7 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
 
 <h2 id="interaktiver-regler-simulator">Interaktiver Regler-Simulator</h2>
 <p>Passe die Dämpfung $\zeta$ und die Kreisverstärkung $K_p$ direkt im untenstehenden Systemsimulator an:</p>
-<div class="interactive-widget-box" id="widget-1792190887871239280">
+<div class="interactive-widget-box" id="widget-1792225373102872174">
   <div class="widget-title">Sprungantwort eines Systems zweiter Ordnung</div>
   <div class="widget-desc">Bewege die Schieberegler, um das Einschwingverhalten und Dämpfung in Echtzeit zu beobachten.</div>
 
@@ -1509,7 +1509,7 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
 
 <script>
 (function() {
-  const root = document.getElementById("widget-1792190887871239280");
+  const root = document.getElementById("widget-1792225373102872174");
   if (!root) return;
 
   const canvas = root.querySelector(".widget-display-canvas");
@@ -1605,7 +1605,7 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
 <em>(Dieser Text wird erst sichtbar, wenn du ihn markierst oder mit der Maus darüberfährst!)</em></p>
 <p>In unserem weiteren Beitrag untersuchen wir <a href="https://jokobus.github.io/smidr/de/posts/deep-learning-wasm-runners/">WASM Client-seitige Code-Ausführung</a> für neuronale Netze direkt im Webbrowser!</p>
 <h2 id="literaturverzeichnis--referenzen">Literaturverzeichnis &amp; Referenzen</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792190887871294073" aria-label="Literaturverzeichnis &amp; Referenzen">
+<section class="smidr-bibliography-section" id="bib-sec-1792225373102922176" aria-label="Literaturverzeichnis &amp; Referenzen">
   <h2 class="bib-section-title">
     <span>📚</span> <span>Literaturverzeichnis &amp; Referenzen</span>
   </h2>
@@ -1674,7 +1674,7 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
 
 <h2 id="regelungsarchitektur-vektorielles-tikz-diagramm">Regelungsarchitektur (Vektorielles TikZ-Diagramm)</h2>
 <p>Hier ist das Blockschaltbild des Regelkreises, direkt im Browser mittels <strong>TikZ WebAssembly</strong> kompiliert:</p>
-<figure class="tikz-container" id="tikz-1792190887871213302">
+<figure class="tikz-container" id="tikz-1792225373102847147">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -1698,7 +1698,7 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
 
 <h2 id="interaktiver-regler-simulator">Interaktiver Regler-Simulator</h2>
 <p>Passe die Dämpfung $\zeta$ und die Kreisverstärkung $K_p$ direkt im untenstehenden Systemsimulator an:</p>
-<div class="interactive-widget-box" id="widget-1792190887871239280">
+<div class="interactive-widget-box" id="widget-1792225373102872174">
   <div class="widget-title">Sprungantwort eines Systems zweiter Ordnung</div>
   <div class="widget-desc">Bewege die Schieberegler, um das Einschwingverhalten und Dämpfung in Echtzeit zu beobachten.</div>
 
@@ -1733,7 +1733,7 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
 
 <script>
 (function() {
-  const root = document.getElementById("widget-1792190887871239280");
+  const root = document.getElementById("widget-1792225373102872174");
   if (!root) return;
 
   const canvas = root.querySelector(".widget-display-canvas");
@@ -1829,7 +1829,7 @@ print(f&#34;Aktivierung: {activation:.4f}&#34;)</textarea>
 <em>(Dieser Text wird erst sichtbar, wenn du ihn markierst oder mit der Maus darüberfährst!)</em></p>
 <p>In unserem weiteren Beitrag untersuchen wir <a href="https://jokobus.github.io/smidr/de/posts/deep-learning-wasm-runners/">WASM Client-seitige Code-Ausführung</a> für neuronale Netze direkt im Webbrowser!</p>
 <h2 id="literaturverzeichnis--referenzen">Literaturverzeichnis &amp; Referenzen</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792190887871294073" aria-label="Literaturverzeichnis &amp; Referenzen">
+<section class="smidr-bibliography-section" id="bib-sec-1792225373102922176" aria-label="Literaturverzeichnis &amp; Referenzen">
   <h2 class="bib-section-title">
     <span>📚</span> <span>Literaturverzeichnis &amp; Referenzen</span>
   </h2>

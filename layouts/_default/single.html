@@ -1,6 +1,6 @@
 {{ define "main" }}
 {{- $isPost := or (eq .Section "posts") (eq .Type "posts") -}}
-<div class="container">
+<div class="{{ if .Params.fullWidth }}container-wide{{ else }}container{{ end }}">
   <article class="article-container" itemscope itemtype="http://schema.org/BlogPosting">
     {{- if and (ne .Params.head false) (ne .Params.head "false") -}}
     <header class="article-header">

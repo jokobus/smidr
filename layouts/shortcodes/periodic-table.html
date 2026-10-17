@@ -1,0 +1,17 @@
+{{- $lang := .Get "lang" | default .Page.Language.Lang | default "en" -}}
+{{- $pseCss := resources.Get "css/pse.css" | resources.Minify | resources.Fingerprint -}}
+{{- $pseData := resources.Get "js/pse-data.js" | resources.Minify | resources.Fingerprint -}}
+{{- $pseJs := resources.Get "js/pse.js" | resources.Minify | resources.Fingerprint -}}
+
+<link rel="stylesheet" href="{{ $pseCss.RelPermalink }}" integrity="{{ $pseCss.Data.Integrity }}">
+
+<div class="pse-container" data-lang="{{ $lang }}">
+  <noscript>
+    <p style="padding: 1rem; border: 1px solid var(--color-border); border-radius: 8px;">
+      Please enable JavaScript to view the interactive Periodic Table of the Elements.
+    </p>
+  </noscript>
+</div>
+
+<script defer src="{{ $pseData.RelPermalink }}" integrity="{{ $pseData.Data.Integrity }}"></script>
+<script defer src="{{ $pseJs.RelPermalink }}" integrity="{{ $pseJs.Data.Integrity }}"></script>

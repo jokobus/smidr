@@ -1,15 +1,30 @@
 {{- $caption := .Get "caption" -}}
+{{- $src := .Get "src" -}}
+{{- $alt := .Get "alt" | default $caption | default "TikZ Diagram" -}}
 {{- $id := printf "tikz-%d" (now.UnixNano) -}}
 
 <figure class="tikz-container" id="{{ $id }}">
   <div class="tikz-wrapper">
-    <script type="text/tikz">
+    {{- if $src -}}
+      {{- $res := .Page.Resources.GetMatch $src -}}
+      {{- if $res -}}
+        {{- if strings.HasSuffix $src ".svg" -}}
+          {{ $res.Content | safeHTML }}
+        {{- else -}}
+          <img src="{{ $res.RelPermalink }}" alt="{{ $alt }}" class="tikz-svg-img" loading="lazy" />
+        {{- end -}}
+      {{- else -}}
+        <img src="{{ $src | relURL }}" alt="{{ $alt }}" class="tikz-svg-img" loading="lazy" />
+      {{- end -}}
+    {{- else -}}
+      <script type="text/tikz">
 {{ .Inner | safeJS }}
-    </script>
+      </script>
+    {{- end -}}
   </div>
   {{ with $caption }}
   <figcaption class="tikz-caption">
-    <span class="tikz-caption-prefix">Figure:</span> {{ . }}
+    <span class="tikz-caption-prefix">{{ i18n "figure" | default "Figure" }}:</span> {{ . }}
   </figcaption>
   {{ end }}
 </figure>

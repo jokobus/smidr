@@ -1,3 +1,16 @@
 <!-- TikzJax: In-browser WebAssembly compilation of LaTeX TikZ diagrams into SVG -->
 <link rel="stylesheet" href="https://tikzjax.com/v1/fonts.css">
+<script>
+  // Ensure HTML entities inside <script type="text/tikz"> (e.g., -> encoded as -&gt;) are decoded before TikzJax runs
+  document.addEventListener("DOMContentLoaded", function() {
+    var scripts = document.querySelectorAll('script[type="text/tikz"]');
+    for (var i = 0; i < scripts.length; i++) {
+      var s = scripts[i];
+      s.textContent = s.textContent
+        .replace(/&gt;/g, '>')
+        .replace(/&lt;/g, '<')
+        .replace(/&amp;/g, '&');
+    }
+  });
+</script>
 <script defer src="https://tikzjax.com/v1/tikzjax.js"></script>

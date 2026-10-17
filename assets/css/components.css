@@ -1248,10 +1248,19 @@ body.runner-fs-active {
   overflow-x: auto;
 }
 
-/* Invert or adapt TikZ SVGs for dark mode so lines and math text are crisp white */
-[data-theme="dark"] .tikz-wrapper svg {
+/* Invert raw black-and-white TikzJax SVGs for dark mode, but preserve native adaptive SVGs */
+[data-theme="dark"] .tikz-wrapper svg:not(.tikz-svg) {
   filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.2)) invert(0.93) hue-rotate(180deg);
 }
+
+.tikz-wrapper .tikz-svg,
+.tikz-wrapper .tikz-svg-img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
 
 .tikz-caption {
   margin-top: 0.75rem;

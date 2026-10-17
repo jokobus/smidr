@@ -13,7 +13,7 @@ y_{ee} &amp;= l_1 \sin(\theta_1) + l_2 \sin(\theta_1 + \theta_2)
 , representing these geometric transforms as homogeneous matrices provides computational uniformity for higher degrees of freedom.</p>
 <h2 id="2-kinematic-linkage-diagram-tikz">2. Kinematic Linkage Diagram (TikZ)</h2>
 <p>The following schematic is rendered entirely client-side using WebAssembly TeX (TikzJax):</p>
-<figure class="tikz-container" id="tikz-1792234620018207186">
+<figure class="tikz-container" id="tikz-1792235642861238258">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -115,6 +115,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
   </div>
 </div>
 
+
 <h2 id="4-including-standalone-source-files">4. Including Standalone Source Files</h2>
 <p>Rather than copy-pasting code into Markdown, Smidr allows referencing clean production scripts directly from your repository using <code>code-file</code>:</p>
 <div class="code-file-container">
@@ -161,131 +162,42 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
   </div>
 </div>
 
+
 <h2 id="5-real-time-parameter-response-tuner">5. Real-Time Parameter Response Tuner</h2>
 <p>Test closed-loop trajectory tracking response under variable damping ratios and natural frequencies:</p>
-<div class="interactive-widget-box" id="widget-1792234620028953710">
+<div class="interactive-widget-box" id="widget-1792235642872374560">
   <div class="widget-title">Robotic Trajectory Response Tuner</div>
   <div class="widget-desc">Adjust velocity gain and damping to observe step response oscillations.</div>
 
   <div class="widget-controls">
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Proportional Gain ($K_p$):</span>
+        <span>Proportional Gain (<em>K<sub>p</sub></em>):</span>
         <strong class="val-kp">2.5</strong>
       </div>
-      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5">
+      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5" aria-label="Proportional Gain">
     </div>
 
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Damping Ratio ($\zeta$):</span>
+        <span>Damping Ratio (<em>&zeta;</em>):</span>
         <strong class="val-zeta">0.45</strong>
       </div>
-      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45">
+      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45" aria-label="Damping Ratio">
     </div>
 
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Natural Frequency ($\omega_n$):</span>
+        <span>Natural Frequency (<em>&omega;<sub>n</sub></em>):</span>
         <strong class="val-wn">3.0</strong>
       </div>
-      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0">
+      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0" aria-label="Natural Frequency">
     </div>
   </div>
 
   <canvas class="widget-display-canvas" width="600" height="180"></canvas>
 </div>
 
-<script>
-(function() {
-  const root = document.getElementById("widget-1792234620028953710");
-  if (!root) return;
-
-  const canvas = root.querySelector(".widget-display-canvas");
-  const ctx = canvas.getContext("2d");
-  const sliderKp = root.querySelector(".slider-kp");
-  const sliderZeta = root.querySelector(".slider-zeta");
-  const sliderWn = root.querySelector(".slider-wn");
-  const valKp = root.querySelector(".val-kp");
-  const valZeta = root.querySelector(".val-zeta");
-  const valWn = root.querySelector(".val-wn");
-
-  function draw() {
-    const Kp = parseFloat(sliderKp.value);
-    const zeta = parseFloat(sliderZeta.value);
-    const wn = parseFloat(sliderWn.value);
-
-    valKp.textContent = Kp.toFixed(1);
-    valZeta.textContent = zeta.toFixed(2);
-    valWn.textContent = wn.toFixed(1);
-
-    const w = canvas.width;
-    const h = canvas.height;
-    ctx.clearRect(0, 0, w, h);
-
-    
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
-    ctx.lineWidth = 1;
-    for (let x = 40; x < w; x += 40) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, h);
-      ctx.stroke();
-    }
-    for (let y = 20; y < h; y += 30) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(w, y);
-      ctx.stroke();
-    }
-
-    
-    const setpointY = h * 0.35;
-    ctx.strokeStyle = "#a855f7";
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    ctx.moveTo(0, setpointY);
-    ctx.lineTo(w, setpointY);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    
-    ctx.strokeStyle = "#00f0ff";
-    ctx.lineWidth = 2.5;
-    ctx.shadowColor = "#00f0ff";
-    ctx.shadowBlur = 8;
-    ctx.beginPath();
-
-    const maxT = 6.0;
-    const baseY = h * 0.85;
-    const scaleY = (baseY - setpointY);
-
-    for (let px = 0; px < w; px++) {
-      const t = (px / w) * maxT;
-      let y = 0;
-      if (zeta < 1.0) {
-        const wd = wn * Math.sqrt(1 - zeta * zeta);
-        const env = Math.exp(-zeta * wn * t);
-        y = 1 - env * (Math.cos(wd * t) + (zeta / Math.sqrt(1 - zeta * zeta)) * Math.sin(wd * t));
-      } else {
-        
-        y = 1 - Math.exp(-wn * t) * (1 + wn * t);
-      }
-
-      const py = baseY - (y * scaleY * (Kp / 2.5));
-      if (px === 0) ctx.moveTo(px, py);
-      else ctx.lineTo(px, py);
-    }
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-  }
-
-  sliderKp.addEventListener("input", draw);
-  sliderZeta.addEventListener("input", draw);
-  sliderWn.addEventListener("input", draw);
-  draw();
-})();
-</script>
 
 <h2 id="6-support-open-science--robotics-research">6. Support Open Science &amp; Robotics Research</h2>
 <div class="ad-container in-article-ad sponsor-card-custom">
@@ -313,7 +225,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
 
 <hr>
 <h2 id="7-references--bibliography">7. References &amp; Bibliography</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792234620029123778" aria-label="References">
+<section class="smidr-bibliography-section" id="bib-sec-1792235642872443449" aria-label="References">
   <h2 class="bib-section-title">
     <span>📚</span> <span>References</span>
   </h2>
@@ -356,7 +268,7 @@ y_{ee} &amp;= l_1 \sin(\theta_1) + l_2 \sin(\theta_1 + \theta_2)
 , representing these geometric transforms as homogeneous matrices provides computational uniformity for higher degrees of freedom.</p>
 <h2 id="2-kinematic-linkage-diagram-tikz">2. Kinematic Linkage Diagram (TikZ)</h2>
 <p>The following schematic is rendered entirely client-side using WebAssembly TeX (TikzJax):</p>
-<figure class="tikz-container" id="tikz-1792234620018207186">
+<figure class="tikz-container" id="tikz-1792235642861238258">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -458,6 +370,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
   </div>
 </div>
 
+
 <h2 id="4-including-standalone-source-files">4. Including Standalone Source Files</h2>
 <p>Rather than copy-pasting code into Markdown, Smidr allows referencing clean production scripts directly from your repository using <code>code-file</code>:</p>
 <div class="code-file-container">
@@ -504,131 +417,42 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
   </div>
 </div>
 
+
 <h2 id="5-real-time-parameter-response-tuner">5. Real-Time Parameter Response Tuner</h2>
 <p>Test closed-loop trajectory tracking response under variable damping ratios and natural frequencies:</p>
-<div class="interactive-widget-box" id="widget-1792234620028953710">
+<div class="interactive-widget-box" id="widget-1792235642872374560">
   <div class="widget-title">Robotic Trajectory Response Tuner</div>
   <div class="widget-desc">Adjust velocity gain and damping to observe step response oscillations.</div>
 
   <div class="widget-controls">
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Proportional Gain ($K_p$):</span>
+        <span>Proportional Gain (<em>K<sub>p</sub></em>):</span>
         <strong class="val-kp">2.5</strong>
       </div>
-      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5">
+      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5" aria-label="Proportional Gain">
     </div>
 
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Damping Ratio ($\zeta$):</span>
+        <span>Damping Ratio (<em>&zeta;</em>):</span>
         <strong class="val-zeta">0.45</strong>
       </div>
-      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45">
+      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45" aria-label="Damping Ratio">
     </div>
 
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Natural Frequency ($\omega_n$):</span>
+        <span>Natural Frequency (<em>&omega;<sub>n</sub></em>):</span>
         <strong class="val-wn">3.0</strong>
       </div>
-      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0">
+      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0" aria-label="Natural Frequency">
     </div>
   </div>
 
   <canvas class="widget-display-canvas" width="600" height="180"></canvas>
 </div>
 
-<script>
-(function() {
-  const root = document.getElementById("widget-1792234620028953710");
-  if (!root) return;
-
-  const canvas = root.querySelector(".widget-display-canvas");
-  const ctx = canvas.getContext("2d");
-  const sliderKp = root.querySelector(".slider-kp");
-  const sliderZeta = root.querySelector(".slider-zeta");
-  const sliderWn = root.querySelector(".slider-wn");
-  const valKp = root.querySelector(".val-kp");
-  const valZeta = root.querySelector(".val-zeta");
-  const valWn = root.querySelector(".val-wn");
-
-  function draw() {
-    const Kp = parseFloat(sliderKp.value);
-    const zeta = parseFloat(sliderZeta.value);
-    const wn = parseFloat(sliderWn.value);
-
-    valKp.textContent = Kp.toFixed(1);
-    valZeta.textContent = zeta.toFixed(2);
-    valWn.textContent = wn.toFixed(1);
-
-    const w = canvas.width;
-    const h = canvas.height;
-    ctx.clearRect(0, 0, w, h);
-
-    
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
-    ctx.lineWidth = 1;
-    for (let x = 40; x < w; x += 40) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, h);
-      ctx.stroke();
-    }
-    for (let y = 20; y < h; y += 30) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(w, y);
-      ctx.stroke();
-    }
-
-    
-    const setpointY = h * 0.35;
-    ctx.strokeStyle = "#a855f7";
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    ctx.moveTo(0, setpointY);
-    ctx.lineTo(w, setpointY);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    
-    ctx.strokeStyle = "#00f0ff";
-    ctx.lineWidth = 2.5;
-    ctx.shadowColor = "#00f0ff";
-    ctx.shadowBlur = 8;
-    ctx.beginPath();
-
-    const maxT = 6.0;
-    const baseY = h * 0.85;
-    const scaleY = (baseY - setpointY);
-
-    for (let px = 0; px < w; px++) {
-      const t = (px / w) * maxT;
-      let y = 0;
-      if (zeta < 1.0) {
-        const wd = wn * Math.sqrt(1 - zeta * zeta);
-        const env = Math.exp(-zeta * wn * t);
-        y = 1 - env * (Math.cos(wd * t) + (zeta / Math.sqrt(1 - zeta * zeta)) * Math.sin(wd * t));
-      } else {
-        
-        y = 1 - Math.exp(-wn * t) * (1 + wn * t);
-      }
-
-      const py = baseY - (y * scaleY * (Kp / 2.5));
-      if (px === 0) ctx.moveTo(px, py);
-      else ctx.lineTo(px, py);
-    }
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-  }
-
-  sliderKp.addEventListener("input", draw);
-  sliderZeta.addEventListener("input", draw);
-  sliderWn.addEventListener("input", draw);
-  draw();
-})();
-</script>
 
 <h2 id="6-support-open-science--robotics-research">6. Support Open Science &amp; Robotics Research</h2>
 <div class="ad-container in-article-ad sponsor-card-custom">
@@ -656,7 +480,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
 
 <hr>
 <h2 id="7-references--bibliography">7. References &amp; Bibliography</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792234620029123778" aria-label="References">
+<section class="smidr-bibliography-section" id="bib-sec-1792235642872443449" aria-label="References">
   <h2 class="bib-section-title">
     <span>📚</span> <span>References</span>
   </h2>
@@ -717,6 +541,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
   </div>
 </div>
 
+
 <div class="callout callout-robotics" role="region" aria-label="Robotics Hardware Note">
   <div class="callout-icon" aria-hidden="true">🤖</div>
   <div class="callout-body">
@@ -726,6 +551,7 @@ print(f&#34;Reach Radius: R = {math.sqrt(ee[0]**2 &#43; ee[1]**2):.4f} m&#34;)</
     </div>
   </div>
 </div>
+
 
 <h2 id="5-client-side-wasm-code-runners">5. Client-Side WASM Code Runners</h2>
 <p>Want your readers to experiment with code right on the page? Embed a Pyodide WebAssembly runner:</p>
@@ -779,131 +605,42 @@ print(&#34;Computed squares:&#34;, squares)</textarea>
   </div>
 </div>
 
+
 <h2 id="6-embedded-parameter-sliders">6. Embedded Parameter Sliders</h2>
 <p>Allow readers to interact with real-time dynamic visualizations:</p>
-<div class="interactive-widget-box" id="widget-1792234620034741993">
+<div class="interactive-widget-box" id="widget-1792235642879374110">
   <div class="widget-title">Interactive System Response Tuner</div>
   <div class="widget-desc">Drag sliders to modify system parameters in real time.</div>
 
   <div class="widget-controls">
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Proportional Gain ($K_p$):</span>
+        <span>Proportional Gain (<em>K<sub>p</sub></em>):</span>
         <strong class="val-kp">2.5</strong>
       </div>
-      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5">
+      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5" aria-label="Proportional Gain">
     </div>
 
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Damping Ratio ($\zeta$):</span>
+        <span>Damping Ratio (<em>&zeta;</em>):</span>
         <strong class="val-zeta">0.45</strong>
       </div>
-      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45">
+      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45" aria-label="Damping Ratio">
     </div>
 
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Natural Frequency ($\omega_n$):</span>
+        <span>Natural Frequency (<em>&omega;<sub>n</sub></em>):</span>
         <strong class="val-wn">3.0</strong>
       </div>
-      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0">
+      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0" aria-label="Natural Frequency">
     </div>
   </div>
 
   <canvas class="widget-display-canvas" width="600" height="180"></canvas>
 </div>
 
-<script>
-(function() {
-  const root = document.getElementById("widget-1792234620034741993");
-  if (!root) return;
-
-  const canvas = root.querySelector(".widget-display-canvas");
-  const ctx = canvas.getContext("2d");
-  const sliderKp = root.querySelector(".slider-kp");
-  const sliderZeta = root.querySelector(".slider-zeta");
-  const sliderWn = root.querySelector(".slider-wn");
-  const valKp = root.querySelector(".val-kp");
-  const valZeta = root.querySelector(".val-zeta");
-  const valWn = root.querySelector(".val-wn");
-
-  function draw() {
-    const Kp = parseFloat(sliderKp.value);
-    const zeta = parseFloat(sliderZeta.value);
-    const wn = parseFloat(sliderWn.value);
-
-    valKp.textContent = Kp.toFixed(1);
-    valZeta.textContent = zeta.toFixed(2);
-    valWn.textContent = wn.toFixed(1);
-
-    const w = canvas.width;
-    const h = canvas.height;
-    ctx.clearRect(0, 0, w, h);
-
-    
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
-    ctx.lineWidth = 1;
-    for (let x = 40; x < w; x += 40) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, h);
-      ctx.stroke();
-    }
-    for (let y = 20; y < h; y += 30) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(w, y);
-      ctx.stroke();
-    }
-
-    
-    const setpointY = h * 0.35;
-    ctx.strokeStyle = "#a855f7";
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    ctx.moveTo(0, setpointY);
-    ctx.lineTo(w, setpointY);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    
-    ctx.strokeStyle = "#00f0ff";
-    ctx.lineWidth = 2.5;
-    ctx.shadowColor = "#00f0ff";
-    ctx.shadowBlur = 8;
-    ctx.beginPath();
-
-    const maxT = 6.0;
-    const baseY = h * 0.85;
-    const scaleY = (baseY - setpointY);
-
-    for (let px = 0; px < w; px++) {
-      const t = (px / w) * maxT;
-      let y = 0;
-      if (zeta < 1.0) {
-        const wd = wn * Math.sqrt(1 - zeta * zeta);
-        const env = Math.exp(-zeta * wn * t);
-        y = 1 - env * (Math.cos(wd * t) + (zeta / Math.sqrt(1 - zeta * zeta)) * Math.sin(wd * t));
-      } else {
-        
-        y = 1 - Math.exp(-wn * t) * (1 + wn * t);
-      }
-
-      const py = baseY - (y * scaleY * (Kp / 2.5));
-      if (px === 0) ctx.moveTo(px, py);
-      else ctx.lineTo(px, py);
-    }
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-  }
-
-  sliderKp.addEventListener("input", draw);
-  sliderZeta.addEventListener("input", draw);
-  sliderWn.addEventListener("input", draw);
-  draw();
-})();
-</script>
 
 <h2 id="7-secret-text">7. Secret Text</h2>
 <p>Hide spoilers, puzzle solutions, or Easter eggs with the <code>secret</code> shortcode:</p>
@@ -997,7 +734,68 @@ mQGNBGXx... [Your ASCII Armored Key Here] ...
 </span></span></code></pre></div><h2 id="12-direct-file-based-code-inclusion">12. Direct File-Based Code Inclusion</h2>
 <p>Instead of copy-pasting code, reference source files directly from your repository:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">{{&lt; code-file source=&#34;scripts/train.py&#34; lang=&#34;python&#34; title=&#34;Training Loop&#34; &gt;}}
-</span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
+</span></span></code></pre></div><h2 id="13-interactive-3d-flashcards">13. Interactive 3D Flashcards</h2>
+<p>Engage readers with full-width flip cards that reveal answers or detailed explanations with a 3D turning animation:</p>
+<div class="flashcard-container" tabindex="0" role="button" aria-label="Interactive Flashcard. Click or tap to flip">
+  <div class="flashcard-flipper">
+    
+    <div class="flashcard-face flashcard-front">
+      <div class="flashcard-header">
+        <span class="flashcard-badge">
+          <span>💡</span>
+          <span>Flashcard</span>
+        </span>
+        <span class="flashcard-flip-indicator">
+          <span class="flip-icon">↻</span>
+          <span class="flip-text">Click or tap to flip</span>
+        </span>
+      </div>
+      <div class="flashcard-body">
+        What is the Nyquist-Shannon Sampling Theorem?
+      </div>
+    </div>
+
+    
+    <div class="flashcard-face flashcard-back">
+      <div class="flashcard-header">
+        <span class="flashcard-badge flashcard-badge-back">
+          <span>✓</span>
+          <span>Answer / Details</span>
+        </span>
+        <span class="flashcard-flip-indicator">
+          <span class="flip-icon">↻</span>
+          <span class="flip-text">Flip back</span>
+        </span>
+      </div>
+      <div class="flashcard-body">
+        A continuous signal can be completely reconstructed if it is sampled at a frequency strictly greater than twice the highest frequency present: $f_s &gt; 2 B$.
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 id="14-collapsible-expandable-bars-accordions">14. Collapsible Expandable Bars (Accordions)</h2>
+<p>Keep articles clean and hide technical proofs, derivation details, or spoilers under horizontal clickable bars that expand down:</p>
+<details class="smidr-collapse">
+  <summary class="smidr-collapse-summary">
+    <span class="smidr-collapse-title-wrap">
+      <span class="smidr-collapse-icon">▸</span>
+      <span class="smidr-collapse-title">Click to expand mathematical derivation</span>
+    </span>
+    <span class="smidr-collapse-chevron" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </span>
+  </summary>
+  <div class="smidr-collapse-content">
+    Starting from the Euler-Lagrange equations of motion:
+$$\frac{d}{dt}\left(\frac{\partial \mathcal{L}}{\partial \dot{q}_i}\right) - \frac{\partial \mathcal{L}}{\partial q_i} = Q_i$$
+We can directly compute the generalized torque required at each joint.
+  </div>
+</details>
+
+<div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
 <li id="fn:1">
@@ -1038,6 +836,7 @@ mQGNBGXx... [Your ASCII Armored Key Here] ...
   </div>
 </div>
 
+
 <div class="callout callout-robotics" role="region" aria-label="Robotics Hardware Note">
   <div class="callout-icon" aria-hidden="true">🤖</div>
   <div class="callout-body">
@@ -1047,6 +846,7 @@ mQGNBGXx... [Your ASCII Armored Key Here] ...
     </div>
   </div>
 </div>
+
 
 <h2 id="5-client-side-wasm-code-runners">5. Client-Side WASM Code Runners</h2>
 <p>Want your readers to experiment with code right on the page? Embed a Pyodide WebAssembly runner:</p>
@@ -1100,131 +900,42 @@ print(&#34;Computed squares:&#34;, squares)</textarea>
   </div>
 </div>
 
+
 <h2 id="6-embedded-parameter-sliders">6. Embedded Parameter Sliders</h2>
 <p>Allow readers to interact with real-time dynamic visualizations:</p>
-<div class="interactive-widget-box" id="widget-1792234620034741993">
+<div class="interactive-widget-box" id="widget-1792235642879374110">
   <div class="widget-title">Interactive System Response Tuner</div>
   <div class="widget-desc">Drag sliders to modify system parameters in real time.</div>
 
   <div class="widget-controls">
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Proportional Gain ($K_p$):</span>
+        <span>Proportional Gain (<em>K<sub>p</sub></em>):</span>
         <strong class="val-kp">2.5</strong>
       </div>
-      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5">
+      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5" aria-label="Proportional Gain">
     </div>
 
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Damping Ratio ($\zeta$):</span>
+        <span>Damping Ratio (<em>&zeta;</em>):</span>
         <strong class="val-zeta">0.45</strong>
       </div>
-      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45">
+      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45" aria-label="Damping Ratio">
     </div>
 
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Natural Frequency ($\omega_n$):</span>
+        <span>Natural Frequency (<em>&omega;<sub>n</sub></em>):</span>
         <strong class="val-wn">3.0</strong>
       </div>
-      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0">
+      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0" aria-label="Natural Frequency">
     </div>
   </div>
 
   <canvas class="widget-display-canvas" width="600" height="180"></canvas>
 </div>
 
-<script>
-(function() {
-  const root = document.getElementById("widget-1792234620034741993");
-  if (!root) return;
-
-  const canvas = root.querySelector(".widget-display-canvas");
-  const ctx = canvas.getContext("2d");
-  const sliderKp = root.querySelector(".slider-kp");
-  const sliderZeta = root.querySelector(".slider-zeta");
-  const sliderWn = root.querySelector(".slider-wn");
-  const valKp = root.querySelector(".val-kp");
-  const valZeta = root.querySelector(".val-zeta");
-  const valWn = root.querySelector(".val-wn");
-
-  function draw() {
-    const Kp = parseFloat(sliderKp.value);
-    const zeta = parseFloat(sliderZeta.value);
-    const wn = parseFloat(sliderWn.value);
-
-    valKp.textContent = Kp.toFixed(1);
-    valZeta.textContent = zeta.toFixed(2);
-    valWn.textContent = wn.toFixed(1);
-
-    const w = canvas.width;
-    const h = canvas.height;
-    ctx.clearRect(0, 0, w, h);
-
-    
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
-    ctx.lineWidth = 1;
-    for (let x = 40; x < w; x += 40) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, h);
-      ctx.stroke();
-    }
-    for (let y = 20; y < h; y += 30) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(w, y);
-      ctx.stroke();
-    }
-
-    
-    const setpointY = h * 0.35;
-    ctx.strokeStyle = "#a855f7";
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    ctx.moveTo(0, setpointY);
-    ctx.lineTo(w, setpointY);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    
-    ctx.strokeStyle = "#00f0ff";
-    ctx.lineWidth = 2.5;
-    ctx.shadowColor = "#00f0ff";
-    ctx.shadowBlur = 8;
-    ctx.beginPath();
-
-    const maxT = 6.0;
-    const baseY = h * 0.85;
-    const scaleY = (baseY - setpointY);
-
-    for (let px = 0; px < w; px++) {
-      const t = (px / w) * maxT;
-      let y = 0;
-      if (zeta < 1.0) {
-        const wd = wn * Math.sqrt(1 - zeta * zeta);
-        const env = Math.exp(-zeta * wn * t);
-        y = 1 - env * (Math.cos(wd * t) + (zeta / Math.sqrt(1 - zeta * zeta)) * Math.sin(wd * t));
-      } else {
-        
-        y = 1 - Math.exp(-wn * t) * (1 + wn * t);
-      }
-
-      const py = baseY - (y * scaleY * (Kp / 2.5));
-      if (px === 0) ctx.moveTo(px, py);
-      else ctx.lineTo(px, py);
-    }
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-  }
-
-  sliderKp.addEventListener("input", draw);
-  sliderZeta.addEventListener("input", draw);
-  sliderWn.addEventListener("input", draw);
-  draw();
-})();
-</script>
 
 <h2 id="7-secret-text">7. Secret Text</h2>
 <p>Hide spoilers, puzzle solutions, or Easter eggs with the <code>secret</code> shortcode:</p>
@@ -1318,7 +1029,68 @@ mQGNBGXx... [Your ASCII Armored Key Here] ...
 </span></span></code></pre></div><h2 id="12-direct-file-based-code-inclusion">12. Direct File-Based Code Inclusion</h2>
 <p>Instead of copy-pasting code, reference source files directly from your repository:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">{{&lt; code-file source=&#34;scripts/train.py&#34; lang=&#34;python&#34; title=&#34;Training Loop&#34; &gt;}}
-</span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
+</span></span></code></pre></div><h2 id="13-interactive-3d-flashcards">13. Interactive 3D Flashcards</h2>
+<p>Engage readers with full-width flip cards that reveal answers or detailed explanations with a 3D turning animation:</p>
+<div class="flashcard-container" tabindex="0" role="button" aria-label="Interactive Flashcard. Click or tap to flip">
+  <div class="flashcard-flipper">
+    
+    <div class="flashcard-face flashcard-front">
+      <div class="flashcard-header">
+        <span class="flashcard-badge">
+          <span>💡</span>
+          <span>Flashcard</span>
+        </span>
+        <span class="flashcard-flip-indicator">
+          <span class="flip-icon">↻</span>
+          <span class="flip-text">Click or tap to flip</span>
+        </span>
+      </div>
+      <div class="flashcard-body">
+        What is the Nyquist-Shannon Sampling Theorem?
+      </div>
+    </div>
+
+    
+    <div class="flashcard-face flashcard-back">
+      <div class="flashcard-header">
+        <span class="flashcard-badge flashcard-badge-back">
+          <span>✓</span>
+          <span>Answer / Details</span>
+        </span>
+        <span class="flashcard-flip-indicator">
+          <span class="flip-icon">↻</span>
+          <span class="flip-text">Flip back</span>
+        </span>
+      </div>
+      <div class="flashcard-body">
+        A continuous signal can be completely reconstructed if it is sampled at a frequency strictly greater than twice the highest frequency present: $f_s &gt; 2 B$.
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 id="14-collapsible-expandable-bars-accordions">14. Collapsible Expandable Bars (Accordions)</h2>
+<p>Keep articles clean and hide technical proofs, derivation details, or spoilers under horizontal clickable bars that expand down:</p>
+<details class="smidr-collapse">
+  <summary class="smidr-collapse-summary">
+    <span class="smidr-collapse-title-wrap">
+      <span class="smidr-collapse-icon">▸</span>
+      <span class="smidr-collapse-title">Click to expand mathematical derivation</span>
+    </span>
+    <span class="smidr-collapse-chevron" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </span>
+  </summary>
+  <div class="smidr-collapse-content">
+    Starting from the Euler-Lagrange equations of motion:
+$$\frac{d}{dt}\left(\frac{\partial \mathcal{L}}{\partial \dot{q}_i}\right) - \frac{\partial \mathcal{L}}{\partial q_i} = Q_i$$
+We can directly compute the generalized torque required at each joint.
+  </div>
+</details>
+
+<div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
 <li id="fn:1">
@@ -1339,6 +1111,7 @@ All Python scripts run in an isolated client-side WebAssembly sandbox. Infinite 
   </div>
 </div>
 
+
 <h2 id="live-python-sandbox-pyodide-wasm">Live Python Sandbox (Pyodide WASM)</h2>
 <p>Try running or editing the neural forward-pass below. When you click <strong>Run (WASM)</strong>, the browser lazily loads Pyodide WebAssembly and calculates the activation values on your device:</p>
 <div class="code-runner-box" data-lang="python">
@@ -1402,6 +1175,7 @@ print(f&#34;Neuron Output: {activation:.4f}&#34;)</textarea>
   </div>
 </div>
 
+
 <h2 id="live-javascript-evaluation-playground">Live JavaScript Evaluation Playground</h2>
 <p>For fast vector computations, readers can also use the lightweight in-browser JS evaluation sandbox:</p>
 <div class="code-runner-box" data-lang="js">
@@ -1453,6 +1227,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
     <pre class="runner-stderr"></pre>
   </div>
 </div>
+
 
 <h2 id="digital-garden-connection">Digital Garden Connection</h2>
 <p>Notice how this post links directly with our previous work on <a href="https://jokobus.github.io/smidr/smidr/posts/first-robotics-control/">Autonomous Quadrotor Trajectory Optimization with LQR</a>. The bidirectional link detector below discovers and displays this relationship automatically!</p>
@@ -1469,6 +1244,7 @@ All Python scripts run in an isolated client-side WebAssembly sandbox. Infinite 
   </div>
 </div>
 
+
 <h2 id="live-python-sandbox-pyodide-wasm">Live Python Sandbox (Pyodide WASM)</h2>
 <p>Try running or editing the neural forward-pass below. When you click <strong>Run (WASM)</strong>, the browser lazily loads Pyodide WebAssembly and calculates the activation values on your device:</p>
 <div class="code-runner-box" data-lang="python">
@@ -1532,6 +1308,7 @@ print(f&#34;Neuron Output: {activation:.4f}&#34;)</textarea>
   </div>
 </div>
 
+
 <h2 id="live-javascript-evaluation-playground">Live JavaScript Evaluation Playground</h2>
 <p>For fast vector computations, readers can also use the lightweight in-browser JS evaluation sandbox:</p>
 <div class="code-runner-box" data-lang="js">
@@ -1583,6 +1360,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
     <pre class="runner-stderr"></pre>
   </div>
 </div>
+
 
 <h2 id="digital-garden-connection">Digital Garden Connection</h2>
 <p>Notice how this post links directly with our previous work on <a href="https://jokobus.github.io/smidr/smidr/posts/first-robotics-control/">Autonomous Quadrotor Trajectory Optimization with LQR</a>. The bidirectional link detector below discovers and displays this relationship automatically!</p>
@@ -1612,9 +1390,10 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
   </div>
 </div>
 
+
 <h2 id="control-architecture-vector-tikz-diagram">Control Architecture (Vector TikZ Diagram)</h2>
 <p>Below is the closed-loop feedback architecture rendered in vectorized SVG directly in your browser using <strong>TikZ WebAssembly</strong>:</p>
-<figure class="tikz-container" id="tikz-1792234620030653009">
+<figure class="tikz-container" id="tikz-1792235642874423292">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -1638,129 +1417,39 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <h2 id="interactive-control-tuner">Interactive Control Tuner</h2>
 <p>You can adjust the damping ratio $\zeta$ and proportional gain $K_p$ in the live system simulator below to observe the pole placement and step response settling time:</p>
-<div class="interactive-widget-box" id="widget-1792234620030675511">
+<div class="interactive-widget-box" id="widget-1792235642874450032">
   <div class="widget-title">Second-Order Closed-Loop Step Response</div>
   <div class="widget-desc">Drag the sliders below to witness closed-loop damping and transient oscillations in real time.</div>
 
   <div class="widget-controls">
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Proportional Gain ($K_p$):</span>
+        <span>Proportional Gain (<em>K<sub>p</sub></em>):</span>
         <strong class="val-kp">2.5</strong>
       </div>
-      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5">
+      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5" aria-label="Proportional Gain">
     </div>
 
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Damping Ratio ($\zeta$):</span>
+        <span>Damping Ratio (<em>&zeta;</em>):</span>
         <strong class="val-zeta">0.45</strong>
       </div>
-      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45">
+      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45" aria-label="Damping Ratio">
     </div>
 
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Natural Frequency ($\omega_n$):</span>
+        <span>Natural Frequency (<em>&omega;<sub>n</sub></em>):</span>
         <strong class="val-wn">3.0</strong>
       </div>
-      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0">
+      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0" aria-label="Natural Frequency">
     </div>
   </div>
 
   <canvas class="widget-display-canvas" width="600" height="180"></canvas>
 </div>
 
-<script>
-(function() {
-  const root = document.getElementById("widget-1792234620030675511");
-  if (!root) return;
-
-  const canvas = root.querySelector(".widget-display-canvas");
-  const ctx = canvas.getContext("2d");
-  const sliderKp = root.querySelector(".slider-kp");
-  const sliderZeta = root.querySelector(".slider-zeta");
-  const sliderWn = root.querySelector(".slider-wn");
-  const valKp = root.querySelector(".val-kp");
-  const valZeta = root.querySelector(".val-zeta");
-  const valWn = root.querySelector(".val-wn");
-
-  function draw() {
-    const Kp = parseFloat(sliderKp.value);
-    const zeta = parseFloat(sliderZeta.value);
-    const wn = parseFloat(sliderWn.value);
-
-    valKp.textContent = Kp.toFixed(1);
-    valZeta.textContent = zeta.toFixed(2);
-    valWn.textContent = wn.toFixed(1);
-
-    const w = canvas.width;
-    const h = canvas.height;
-    ctx.clearRect(0, 0, w, h);
-
-    
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
-    ctx.lineWidth = 1;
-    for (let x = 40; x < w; x += 40) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, h);
-      ctx.stroke();
-    }
-    for (let y = 20; y < h; y += 30) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(w, y);
-      ctx.stroke();
-    }
-
-    
-    const setpointY = h * 0.35;
-    ctx.strokeStyle = "#a855f7";
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    ctx.moveTo(0, setpointY);
-    ctx.lineTo(w, setpointY);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    
-    ctx.strokeStyle = "#00f0ff";
-    ctx.lineWidth = 2.5;
-    ctx.shadowColor = "#00f0ff";
-    ctx.shadowBlur = 8;
-    ctx.beginPath();
-
-    const maxT = 6.0;
-    const baseY = h * 0.85;
-    const scaleY = (baseY - setpointY);
-
-    for (let px = 0; px < w; px++) {
-      const t = (px / w) * maxT;
-      let y = 0;
-      if (zeta < 1.0) {
-        const wd = wn * Math.sqrt(1 - zeta * zeta);
-        const env = Math.exp(-zeta * wn * t);
-        y = 1 - env * (Math.cos(wd * t) + (zeta / Math.sqrt(1 - zeta * zeta)) * Math.sin(wd * t));
-      } else {
-        
-        y = 1 - Math.exp(-wn * t) * (1 + wn * t);
-      }
-
-      const py = baseY - (y * scaleY * (Kp / 2.5));
-      if (px === 0) ctx.moveTo(px, py);
-      else ctx.lineTo(px, py);
-    }
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-  }
-
-  sliderKp.addEventListener("input", draw);
-  sliderZeta.addEventListener("input", draw);
-  sliderWn.addEventListener("input", draw);
-  draw();
-})();
-</script>
 
 <h2 id="secret-telemetry-flag">Secret Telemetry Flag</h2>
 <p>Here is an encrypted debug marker embedded in this dispatch:
@@ -1791,7 +1480,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Optimal LQR Gain Shape:&#34;</span><span class="p">,</span> <span class="n">K</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </span></span></code></pre></div><p>In our companion article, we expand on <a href="https://jokobus.github.io/smidr/smidr/posts/deep-learning-wasm-runners/">WASM Client-side Execution</a> to evaluate neural network controllers directly in the browser!</p>
 <h2 id="references--bibliography">References &amp; Bibliography</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792234620030731185" aria-label="References &amp; Citations">
+<section class="smidr-bibliography-section" id="bib-sec-1792235642874480529" aria-label="References &amp; Citations">
   <h2 class="bib-section-title">
     <span>📚</span> <span>References &amp; Citations</span>
   </h2>
@@ -1858,9 +1547,10 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
   </div>
 </div>
 
+
 <h2 id="control-architecture-vector-tikz-diagram">Control Architecture (Vector TikZ Diagram)</h2>
 <p>Below is the closed-loop feedback architecture rendered in vectorized SVG directly in your browser using <strong>TikZ WebAssembly</strong>:</p>
-<figure class="tikz-container" id="tikz-1792234620030653009">
+<figure class="tikz-container" id="tikz-1792235642874423292">
   <div class="tikz-wrapper">
     <script type="text/tikz">
 
@@ -1884,129 +1574,39 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 
 <h2 id="interactive-control-tuner">Interactive Control Tuner</h2>
 <p>You can adjust the damping ratio $\zeta$ and proportional gain $K_p$ in the live system simulator below to observe the pole placement and step response settling time:</p>
-<div class="interactive-widget-box" id="widget-1792234620030675511">
+<div class="interactive-widget-box" id="widget-1792235642874450032">
   <div class="widget-title">Second-Order Closed-Loop Step Response</div>
   <div class="widget-desc">Drag the sliders below to witness closed-loop damping and transient oscillations in real time.</div>
 
   <div class="widget-controls">
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Proportional Gain ($K_p$):</span>
+        <span>Proportional Gain (<em>K<sub>p</sub></em>):</span>
         <strong class="val-kp">2.5</strong>
       </div>
-      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5">
+      <input type="range" class="widget-slider slider-kp" min="0.5" max="10.0" step="0.1" value="2.5" aria-label="Proportional Gain">
     </div>
 
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Damping Ratio ($\zeta$):</span>
+        <span>Damping Ratio (<em>&zeta;</em>):</span>
         <strong class="val-zeta">0.45</strong>
       </div>
-      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45">
+      <input type="range" class="widget-slider slider-zeta" min="0.05" max="2.0" step="0.05" value="0.45" aria-label="Damping Ratio">
     </div>
 
     <div class="widget-control-group">
       <div class="widget-label-row">
-        <span>Natural Frequency ($\omega_n$):</span>
+        <span>Natural Frequency (<em>&omega;<sub>n</sub></em>):</span>
         <strong class="val-wn">3.0</strong>
       </div>
-      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0">
+      <input type="range" class="widget-slider slider-wn" min="1.0" max="8.0" step="0.2" value="3.0" aria-label="Natural Frequency">
     </div>
   </div>
 
   <canvas class="widget-display-canvas" width="600" height="180"></canvas>
 </div>
 
-<script>
-(function() {
-  const root = document.getElementById("widget-1792234620030675511");
-  if (!root) return;
-
-  const canvas = root.querySelector(".widget-display-canvas");
-  const ctx = canvas.getContext("2d");
-  const sliderKp = root.querySelector(".slider-kp");
-  const sliderZeta = root.querySelector(".slider-zeta");
-  const sliderWn = root.querySelector(".slider-wn");
-  const valKp = root.querySelector(".val-kp");
-  const valZeta = root.querySelector(".val-zeta");
-  const valWn = root.querySelector(".val-wn");
-
-  function draw() {
-    const Kp = parseFloat(sliderKp.value);
-    const zeta = parseFloat(sliderZeta.value);
-    const wn = parseFloat(sliderWn.value);
-
-    valKp.textContent = Kp.toFixed(1);
-    valZeta.textContent = zeta.toFixed(2);
-    valWn.textContent = wn.toFixed(1);
-
-    const w = canvas.width;
-    const h = canvas.height;
-    ctx.clearRect(0, 0, w, h);
-
-    
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
-    ctx.lineWidth = 1;
-    for (let x = 40; x < w; x += 40) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, h);
-      ctx.stroke();
-    }
-    for (let y = 20; y < h; y += 30) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(w, y);
-      ctx.stroke();
-    }
-
-    
-    const setpointY = h * 0.35;
-    ctx.strokeStyle = "#a855f7";
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    ctx.moveTo(0, setpointY);
-    ctx.lineTo(w, setpointY);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    
-    ctx.strokeStyle = "#00f0ff";
-    ctx.lineWidth = 2.5;
-    ctx.shadowColor = "#00f0ff";
-    ctx.shadowBlur = 8;
-    ctx.beginPath();
-
-    const maxT = 6.0;
-    const baseY = h * 0.85;
-    const scaleY = (baseY - setpointY);
-
-    for (let px = 0; px < w; px++) {
-      const t = (px / w) * maxT;
-      let y = 0;
-      if (zeta < 1.0) {
-        const wd = wn * Math.sqrt(1 - zeta * zeta);
-        const env = Math.exp(-zeta * wn * t);
-        y = 1 - env * (Math.cos(wd * t) + (zeta / Math.sqrt(1 - zeta * zeta)) * Math.sin(wd * t));
-      } else {
-        
-        y = 1 - Math.exp(-wn * t) * (1 + wn * t);
-      }
-
-      const py = baseY - (y * scaleY * (Kp / 2.5));
-      if (px === 0) ctx.moveTo(px, py);
-      else ctx.lineTo(px, py);
-    }
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-  }
-
-  sliderKp.addEventListener("input", draw);
-  sliderZeta.addEventListener("input", draw);
-  sliderWn.addEventListener("input", draw);
-  draw();
-})();
-</script>
 
 <h2 id="secret-telemetry-flag">Secret Telemetry Flag</h2>
 <p>Here is an encrypted debug marker embedded in this dispatch:
@@ -2037,7 +1637,7 @@ console.log(&#34;Euclidean Norm:&#34;, magnitude.toFixed(3));</textarea>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Optimal LQR Gain Shape:&#34;</span><span class="p">,</span> <span class="n">K</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </span></span></code></pre></div><p>In our companion article, we expand on <a href="https://jokobus.github.io/smidr/smidr/posts/deep-learning-wasm-runners/">WASM Client-side Execution</a> to evaluate neural network controllers directly in the browser!</p>
 <h2 id="references--bibliography">References &amp; Bibliography</h2>
-<section class="smidr-bibliography-section" id="bib-sec-1792234620030731185" aria-label="References &amp; Citations">
+<section class="smidr-bibliography-section" id="bib-sec-1792235642874480529" aria-label="References &amp; Citations">
   <h2 class="bib-section-title">
     <span>📚</span> <span>References &amp; Citations</span>
   </h2>

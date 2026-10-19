@@ -30,6 +30,7 @@ languages:
     params:
       description: "A futuristic robotics, machine learning, and engineering logbook."
       subtitle: "Robotics & Machine Learning"
+      hero_description: "A futuristic robotics, machine learning, and engineering logbook."
     menus:
       main:
         - name: "Home"
@@ -53,6 +54,7 @@ languages:
     params:
       description: "Ein futuristisches Logbuch über Robotik, maschinelles Lernen und Ingenieurwesen."
       subtitle: "Robotik & Maschinelles Lernen"
+      hero_description: "Ein futuristisches Logbuch über Robotik, maschinelles Lernen und Ingenieurwesen."
     menus:
       main:
         - name: "Start"

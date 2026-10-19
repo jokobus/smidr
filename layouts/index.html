@@ -9,15 +9,16 @@
     <h1 style="font-size: 3rem; font-weight: 900; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 0.85rem;">
       <span class="logo-text">{{ .Site.Title }}</span>
     </h1>
-    {{ with .Site.Params.subtitle }}
-    <p class="hero-subtitle" style="font-size: 1.35rem; font-weight: 600; color: var(--color-primary); max-width: 720px; margin: 0 auto 0.75rem; line-height: 1.4; letter-spacing: -0.01em;">
+    {{- $heroSub := .Site.Params.subtitle | default (i18n "hero_subtitle") -}}
+    {{- $showHeroDesc := and .Site.Params.hero_description (ne .Site.Params.hero_description "") (ne .Site.Params.show_hero_description false) -}}
+    {{ with $heroSub }}
+    <p class="hero-subtitle" style="font-size: 1.35rem; font-weight: 600; color: var(--color-primary); max-width: 720px; margin: 0 auto {{ if $showHeroDesc }}0.75rem{{ else }}2rem{{ end }}; line-height: 1.4; letter-spacing: -0.01em;">
       {{ . }}
     </p>
     {{ end }}
-    {{- $heroDesc := .Site.Params.description | default (i18n "hero_description") | default (i18n "hero_subtitle") -}}
-    {{ with $heroDesc }}
+    {{ if $showHeroDesc }}
     <p class="hero-description" style="font-size: 1.15rem; color: var(--color-text-muted); max-width: 680px; margin: 0 auto 2rem; line-height: 1.6;">
-      {{ . }}
+      {{ .Site.Params.hero_description }}
     </p>
     {{ end }}
     <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">

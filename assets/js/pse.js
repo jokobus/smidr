@@ -25,6 +25,20 @@
     let activeCategory = null;
     let currentScale = 1.0;
     let currentModalZ = 1;
+    let currentSearchQuery = '';
+    let isDetailedSearchOpen = false;
+    let detailedFilters = {
+      enMin: null,
+      enMax: null,
+      densityMin: null,
+      densityMax: null,
+      mpMin: null,
+      mpMax: null,
+      bpMin: null,
+      bpMax: null,
+      config: '',
+      ox: ''
+    };
 
     // Elements lookup map by Z
     const elemMap = new Map();
@@ -34,6 +48,20 @@
     const i18n = {
       en: {
         search_placeholder: "Search element (e.g. Fe, Iron, 26)...",
+        detailed_search: "Detailed Search",
+        density_label: "Density",
+        density_unit: "g/cm³",
+        boiling_point: "Boiling Point",
+        melting_point: "Melting Point",
+        electronegativity: "Electronegativity (Pauling)",
+        electron_config: "Electron Configuration",
+        electron_config_placeholder: "e.g. 3d, 4f, [Xe], 6s",
+        oxidation_states: "Oxidation States",
+        oxidation_states_placeholder: "e.g. +2, +3, -1",
+        filter_min: "Min",
+        filter_max: "Max",
+        reset_filters: "Reset Filters",
+        results_count: "elements",
         toggle_f_block: "Lanthanoids & Actinoids",
         toggle_d_block: "Transition Metals (3-12)",
         main_groups_badge: "8 Main Groups",
@@ -77,6 +105,20 @@
       },
       de: {
         search_placeholder: "Element suchen (z.B. Fe, Eisen, 26)...",
+        detailed_search: "Erweiterte Suche",
+        density_label: "Dichte",
+        density_unit: "g/cm³",
+        boiling_point: "Siedepunkt",
+        melting_point: "Schmelzpunkt",
+        electronegativity: "Elektronegativität (Pauling)",
+        electron_config: "Elektronenkonfiguration",
+        electron_config_placeholder: "z.B. 3d, 4f, [Xe], 6s",
+        oxidation_states: "Oxidationsstufen",
+        oxidation_states_placeholder: "z.B. +2, +3, -1",
+        filter_min: "Min",
+        filter_max: "Max",
+        reset_filters: "Filter zurücksetzen",
+        results_count: "Elemente",
         toggle_f_block: "Lanthanoide & Actinoide",
         toggle_d_block: "Nebengruppen (3-12)",
         main_groups_badge: "8 Hauptgruppen",
@@ -234,9 +276,15 @@
       const searchBox = document.createElement('div');
       searchBox.className = 'pse-search-box';
       searchBox.innerHTML = `
-        <span class="pse-search-icon">🔍</span>
-        <input type="text" id="pse-search-input" placeholder="${t.search_placeholder}" autocomplete="off" />
-        <button class="pse-search-clear" id="pse-search-clear" title="Clear">✕</button>
+        <div class="pse-search-input-wrap">
+          <span class="pse-search-icon">🔍</span>
+          <input type="text" id="pse-search-input" placeholder="${t.search_placeholder}" autocomplete="off" value="${currentSearchQuery || ''}" />
+          <button class="pse-search-clear" id="pse-search-clear" title="Clear" style="${currentSearchQuery ? 'display:block;' : ''}">✕</button>
+        </div>
+        <button type="button" class="pse-detailed-search-btn ${isDetailedSearchOpen ? 'active' : ''}" id="pse-btn-detailed-search" title="${t.detailed_search}">
+          <span>⚙️</span>
+          <span>${t.detailed_search}</span>
+        </button>
       `;
 
       controlsLeft.appendChild(searchBox);
@@ -247,7 +295,7 @@
 
       // Transition Metals Toggle (Hauptgruppen collapse)
       const dBlockBtn = document.createElement('button');
-      dBlockBtn.className = `pse-btn ${hideDBlock ? 'active' : ''}`;
+      dBlockBtn.className = `pse-btn ${!hideDBlock ? 'active' : ''}`;
       dBlockBtn.id = 'pse-btn-dblock';
       dBlockBtn.innerHTML = `<span>⊞</span> <span>${t.toggle_d_block}</span>`;
       dBlockBtn.title = hideDBlock ? t.full_table_badge : t.main_groups_badge;
@@ -283,6 +331,61 @@
       toolbar.appendChild(controlsRight);
       container.appendChild(toolbar);
 
+      // 1b. Detailed Search Panel
+      const detailedPanel = document.createElement('div');
+      detailedPanel.className = 'pse-detailed-panel';
+      detailedPanel.id = 'pse-detailed-panel';
+      detailedPanel.style.display = isDetailedSearchOpen ? 'block' : 'none';
+      detailedPanel.innerHTML = `
+        <div class="pse-detailed-grid">
+          <div class="pse-detailed-field">
+            <label>${t.electronegativity}</label>
+            <div class="pse-range-inputs">
+              <input type="number" step="0.1" min="0" max="4.0" id="pse-filter-en-min" placeholder="${t.filter_min} (0.7)" value="${detailedFilters.enMin !== null ? detailedFilters.enMin : ''}" />
+              <span>–</span>
+              <input type="number" step="0.1" min="0" max="4.0" id="pse-filter-en-max" placeholder="${t.filter_max} (4.0)" value="${detailedFilters.enMax !== null ? detailedFilters.enMax : ''}" />
+            </div>
+          </div>
+          <div class="pse-detailed-field">
+            <label>${t.density_label} (${t.density_unit})</label>
+            <div class="pse-range-inputs">
+              <input type="number" step="0.01" min="0" id="pse-filter-density-min" placeholder="${t.filter_min}" value="${detailedFilters.densityMin !== null ? detailedFilters.densityMin : ''}" />
+              <span>–</span>
+              <input type="number" step="0.01" min="0" id="pse-filter-density-max" placeholder="${t.filter_max}" value="${detailedFilters.densityMax !== null ? detailedFilters.densityMax : ''}" />
+            </div>
+          </div>
+          <div class="pse-detailed-field">
+            <label>${t.melting_point} (°C)</label>
+            <div class="pse-range-inputs">
+              <input type="number" step="1" id="pse-filter-mp-min" placeholder="${t.filter_min}" value="${detailedFilters.mpMin !== null ? detailedFilters.mpMin : ''}" />
+              <span>–</span>
+              <input type="number" step="1" id="pse-filter-mp-max" placeholder="${t.filter_max}" value="${detailedFilters.mpMax !== null ? detailedFilters.mpMax : ''}" />
+            </div>
+          </div>
+          <div class="pse-detailed-field">
+            <label>${t.boiling_point} (°C)</label>
+            <div class="pse-range-inputs">
+              <input type="number" step="1" id="pse-filter-bp-min" placeholder="${t.filter_min}" value="${detailedFilters.bpMin !== null ? detailedFilters.bpMin : ''}" />
+              <span>–</span>
+              <input type="number" step="1" id="pse-filter-bp-max" placeholder="${t.filter_max}" value="${detailedFilters.bpMax !== null ? detailedFilters.bpMax : ''}" />
+            </div>
+          </div>
+          <div class="pse-detailed-field">
+            <label>${t.electron_config}</label>
+            <input type="text" id="pse-filter-config" placeholder="${t.electron_config_placeholder}" value="${detailedFilters.config || ''}" />
+          </div>
+          <div class="pse-detailed-field">
+            <label>${t.oxidation_states}</label>
+            <input type="text" id="pse-filter-ox" placeholder="${t.oxidation_states_placeholder}" value="${detailedFilters.ox || ''}" />
+          </div>
+        </div>
+        <div class="pse-detailed-footer">
+          <span class="pse-detailed-count" id="pse-detailed-count"></span>
+          <button type="button" class="pse-btn pse-btn-reset-filters" id="pse-btn-reset-filters">${t.reset_filters}</button>
+        </div>
+      `;
+      container.appendChild(detailedPanel);
+
       // 2. Legend Bar (Categories & State of Matter)
       const legendBar = document.createElement('div');
       legendBar.className = 'pse-legend-bar';
@@ -309,7 +412,9 @@
           } else {
             activeCategory = cat.key;
           }
-          applyCategoryFilter();
+          const allPills = container.querySelectorAll('.pse-legend-pill[data-cat]');
+          allPills.forEach(p => p.classList.toggle('active', p.dataset.cat === activeCategory));
+          applyAllFilters();
         });
         catItems.appendChild(pill);
       });
@@ -418,6 +523,7 @@
       if (!hideDBlock) {
         const laPlaceholder = document.createElement('div');
         laPlaceholder.className = 'pse-f-placeholder';
+        laPlaceholder.dataset.series = 'lanthanide';
         laPlaceholder.style.gridRow = '7'; // Period 6
         laPlaceholder.style.gridColumn = '4'; // Group 3
         laPlaceholder.innerHTML = `
@@ -437,6 +543,7 @@
 
         const acPlaceholder = document.createElement('div');
         acPlaceholder.className = 'pse-f-placeholder';
+        acPlaceholder.dataset.series = 'actinide';
         acPlaceholder.style.gridRow = '8'; // Period 7
         acPlaceholder.style.gridColumn = '4'; // Group 3
         acPlaceholder.innerHTML = `
@@ -606,12 +713,220 @@
 
       const dBtn = document.getElementById('pse-btn-dblock');
       if (dBtn) {
-        dBtn.classList.toggle('active', hideDBlock);
+        dBtn.classList.toggle('active', !hideDBlock);
       }
 
       const fBtn = document.getElementById('pse-btn-fblock');
       if (fBtn) {
         fBtn.classList.toggle('active', !hideFBlock);
+      }
+
+      applyAllFilters();
+    }
+
+    // Helper functions for detailed filtering
+    function normalizeConfig(str) {
+      if (!str) return '';
+      const superscripts = {
+        '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5',
+        '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁰': '0'
+      };
+      return str.replace(/[¹²³⁴⁵⁶⁷⁸⁹⁰]/g, ch => superscripts[ch] || ch).toLowerCase().replace(/\s+/g, '');
+    }
+
+    function parseDensity(densityStr) {
+      if (!densityStr || densityStr === '-') return null;
+      const num = parseFloat(densityStr);
+      if (isNaN(num)) return null;
+      if (densityStr.includes('g/L')) {
+        return num / 1000;
+      }
+      return num;
+    }
+
+    function matchOxidationState(oxStr, query) {
+      if (!oxStr || oxStr === '-' || !query) return false;
+      const q = query.trim();
+      const cleanQ = q.replace(/^\+/, '');
+      const isNeg = q.startsWith('-');
+      const parts = oxStr.split(',').map(s => s.trim());
+      return parts.some(part => {
+        if (isNeg) {
+          return part === q;
+        }
+        const cleanPart = part.replace(/^\+/, '');
+        return cleanPart === cleanQ || part === q;
+      });
+    }
+
+    // Unified Filtering (Search + Detailed Filters + Categories)
+    function applyAllFilters() {
+      const q = currentSearchQuery.trim().toLowerCase();
+      const hasEn = detailedFilters.enMin !== null || detailedFilters.enMax !== null;
+      const hasDensity = detailedFilters.densityMin !== null || detailedFilters.densityMax !== null;
+      const hasMp = detailedFilters.mpMin !== null || detailedFilters.mpMax !== null;
+      const hasBp = detailedFilters.bpMin !== null || detailedFilters.bpMax !== null;
+      const hasConfig = Boolean(detailedFilters.config && detailedFilters.config.trim());
+      const hasOx = Boolean(detailedFilters.ox && detailedFilters.ox.trim());
+      const hasCategory = Boolean(activeCategory);
+
+      const isFilterActive = Boolean(q || hasEn || hasDensity || hasMp || hasBp || hasConfig || hasOx || hasCategory);
+
+      const normConfigQuery = hasConfig ? normalizeConfig(detailedFilters.config) : '';
+      const oxQuery = hasOx ? detailedFilters.ox.trim() : '';
+
+      const cells = container.querySelectorAll('.pse-cell');
+      const laPlaceholder = container.querySelector('.pse-f-placeholder[data-series="lanthanide"]');
+      const acPlaceholder = container.querySelector('.pse-f-placeholder[data-series="actinide"]');
+
+      if (!isFilterActive) {
+        cells.forEach(c => c.classList.remove('dimmed', 'matched'));
+        if (laPlaceholder) laPlaceholder.classList.remove('dimmed', 'matched');
+        if (acPlaceholder) acPlaceholder.classList.remove('dimmed', 'matched');
+
+        const countEl = document.getElementById('pse-detailed-count');
+        if (countEl) countEl.textContent = '';
+        return;
+      }
+
+      let matchCount = 0;
+      let hasLanthanideMatch = false;
+      let hasActinideMatch = false;
+
+      data.forEach(el => {
+        let isMatch = true;
+
+        // 1. Text Search Query
+        if (q) {
+          const zStr = String(el.z);
+          const sym = el.s.toLowerCase();
+          const nameEn = el.n_en.toLowerCase();
+          const nameDe = el.n_de.toLowerCase();
+          const matchesText = (
+            zStr === q ||
+            sym === q ||
+            sym.startsWith(q) ||
+            nameEn.includes(q) ||
+            nameDe.includes(q)
+          );
+          if (!matchesText) isMatch = false;
+        }
+
+        // 2. Category
+        if (isMatch && hasCategory) {
+          if (el.cat !== activeCategory) isMatch = false;
+        }
+
+        // 3. Electronegativity (Pauling)
+        if (isMatch && hasEn) {
+          if (el.en === '-' || !el.en) {
+            isMatch = false;
+          } else {
+            const enVal = parseFloat(el.en);
+            if (isNaN(enVal)) {
+              isMatch = false;
+            } else {
+              if (detailedFilters.enMin !== null && enVal < detailedFilters.enMin) isMatch = false;
+              if (detailedFilters.enMax !== null && enVal > detailedFilters.enMax) isMatch = false;
+            }
+          }
+        }
+
+        // 4. Density
+        if (isMatch && hasDensity) {
+          const dVal = parseDensity(el.density);
+          if (dVal === null) {
+            isMatch = false;
+          } else {
+            if (detailedFilters.densityMin !== null && dVal < detailedFilters.densityMin) isMatch = false;
+            if (detailedFilters.densityMax !== null && dVal > detailedFilters.densityMax) isMatch = false;
+          }
+        }
+
+        // 5. Melting Point
+        if (isMatch && hasMp) {
+          if (el.mp === '-' || !el.mp) {
+            isMatch = false;
+          } else {
+            const mpVal = parseFloat(el.mp);
+            if (isNaN(mpVal)) {
+              isMatch = false;
+            } else {
+              if (detailedFilters.mpMin !== null && mpVal < detailedFilters.mpMin) isMatch = false;
+              if (detailedFilters.mpMax !== null && mpVal > detailedFilters.mpMax) isMatch = false;
+            }
+          }
+        }
+
+        // 6. Boiling Point
+        if (isMatch && hasBp) {
+          if (el.bp === '-' || !el.bp) {
+            isMatch = false;
+          } else {
+            const bpVal = parseFloat(el.bp);
+            if (isNaN(bpVal)) {
+              isMatch = false;
+            } else {
+              if (detailedFilters.bpMin !== null && bpVal < detailedFilters.bpMin) isMatch = false;
+              if (detailedFilters.bpMax !== null && bpVal > detailedFilters.bpMax) isMatch = false;
+            }
+          }
+        }
+
+        // 7. Electron Configuration
+        if (isMatch && hasConfig) {
+          const normElConfig = normalizeConfig(el.config);
+          if (!normElConfig.includes(normConfigQuery)) isMatch = false;
+        }
+
+        // 8. Oxidation States
+        if (isMatch && hasOx) {
+          if (!matchOxidationState(el.ox, oxQuery)) isMatch = false;
+        }
+
+        // Apply classes to corresponding cell
+        const cell = container.querySelector(`.pse-cell[data-z="${el.z}"]`);
+        if (cell) {
+          if (isMatch) {
+            cell.classList.remove('dimmed');
+            cell.classList.add('matched');
+            matchCount++;
+            if (el.cat === 'lanthanide') hasLanthanideMatch = true;
+            if (el.cat === 'actinide') hasActinideMatch = true;
+          } else {
+            cell.classList.add('dimmed');
+            cell.classList.remove('matched');
+          }
+        }
+      });
+
+      // Update Placeholders (La-Lu & Ac-Lr):
+      // Only highlight if contains a currently hidden match for the search!
+      if (laPlaceholder) {
+        if (hasLanthanideMatch && hideFBlock) {
+          laPlaceholder.classList.add('matched');
+          laPlaceholder.classList.remove('dimmed');
+        } else {
+          laPlaceholder.classList.remove('matched');
+          laPlaceholder.classList.add('dimmed');
+        }
+      }
+
+      if (acPlaceholder) {
+        if (hasActinideMatch && hideFBlock) {
+          acPlaceholder.classList.add('matched');
+          acPlaceholder.classList.remove('dimmed');
+        } else {
+          acPlaceholder.classList.remove('matched');
+          acPlaceholder.classList.add('dimmed');
+        }
+      }
+
+      // Result count display
+      const countEl = document.getElementById('pse-detailed-count');
+      if (countEl) {
+        const t = i18n[currentLang];
+        countEl.textContent = `${matchCount} / 118 ${t.results_count}`;
       }
     }
 
@@ -645,20 +960,98 @@
         });
       }
 
+      // Detailed Search Toggle Button
+      const detailedBtn = document.getElementById('pse-btn-detailed-search');
+      const detailedPanel = document.getElementById('pse-detailed-panel');
+      if (detailedBtn && detailedPanel) {
+        detailedBtn.addEventListener('click', () => {
+          isDetailedSearchOpen = !isDetailedSearchOpen;
+          detailedPanel.style.display = isDetailedSearchOpen ? 'block' : 'none';
+          detailedBtn.classList.toggle('active', isDetailedSearchOpen);
+        });
+      }
+
+      // Detailed Search Input Handlers
+      const parseNum = (val) => {
+        const trimmed = (val || '').trim();
+        if (!trimmed) return null;
+        const n = parseFloat(trimmed);
+        return isNaN(n) ? null : n;
+      };
+
+      const enMinIn = document.getElementById('pse-filter-en-min');
+      const enMaxIn = document.getElementById('pse-filter-en-max');
+      const dMinIn = document.getElementById('pse-filter-density-min');
+      const dMaxIn = document.getElementById('pse-filter-density-max');
+      const mpMinIn = document.getElementById('pse-filter-mp-min');
+      const mpMaxIn = document.getElementById('pse-filter-mp-max');
+      const bpMinIn = document.getElementById('pse-filter-bp-min');
+      const bpMaxIn = document.getElementById('pse-filter-bp-max');
+      const configIn = document.getElementById('pse-filter-config');
+      const oxIn = document.getElementById('pse-filter-ox');
+      const resetBtn = document.getElementById('pse-btn-reset-filters');
+
+      const onDetailedChange = () => {
+        if (enMinIn) detailedFilters.enMin = parseNum(enMinIn.value);
+        if (enMaxIn) detailedFilters.enMax = parseNum(enMaxIn.value);
+        if (dMinIn) detailedFilters.densityMin = parseNum(dMinIn.value);
+        if (dMaxIn) detailedFilters.densityMax = parseNum(dMaxIn.value);
+        if (mpMinIn) detailedFilters.mpMin = parseNum(mpMinIn.value);
+        if (mpMaxIn) detailedFilters.mpMax = parseNum(mpMaxIn.value);
+        if (bpMinIn) detailedFilters.bpMin = parseNum(bpMinIn.value);
+        if (bpMaxIn) detailedFilters.bpMax = parseNum(bpMaxIn.value);
+        if (configIn) detailedFilters.config = configIn.value;
+        if (oxIn) detailedFilters.ox = oxIn.value;
+        applyAllFilters();
+      };
+
+      [enMinIn, enMaxIn, dMinIn, dMaxIn, mpMinIn, mpMaxIn, bpMinIn, bpMaxIn, configIn, oxIn].forEach(input => {
+        if (input) input.addEventListener('input', onDetailedChange);
+      });
+
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          detailedFilters = {
+            enMin: null,
+            enMax: null,
+            densityMin: null,
+            densityMax: null,
+            mpMin: null,
+            mpMax: null,
+            bpMin: null,
+            bpMax: null,
+            config: '',
+            ox: ''
+          };
+          if (enMinIn) enMinIn.value = '';
+          if (enMaxIn) enMaxIn.value = '';
+          if (dMinIn) dMinIn.value = '';
+          if (dMaxIn) dMaxIn.value = '';
+          if (mpMinIn) mpMinIn.value = '';
+          if (mpMaxIn) mpMaxIn.value = '';
+          if (bpMinIn) bpMinIn.value = '';
+          if (bpMaxIn) bpMaxIn.value = '';
+          if (configIn) configIn.value = '';
+          if (oxIn) oxIn.value = '';
+          applyAllFilters();
+        });
+      }
+
       // Search Input
       const searchInput = document.getElementById('pse-search-input');
       const searchClear = document.getElementById('pse-search-clear');
       if (searchInput && searchClear) {
         searchInput.addEventListener('input', (e) => {
-          const val = e.target.value.trim().toLowerCase();
-          searchClear.style.display = val ? 'block' : 'none';
-          applySearchFilter(val);
+          currentSearchQuery = e.target.value.trim().toLowerCase();
+          searchClear.style.display = currentSearchQuery ? 'block' : 'none';
+          applyAllFilters();
         });
 
         searchClear.addEventListener('click', () => {
           searchInput.value = '';
+          currentSearchQuery = '';
           searchClear.style.display = 'none';
-          applySearchFilter('');
+          applyAllFilters();
           searchInput.focus();
         });
       }
@@ -745,63 +1138,6 @@
         } else if (e.key === 'ArrowRight') {
           const newZ = currentModalZ < 118 ? currentModalZ + 1 : 1;
           openSteckbrief(newZ);
-        }
-      });
-    }
-
-    // Search Filtering
-    function applySearchFilter(query) {
-      const cells = container.querySelectorAll('.pse-cell');
-      if (!query) {
-        cells.forEach(c => {
-          c.classList.remove('dimmed', 'matched');
-        });
-        if (activeCategory) applyCategoryFilter();
-        return;
-      }
-
-      cells.forEach(c => {
-        const z = c.dataset.z;
-        const sym = c.dataset.sym;
-        const nameEn = c.dataset.nameEn;
-        const nameDe = c.dataset.nameDe;
-
-        const isMatch = (
-          z === query ||
-          sym === query ||
-          sym.startsWith(query) ||
-          nameEn.includes(query) ||
-          nameDe.includes(query)
-        );
-
-        if (isMatch) {
-          c.classList.remove('dimmed');
-          c.classList.add('matched');
-        } else {
-          c.classList.add('dimmed');
-          c.classList.remove('matched');
-        }
-      });
-    }
-
-    // Category Filter
-    function applyCategoryFilter() {
-      const pills = container.querySelectorAll('.pse-legend-pill[data-cat]');
-      pills.forEach(p => {
-        p.classList.toggle('active', p.dataset.cat === activeCategory);
-      });
-
-      const cells = container.querySelectorAll('.pse-cell');
-      if (!activeCategory) {
-        cells.forEach(c => c.classList.remove('dimmed'));
-        return;
-      }
-
-      cells.forEach(c => {
-        if (c.dataset.cat === activeCategory) {
-          c.classList.remove('dimmed');
-        } else {
-          c.classList.add('dimmed');
         }
       });
     }

@@ -1247,7 +1247,7 @@ window.SMIDR_PSE_DATA = [
     "n_en": "Caesium",
     "n_de": "Caesium",
     "mass": "132.91",
-    "p": 5,
+    "p": 6,
     "g": 1,
     "cat": "alkali",
     "state": "solid",

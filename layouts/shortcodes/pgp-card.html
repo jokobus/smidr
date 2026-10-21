@@ -5,6 +5,7 @@
 {{- $fingerprint := .Get "fingerprint" | default "" -}}
 {{- $algo := .Get "algo" | default "RSA 4096 / Ed25519" -}}
 {{- $keyUrl := .Get "keyUrl" | default (.Get "key_url") | default (.Get "download") -}}
+{{- $zipUrl := .Get "zipUrl" | default (.Get "zip_url") -}}
 {{- $created := .Get "created" | default "" -}}
 {{- $expires := .Get "expires" | default "Never" -}}
 
@@ -78,12 +79,20 @@
     </div>
     {{ end }}
 
-    {{ with $keyUrl }}
-    <div class="pgp-actions">
+    {{ if or $keyUrl $zipUrl }}
+    <div class="pgp-actions" style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+      {{ with $keyUrl }}
       <a href="{{ . | relURL }}" download class="btn-primary-sm" style="text-decoration: none;">
         <span>💾</span>
         <span>{{ i18n "pgp_download_key" }}</span>
       </a>
+      {{ end }}
+      {{ with $zipUrl }}
+      <a href="{{ . | relURL }}" download class="btn-primary-sm" style="text-decoration: none; opacity: 0.95;">
+        <span>📦</span>
+        <span>{{ i18n "pgp_download_zip" | default "Download Key (.zip)" }}</span>
+      </a>
+      {{ end }}
     </div>
     {{ end }}
   </div>

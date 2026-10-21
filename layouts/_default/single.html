@@ -5,6 +5,9 @@
     {{- if and (ne .Params.head false) (ne .Params.head "false") -}}
     <header class="article-header">
       <h1 class="article-title" itemprop="headline">{{ .Title }}</h1>
+      {{ with or .Description .Params.description }}
+      <p class="article-description" itemprop="description">{{ . | markdownify }}</p>
+      {{ end }}
       {{ partial "post-meta.html" . }}
       {{ partial "ai-transparency.html" . }}
     </header>

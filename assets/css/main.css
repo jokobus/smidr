@@ -449,6 +449,15 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+.article-description {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  font-weight: 400;
+}
+
 .article-meta-bar {
   display: flex;
   flex-wrap: wrap;
@@ -731,6 +740,10 @@ body {
   }
   .article-title {
     font-size: clamp(1.75rem, 5.5vw, 2.5rem);
+  }
+  .article-description {
+    font-size: 1.05rem;
+    line-height: 1.5;
   }
   .search-kbd {
     display: none;

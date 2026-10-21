@@ -5,17 +5,18 @@
   --font-mono: ui-monospace, "JetBrains Mono", "Fira Code", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   
   /* Modern High-Tech Gradient Palettes */
-  --gradient-magenta-violet: linear-gradient(135deg, #ff007a 0%, #7928ca 50%, #7000ff 100%);
-  --gradient-cyber: linear-gradient(135deg, #00f0ff 0%, #7000ff 50%, #ff007a 100%);
-  --gradient-neon: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-  --gradient-aurora: linear-gradient(135deg, #00f5a0 0%, #00d9f5 100%);
-  --gradient-sunset: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+  /* Modern High-Tech Gradient Palettes (Global Left-to-Right Sweeps) */
+  --gradient-cyber: linear-gradient(90deg, #00f0ff 0%, #7000ff 50%, #ff007a 100%);
+  --gradient-magenta-violet: linear-gradient(90deg, #00f0ff 0%, #7000ff 50%, #ff007a 100%);
+  --gradient-neon: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+  --gradient-aurora: linear-gradient(90deg, #00f5a0 0%, #00d9f5 100%);
+  --gradient-sunset: linear-gradient(90deg, #ff416c 0%, #ff4b2b 100%);
   --gradient-dark-card: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
   --gradient-light-card: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(245, 247, 250, 0.7) 100%);
   
-  /* Active Brand & Button Gradient (Default: Vibrant Magenta to Violet) */
-  --gradient-brand: var(--gradient-magenta-violet);
-  --gradient-btn: var(--gradient-magenta-violet);
+  /* Active Brand & Button Gradient (Enforced: Global sweep from blue to red) */
+  --gradient-brand: var(--gradient-cyber);
+  --gradient-btn: var(--gradient-cyber);
   
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -28,7 +29,7 @@
 }
 
 /* ==========================================================================
-   Base Theme Variables (Default: Magenta-Violet Palette)
+   Base Theme Variables (Default: Full Blue-to-Red Cyber Palette)
    ========================================================================== */
 
 /* Dark Theme (Default) */
@@ -38,31 +39,31 @@
   --color-bg-surface: #131d31;
   --color-bg-surface-glass: rgba(19, 29, 49, 0.7);
   --color-border: rgba(255, 255, 255, 0.1);
-  --color-border-glow: rgba(255, 0, 122, 0.35);
+  --color-border-glow: rgba(0, 240, 255, 0.35);
   
   --color-text: #f1f5f9;
   --color-text-muted: #94a3b8;
   --color-text-dim: #64748b;
   
-  --color-primary: #ff007a;
-  --color-primary-dim: rgba(255, 0, 122, 0.15);
+  --color-primary: #00f0ff;
+  --color-primary-dim: rgba(0, 240, 255, 0.15);
   --color-secondary: #7000ff;
   --color-secondary-dim: rgba(112, 0, 255, 0.15);
-  --color-accent: #a855f7;
+  --color-accent: #ff007a;
   
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 20px rgba(255, 0, 122, 0.25);
+  --shadow-glow: 0 0 20px rgba(0, 240, 255, 0.25);
   --shadow-glow-purple: 0 0 20px rgba(112, 0, 255, 0.3);
-  --shadow-btn-glow: rgba(255, 0, 122, 0.35);
-  --shadow-btn-glow-hover: rgba(255, 0, 122, 0.6);
+  --shadow-btn-glow: rgba(0, 240, 255, 0.35);
+  --shadow-btn-glow-hover: rgba(112, 0, 255, 0.6);
   
   --code-bg: #0b1120;
   --code-header-bg: #111a2e;
   --code-border: #1e293b;
   
   --card-bg: var(--gradient-dark-card);
-  --grid-pattern: radial-gradient(rgba(255, 0, 122, 0.08) 1px, transparent 1px);
+  --grid-pattern: radial-gradient(rgba(0, 240, 255, 0.08) 1px, transparent 1px);
 }
 
 /* Light Theme */
@@ -72,31 +73,31 @@
   --color-bg-surface: #ffffff;
   --color-bg-surface-glass: rgba(255, 255, 255, 0.85);
   --color-border: rgba(0, 0, 0, 0.08);
-  --color-border-glow: rgba(192, 38, 211, 0.3);
+  --color-border-glow: rgba(2, 132, 199, 0.3);
   
   --color-text: #0f172a;
   --color-text-muted: #475569;
   --color-text-dim: #94a3b8;
   
-  --color-primary: #c026d3;
-  --color-primary-dim: rgba(192, 38, 211, 0.12);
-  --color-secondary: #6d28d9;
-  --color-secondary-dim: rgba(109, 40, 217, 0.12);
-  --color-accent: #7c3aed;
+  --color-primary: #0284c7;
+  --color-primary-dim: rgba(2, 132, 199, 0.12);
+  --color-secondary: #7e22ce;
+  --color-secondary-dim: rgba(126, 34, 206, 0.12);
+  --color-accent: #be185d;
   
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-glow: 0 0 20px rgba(192, 38, 211, 0.15);
-  --shadow-glow-purple: 0 0 20px rgba(109, 40, 217, 0.15);
-  --shadow-btn-glow: rgba(192, 38, 211, 0.25);
-  --shadow-btn-glow-hover: rgba(192, 38, 211, 0.45);
+  --shadow-glow: 0 0 20px rgba(2, 132, 199, 0.15);
+  --shadow-glow-purple: 0 0 20px rgba(126, 34, 206, 0.15);
+  --shadow-btn-glow: rgba(2, 132, 199, 0.25);
+  --shadow-btn-glow-hover: rgba(126, 34, 206, 0.45);
   
   --code-bg: #ffffff;
   --code-header-bg: #f8fafc;
   --code-border: #e2e8f0;
   
   --card-bg: var(--gradient-light-card);
-  --grid-pattern: radial-gradient(rgba(192, 38, 211, 0.08) 1px, transparent 1px);
+  --grid-pattern: radial-gradient(rgba(2, 132, 199, 0.08) 1px, transparent 1px);
 }
 
 /* ==========================================================================
@@ -475,20 +476,29 @@ body {
   gap: 0.5rem;
 }
 
-/* Standard Button Classes */
+/* Standard Button Classes & Enforced Global Styling (Blue-to-Red Sweep) */
 .btn-primary,
-.btn-gradient {
+.btn-gradient,
+.runner-btn-run,
+.ad-btn,
+.sponsor-btn-gradient,
+button.btn-primary,
+button.btn-gradient,
+a.btn-primary,
+a.btn-gradient,
+button[type="submit"]:not(.hero-search-btn):not(.hero-all-posts-btn):not(.search-trigger-btn):not(.mobile-nav-link):not(.code-copy-btn):not(.btn-icon):not(.bib-ctrl-btn):not(.tax-checkbox-btn):not(.filter-mode-btn):not(.filter-clear-btn) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   padding: 0.55rem 1.35rem;
   font-size: 0.92rem;
+  font-family: var(--font-mono);
   font-weight: 700;
   border-radius: var(--radius-sm);
-  background: var(--gradient-btn);
+  background: var(--gradient-btn) !important;
   color: #ffffff !important;
-  border: none;
+  border: none !important;
   cursor: pointer;
   text-decoration: none;
   box-shadow: 0 0 14px var(--shadow-btn-glow);
@@ -496,10 +506,18 @@ body {
 }
 
 .btn-primary:hover,
-.btn-gradient:hover {
+.btn-gradient:hover,
+.runner-btn-run:hover,
+.ad-btn:hover,
+.sponsor-btn-gradient:hover,
+button.btn-primary:hover,
+button.btn-gradient:hover,
+a.btn-primary:hover,
+a.btn-gradient:hover,
+button[type="submit"]:not(.hero-search-btn):not(.hero-all-posts-btn):not(.search-trigger-btn):not(.mobile-nav-link):not(.code-copy-btn):not(.btn-icon):not(.bib-ctrl-btn):not(.tax-checkbox-btn):not(.filter-mode-btn):not(.filter-clear-btn):hover {
   box-shadow: 0 0 20px var(--shadow-btn-glow-hover);
   transform: translateY(-2px);
-  filter: brightness(1.1);
+  filter: brightness(1.12);
   color: #ffffff !important;
 }
 
@@ -510,11 +528,12 @@ body {
   gap: 0.4rem;
   padding: 0.4rem 0.95rem;
   font-size: 0.82rem;
+  font-family: var(--font-mono);
   font-weight: 700;
   border-radius: var(--radius-sm);
-  background: var(--gradient-btn);
+  background: var(--gradient-btn) !important;
   color: #ffffff !important;
-  border: none;
+  border: none !important;
   cursor: pointer;
   text-decoration: none;
   box-shadow: 0 0 12px var(--shadow-btn-glow);
@@ -524,8 +543,40 @@ body {
 .btn-primary-sm:hover {
   box-shadow: 0 0 18px var(--shadow-btn-glow-hover);
   transform: translateY(-2px);
-  filter: brightness(1.1);
+  filter: brightness(1.12);
   color: #ffffff !important;
+}
+
+/* Homepage Hero Navigation Buttons (Matching Gray Style) */
+.hero-all-posts-btn,
+.hero-search-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.4rem;
+  font-size: 0.95rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+.hero-all-posts-btn:hover,
+.hero-search-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-text);
+  background: var(--color-bg-secondary);
+  box-shadow: 0 0 15px var(--color-primary-dim);
+  transform: translateY(-1px);
 }
 
 /* Action Buttons */

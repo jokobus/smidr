@@ -1,5 +1,20 @@
+{{- $palette := .Params.palette | default site.Params.palette | default site.Params.color_palette | default "magenta-violet" | lower -}}
+{{- $gradient := true -}}
+{{- $rawGrad := "" -}}
+{{- if isset .Params "gradient" -}}
+  {{- $rawGrad = .Params.gradient -}}
+{{- else if isset site.Params "gradient" -}}
+  {{- $rawGrad = site.Params.gradient -}}
+{{- else if isset site.Params "gradients" -}}
+  {{- $rawGrad = site.Params.gradients -}}
+{{- else if isset site.Params "farbverlauf" -}}
+  {{- $rawGrad = site.Params.farbverlauf -}}
+{{- end -}}
+{{- if or (eq $rawGrad false) (eq $rawGrad "false") (eq $rawGrad "without") (eq $rawGrad "none") (eq $rawGrad "off") -}}
+  {{- $gradient = false -}}
+{{- end -}}
 <!DOCTYPE html>
-<html lang="{{ .Site.Language.Lang }}" dir="ltr">
+<html lang="{{ .Site.Language.Lang }}" dir="ltr" data-palette="{{ $palette }}" data-gradient="{{ $gradient }}">
 <head>
   {{ partial "head.html" . }}
 </head>

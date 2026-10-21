@@ -37,7 +37,7 @@
         <a href="{{ "tags/" | relLangURL }}{{ . | urlize }}" class="tag-badge">#{{ . }}</a>
         {{ end }}
       </div>
-      <button onclick="navigator.clipboard.writeText(window.location.href); alert('{{ i18n "link_copied" }}');" class="code-copy-btn" type="button" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+      <button onclick="navigator.clipboard.writeText(window.location.href); alert('{{ i18n "link_copied" }}');" class="btn-primary-sm" type="button" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
         <span>🔗</span>
         <span>{{ i18n "copy_link" }}</span>
       </button>

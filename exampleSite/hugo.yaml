@@ -77,6 +77,15 @@ params:
     email: "contact@example.org"
   math: true
 
+  # Color Palette & Farbverlauf (Gradient) Configuration
+  # Supported palettes: "magenta-violet" (default/recommended), "cyber", "neon", "aurora", "sunset", "minimal"
+  palette: "magenta-violet"
+
+  # Farbverlauf toggle:
+  # true  = with "Farbverlauf" (gradient buttons, glowing action triggers, and brand title gradient)
+  # false = without "Farbverlauf" (clean, solid modern styling with solid colors and no gradients)
+  gradient: true
+
   # Bibliography & Citation Configuration
   citation_style: "numeric" # Default citation style: "numeric", "author-year", or "alphabetic"
   bib_auto_load: true       # Automatically load any .bib file alongside the .md content file

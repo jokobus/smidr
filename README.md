@@ -101,7 +101,33 @@ markup:
   highlight:
     noClasses: false
     style: "dracula"
+
+params:
+  # Color palette: "magenta-violet" (default), "cyber", "neon", "aurora", "sunset", "minimal"
+  palette: "magenta-violet"
+  # Farbverlauf toggle (true = dynamic gradients, false = solid modern colors)
+  gradient: true
 ```
+
+### 🎨 Color Palettes & Farbverlauf (Gradients)
+
+Smidr includes curated high-tech color palettes and allows users to configure the active palette and toggle dynamic gradients ("Farbverlauf") on or off directly in `hugo.toml` (or `hugo.yaml` / `params.yaml`):
+
+```toml
+[params]
+palette = "magenta-violet" # Options: "magenta-violet" (default), "cyber", "neon", "aurora", "sunset", "minimal"
+gradient = true            # true: with "Farbverlauf" (gradient buttons & title); false: without "Farbverlauf" (solid colors)
+```
+
+| Palette | Dark Mode Colors | Light Mode Colors | Description |
+| :--- | :--- | :--- | :--- |
+| `magenta-violet` *(Default)* | Neon Magenta (`#ff007a`) &rarr; Electric Violet (`#7000ff`) | Fuchsia (`#c026d3`) &rarr; Deep Violet (`#6d28d9`) | High-tech cyberpunk, vibrant action buttons & glow |
+| `cyber` | Cyan (`#00f0ff`) &rarr; Violet (`#7000ff`) &rarr; Magenta (`#ff007a`) | Sky Blue (`#0284c7`) &rarr; Royal Purple (`#7e22ce`) | Multi-spectrum neon matrix glow |
+| `neon` / `cyan-blue` | Electric Cyan (`#00f2fe`) &rarr; Blue (`#4facfe`) | Deep Blue (`#0284c7`) &rarr; Royal Blue (`#2563eb`) | Crisp, clean aerospace telemetry |
+| `aurora` / `green-blue` | Emerald (`#00f5a0`) &rarr; Cyan (`#00d9f5`) | Forest Emerald (`#059669`) &rarr; Ocean (`#0284c7`) | Organic bio-tech & robotics |
+| `sunset` / `coral` | Hot Coral (`#ff416c`) &rarr; Fiery Orange (`#ff4b2b`) | Crimson (`#dc2626`) &rarr; Amber (`#ea580c`) | Dynamic energy & warmth |
+| `minimal` / `monochrome` | High-contrast Slate & White | Slate & Charcoal | Clean, distraction-free monochrome aesthetic |
+
 
 ### 4. Create Your First Article
 ```bash

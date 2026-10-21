@@ -80,7 +80,7 @@
 
     {{ with $keyUrl }}
     <div class="pgp-actions">
-      <a href="{{ . | relURL }}" download class="pub-btn" style="background: var(--gradient-cyber); color: #ffffff; border: none; font-weight: 700; padding: 0.5rem 1rem;">
+      <a href="{{ . | relURL }}" download class="btn-primary-sm" style="text-decoration: none;">
         <span>💾</span>
         <span>{{ i18n "pgp_download_key" }}</span>
       </a>

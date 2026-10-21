@@ -24,7 +24,9 @@ features = [
   "dynamic-tab-favicon",
   "i18n-en-de",
   "umami-analytics",
-  "backlinks"
+  "backlinks",
+  "color-palettes",
+  "gradient-toggle"
 ]
 min_version = "0.120.0"
 demosite = "https://jokobus.github.io/smidr/"

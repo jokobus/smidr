@@ -1232,6 +1232,17 @@ body.runner-fs-active {
   color: var(--color-text-muted);
 }
 
+[data-theme="light"] .game-canvas {
+  background: #fdf6e2;
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .game-hud {
+  color: var(--color-text-main);
+  font-weight: 600;
+}
+
 /* ==========================================================================
    TikZ Vector Diagrams (TikzJax WebAssembly)
    ========================================================================== */

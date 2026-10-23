@@ -106,10 +106,12 @@
     }
 
     function addPopup(text, x, y, color = '#fcd34d') {
+      // Ensure popup never blocks the rover or upcoming ground hazards (clamped to upper sky zone y <= 75)
+      const safeY = Math.min(y, 75);
       popups.push({
         text,
-        x,
-        y,
+        x: Math.max(70, Math.min(width - 70, x)),
+        y: safeY,
         color,
         life: 45,
         maxLife: 45
@@ -318,7 +320,7 @@
       });
     }
 
-    // Trigger rare gem easter eggs (~every 200 points)
+    // Trigger rare gem easter eggs (~every 200 points) - subtle atmospheric background surprises without popups
     function triggerRareGem() {
       const types = ['alien_ufo', 'neil_armstrong', 'death_star', 'x_fighter'];
       const chosen = types[Math.floor(Math.random() * types.length)];
@@ -331,7 +333,6 @@
           speed: 2.2,
           beamAngle: 0
         };
-        showToast('🛸 Rare Gem: Alien Explorer UFO!');
       } else if (chosen === 'neil_armstrong') {
         activeGem = {
           type: 'neil_armstrong',
@@ -340,7 +341,6 @@
           speed: gameSpeed,
           waveHand: 0
         };
-        showToast('👨‍🚀 Rare Gem: Apollo 11 & American Flag!');
       } else if (chosen === 'death_star') {
         activeGem = {
           type: 'death_star',
@@ -349,7 +349,6 @@
           speed: 0.6,
           radius: 30
         };
-        showToast("🌌 Rare Gem: That's no moon... Death Star!");
       } else if (chosen === 'x_fighter') {
         activeGem = {
           type: 'x_fighter',
@@ -357,7 +356,6 @@
           y: 35,
           speed: 7.5
         };
-        showToast('🚀 Rare Gem: X-Wing Starfighter Zoom!');
       }
     }
 
@@ -1143,7 +1141,7 @@
         );
       }
 
-      // 11. Screen Toast Banner (Gems / Power-up alerts)
+      // 11. Screen Toast Banner (positioned at TOP of canvas so ground/rover path remains completely unobstructed)
       if (toast.life > 0) {
         ctx.save();
         ctx.fillStyle = isLight ? 'rgba(255, 255, 255, 0.94)' : 'rgba(15, 23, 42, 0.92)';
@@ -1152,16 +1150,17 @@
         ctx.shadowColor = ctx.strokeStyle;
         ctx.shadowBlur = 8;
         const toastW = 340;
-        const toastH = 26;
-        drawRoundRect(ctx, width / 2 - toastW / 2, height - 58, toastW, toastH, 6);
+        const toastH = 24;
+        const toastY = rocketFuel > 0 ? 28 : 10;
+        drawRoundRect(ctx, width / 2 - toastW / 2, toastY, toastW, toastH, 6);
         ctx.fill();
         ctx.stroke();
 
-        ctx.font = 'bold 12px monospace';
+        ctx.font = 'bold 11px monospace';
         ctx.fillStyle = isLight ? '#0f172a' : '#f8fafc';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(toast.text, width / 2, height - 45);
+        ctx.fillText(toast.text, width / 2, toastY + toastH / 2);
         ctx.restore();
       }
 

@@ -1232,6 +1232,104 @@ body.runner-fs-active {
   color: var(--color-text-muted);
 }
 
+/* 404 Game Collapsible Legend */
+.game-legend {
+  margin: 1.25rem auto 0;
+  max-width: 640px;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  text-align: left;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.game-legend[open] {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.game-legend-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  user-select: none;
+  list-style: none;
+  transition: background 0.15s ease;
+}
+
+.game-legend-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.game-legend-toggle:hover {
+  background: var(--color-bg-alt);
+}
+
+.game-legend-arrow {
+  transition: transform 0.2s ease;
+  font-size: 0.75rem;
+}
+
+.game-legend[open] .game-legend-arrow {
+  transform: rotate(180deg);
+}
+
+.game-legend-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg);
+  line-height: 1.5;
+}
+
+.game-legend-title {
+  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-text-main);
+  margin-bottom: 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.game-legend-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.game-legend-list li {
+  margin-bottom: 0.35rem;
+}
+
+.game-legend-list li:last-child {
+  margin-bottom: 0;
+}
+
+.game-legend-list kbd {
+  display: inline-block;
+  padding: 0.1rem 0.35rem;
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-primary);
+}
+
 [data-theme="light"] .game-canvas {
   background: #fdf6e2;
   border-color: var(--color-primary);

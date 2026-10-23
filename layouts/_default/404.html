@@ -34,6 +34,39 @@
     <div class="game-instructions">
       <kbd class="search-kbd">SPACE</kbd> or <kbd class="search-kbd">&uarr; ARROW</kbd> or <strong>TAP CANVAS</strong> to jump (Double-jump &amp; Rocket booster supported!)
     </div>
+
+    <!-- Mini Legende / Explanations outside game frame -->
+    <details class="game-legend">
+      <summary class="game-legend-toggle">
+        <span>📖</span>
+        <span>{{ if eq .Language.Lang "de" }}Spielanleitung &amp; Legende anzeigen{{ else }}Show Game Manual &amp; Legend{{ end }}</span>
+        <span class="game-legend-arrow">▾</span>
+      </summary>
+      <div class="game-legend-body">
+        <div class="game-legend-col">
+          <div class="game-legend-title">🎮 {{ if eq .Language.Lang "de" }}Steuerung{{ else }}Controls{{ end }}</div>
+          <ul class="game-legend-list">
+            <li><kbd>SPACE</kbd> / <kbd>&uarr;</kbd> / <strong>Tap</strong>: {{ if eq .Language.Lang "de" }}Sprung{{ else }}Jump{{ end }}</li>
+            <li><strong>2x Tap / Taste</strong>: {{ if eq .Language.Lang "de" }}Doppelsprung in der Luft{{ else }}Double-jump in mid-air{{ end }}</li>
+          </ul>
+        </div>
+        <div class="game-legend-col">
+          <div class="game-legend-title">⚡ {{ if eq .Language.Lang "de" }}Objekte &amp; Boni{{ else }}Power-ups &amp; Items{{ end }}</div>
+          <ul class="game-legend-list">
+            <li>🪙 <strong>{{ if eq .Language.Lang "de" }}Münzen{{ else }}Coins{{ end }}</strong>: +25 {{ if eq .Language.Lang "de" }}Punkte{{ else }}Pts{{ end }}</li>
+            <li>🚀 <strong>{{ if eq .Language.Lang "de" }}Düsenantrieb{{ else }}Rocket Thruster{{ end }}</strong>: {{ if eq .Language.Lang "de" }}Seltener Deckenflug, sanfter Bremsdüsen-Abstieg &amp; Schutzschild{{ else }}Rare ceiling flight, retro-thruster descent &amp; shield{{ end }}</li>
+          </ul>
+        </div>
+        <div class="game-legend-col">
+          <div class="game-legend-title">⚠️ {{ if eq .Language.Lang "de" }}Gefahren{{ else }}Hazards{{ end }}</div>
+          <ul class="game-legend-list">
+            <li>🔺 <strong>{{ if eq .Language.Lang "de" }}Spikes &amp; Barrieren{{ else }}Spikes &amp; Barriers{{ end }}</strong>: {{ if eq .Language.Lang "de" }}Überspringen{{ else }}Leap over{{ end }}</li>
+            <li>🕳️ <strong>{{ if eq .Language.Lang "de" }}Gruben (Pits){{ else }}Chasms / Pits{{ end }}</strong>: {{ if eq .Language.Lang "de" }}Nicht hineinfallen!{{ else }}Don't fall in!{{ end }}</li>
+            <li>🛸 <strong>{{ if eq .Language.Lang "de" }}Drohnen{{ else }}Drones{{ end }}</strong>: {{ if eq .Language.Lang "de" }}Schwebend – drunter oder drüber{{ else }}Airborne – duck or leap{{ end }}</li>
+          </ul>
+        </div>
+      </div>
+    </details>
   </div>
 
   <div style="margin-top: 2.5rem;">

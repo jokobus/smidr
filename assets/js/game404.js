@@ -286,17 +286,34 @@
       }
     }
 
-    // Spawn Rocket Thruster Power-up
+    // Spawn Rocket Thruster Power-up (rarer, irregular & challenging jump heights)
     function spawnPowerup() {
-      if (rocketFuel > 0) return;
+      if (rocketFuel > 0 || isLanding) return;
       const groundY = height - 25;
+
+      // Varied and challenging heights requiring skilled single or double jumps
+      const roll = Math.random();
+      let altitude;
+      if (roll < 0.45) {
+        // High Stratosphere tier: requires mid-air double jump (115 - 138px above ground)
+        altitude = 115 + Math.random() * 23;
+      } else if (roll < 0.80) {
+        // Apex Leap tier: requires single jump timed at peak (82 - 105px above ground)
+        altitude = 82 + Math.random() * 23;
+      } else {
+        // Extreme Altitude tier: near ceiling, requires precision double-jump apex (140 - 158px above ground)
+        altitude = 140 + Math.random() * 18;
+      }
+
       powerups.push({
-        x: width + 20,
-        y: groundY - 48,
+        x: width + 25,
+        y: groundY - altitude,
         w: 24,
         h: 24,
         type: 'rocket',
-        bobOffset: Math.random() * Math.PI,
+        bobAmp: Math.random() * 5 + 4,
+        bobSpeed: Math.random() * 0.04 + 0.06,
+        bobOffset: Math.random() * Math.PI * 2,
         collected: false
       });
     }
@@ -514,7 +531,8 @@
         spawnCoins();
       }
 
-      if (frame % 460 === 0 && Math.random() > 0.25) {
+      // Spawn Rocket Thrusters approx. 1/4 as frequently (~every 40s instead of ~10s)
+      if (frame % 1600 === 0 && Math.random() > 0.35) {
         spawnPowerup();
       }
 
@@ -522,13 +540,14 @@
       for (let i = powerups.length - 1; i >= 0; i--) {
         const pup = powerups[i];
         pup.x -= gameSpeed;
+        const currentBobY = pup.y + Math.sin(frame * (pup.bobSpeed || 0.08) + pup.bobOffset) * (pup.bobAmp || 4);
 
         if (
           !pup.collected &&
           player.x < pup.x + pup.w &&
           player.x + player.w > pup.x &&
-          player.y < pup.y + pup.h &&
-          player.y + player.h > pup.y
+          player.y < currentBobY + pup.h &&
+          player.y + player.h > currentBobY
         ) {
           pup.collected = true;
           rocketFuel = MAX_ROCKET_FUEL;
@@ -536,12 +555,12 @@
           landingShield = 0;
           score += 50;
           if (scoreVal) scoreVal.textContent = score;
-          addPopup('🚀 DÜSENANTRIEB!', pup.x, pup.y - 10, '#00f0ff');
+          addPopup('🚀 DÜSENANTRIEB!', pup.x, currentBobY - 10, '#00f0ff');
           showToast('🚀 DÜSENANTRIEB AKTIV! FLY ALONG THE CEILING!');
           for (let k = 0; k < 15; k++) {
             particles.push({
               x: pup.x + pup.w / 2,
-              y: pup.y + pup.h / 2,
+              y: currentBobY + pup.h / 2,
               vx: (Math.random() - 0.5) * 6,
               vy: (Math.random() - 0.5) * 6,
               size: Math.random() * 3 + 2,
@@ -1053,18 +1072,20 @@
       // 6. Draw Collectibles: Rocket Thruster Power-up
       for (const pup of powerups) {
         if (pup.collected) continue;
-        const py = pup.y + Math.sin(frame * 0.1 + pup.bobOffset) * 4;
+        const py = pup.y + Math.sin(frame * (pup.bobSpeed || 0.08) + pup.bobOffset) * (pup.bobAmp || 4);
 
         ctx.save();
         ctx.translate(pup.x + pup.w / 2, py + pup.h / 2);
 
-        ctx.fillStyle = 'rgba(0, 240, 255, 0.25)';
+        // Pulsing glowing beacon halo
+        const pulse = Math.sin(frame * 0.15) * 2;
+        ctx.fillStyle = 'rgba(0, 240, 255, 0.22)';
         ctx.strokeStyle = '#00f0ff';
         ctx.lineWidth = 2;
         ctx.shadowColor = '#00f0ff';
         ctx.shadowBlur = 10;
         ctx.beginPath();
-        ctx.arc(0, 0, 14, 0, Math.PI * 2);
+        ctx.arc(0, 0, 14 + pulse, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
 

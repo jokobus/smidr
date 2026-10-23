@@ -57,6 +57,8 @@
     // Rocket thruster / Düsenantrieb state
     let rocketFuel = 0;
     const MAX_ROCKET_FUEL = 300;
+    let isLanding = false;
+    let landingShield = 0;
 
     // Rare Gem Easter Eggs (every ~200 points)
     let nextGemScore = 200;
@@ -121,6 +123,8 @@
       baseGameSpeed = 4.2;
       gameSpeed = 4.2;
       rocketFuel = 0;
+      isLanding = false;
+      landingShield = 0;
       nextGemScore = 200;
       activeGem = null;
       obstacles = [];
@@ -148,6 +152,12 @@
       if (rocketFuel > 0) {
         player.vy = -3.5;
         return;
+      }
+
+      // If in retro landing descent, allow player to jump out with shield protection
+      if (isLanding) {
+        isLanding = false;
+        landingShield = 50;
       }
 
       if (player.jumpsLeft > 0) {
@@ -365,11 +375,20 @@
       }
 
       // Rocket boost speed bonus
-      gameSpeed = rocketFuel > 0 ? baseGameSpeed + 2.0 : baseGameSpeed;
+      gameSpeed = (rocketFuel > 0 || isLanding) ? baseGameSpeed + 1.8 : baseGameSpeed;
 
       // Rocket flight physics & fuel depletion
       if (rocketFuel > 0) {
         rocketFuel--;
+
+        // When rocket propulsion ends, initiate guaranteed safe retro landing sequence
+        if (rocketFuel === 0) {
+          isLanding = true;
+          showToast('🛬 RETRO-THRUSTERS: SAFE TOUCHDOWN');
+          // Purge all hazards in the landing corridor so the rover NEVER touches down on a hazard or pit
+          obstacles = obstacles.filter((obs) => obs.x > player.x + 340 || obs.x + obs.w < player.x - 30);
+        }
+
         // Fly smoothly along ceiling
         const targetCeilingY = 28;
         player.y += (targetCeilingY - player.y) * 0.12;
@@ -389,6 +408,58 @@
             life: 25
           });
         }
+      } else if (isLanding) {
+        // Controlled retro-descent cushion
+        player.vy = 2.4;
+        player.y += player.vy;
+        player.isGrounded = false;
+
+        // Retro exhaust particles directed downwards from bottom thruster pods
+        if (frame % 2 === 0) {
+          particles.push({
+            x: player.x + 8 + (Math.random() - 0.5) * 4,
+            y: player.y + player.h,
+            vx: (Math.random() - 0.5) * 2,
+            vy: Math.random() * 3.5 + 2,
+            size: Math.random() * 3 + 2,
+            color: ['#00f0ff', '#f59e0b', '#ffffff'][Math.floor(Math.random() * 3)],
+            life: 16
+          });
+          particles.push({
+            x: player.x + player.w - 12 + (Math.random() - 0.5) * 4,
+            y: player.y + player.h,
+            vx: (Math.random() - 0.5) * 2,
+            vy: Math.random() * 3.5 + 2,
+            size: Math.random() * 3 + 2,
+            color: ['#00f0ff', '#f59e0b', '#ffffff'][Math.floor(Math.random() * 3)],
+            life: 16
+          });
+        }
+
+        const groundY = height - 25 - player.h;
+        if (player.y >= groundY) {
+          player.y = groundY;
+          player.vy = 0;
+          player.isGrounded = true;
+          player.jumpsLeft = 2;
+          isLanding = false;
+          landingShield = 60; // 1-second invulnerability grace period
+          addPopup('TOUCHDOWN!', player.x + 15, groundY - 10, '#00f0ff');
+
+          // Touchdown landing dust puffs
+          const isLightMode = document.documentElement.getAttribute('data-theme') === 'light';
+          for (let k = 0; k < 14; k++) {
+            particles.push({
+              x: player.x + (k % 2 === 0 ? 4 : player.w - 4),
+              y: groundY + player.h,
+              vx: (k % 2 === 0 ? -1 : 1) * (Math.random() * 3.5 + 1),
+              vy: -Math.random() * 2.2 - 0.5,
+              size: Math.random() * 3 + 2,
+              color: isLightMode ? '#fcd34d' : '#94a3b8',
+              life: 22
+            });
+          }
+        }
       } else {
         // Normal ground physics
         player.vy += player.gravity;
@@ -401,6 +472,11 @@
           player.isGrounded = true;
           player.jumpsLeft = 2;
         }
+      }
+
+      // Decrement landing shield grace period
+      if (landingShield > 0) {
+        landingShield--;
       }
 
       // Stars parallax
@@ -426,10 +502,12 @@
         }
       }
 
-      // Spawn items & obstacles
+      // Spawn items & obstacles (suppress obstacles during flight, landing, or active shield)
       const minGap = Math.max(70, Math.floor(135 - gameSpeed * 5));
       if (frame % minGap === 0 && Math.random() > 0.22) {
-        spawnObstacle();
+        if (rocketFuel <= 0 && !isLanding && landingShield <= 20) {
+          spawnObstacle();
+        }
       }
 
       if (frame % 140 === 0 && Math.random() > 0.3) {
@@ -454,6 +532,8 @@
         ) {
           pup.collected = true;
           rocketFuel = MAX_ROCKET_FUEL;
+          isLanding = false;
+          landingShield = 0;
           score += 50;
           if (scoreVal) scoreVal.textContent = score;
           addPopup('🚀 DÜSENANTRIEB!', pup.x, pup.y - 10, '#00f0ff');
@@ -529,7 +609,9 @@
             roverCenterX > obs.x + 4 &&
             roverCenterX < obs.x + obs.w - 4 &&
             player.y >= groundY - 2 &&
-            rocketFuel <= 0
+            rocketFuel <= 0 &&
+            !isLanding &&
+            landingShield <= 0
           ) {
             player.y += 12;
             triggerGameOver();
@@ -542,7 +624,25 @@
             player.y + pad < obs.y + obs.h &&
             player.y + player.h - pad > obs.y
           ) {
-            triggerGameOver();
+            if (rocketFuel > 0 || isLanding || landingShield > 0) {
+              // Shield or rocket absorbs & vaporizes obstacle
+              addPopup('🛡️ DEFLECTED', obs.x + 10, obs.y, '#00f0ff');
+              for (let k = 0; k < 8; k++) {
+                particles.push({
+                  x: obs.x + obs.w / 2,
+                  y: obs.y + obs.h / 2,
+                  vx: (Math.random() - 0.5) * 5,
+                  vy: (Math.random() - 0.5) * 5,
+                  size: Math.random() * 3 + 2,
+                  color: '#00f0ff',
+                  life: 18
+                });
+              }
+              obstacles.splice(i, 1);
+              continue;
+            } else {
+              triggerGameOver();
+            }
           }
         }
 
@@ -983,7 +1083,7 @@
       }
 
       // 8. Draw Player: Cyber Rover
-      drawRover(player, isLight, rocketFuel > 0);
+      drawRover(player, isLight, rocketFuel > 0, isLanding, landingShield);
 
       // 9. Floating Text Popups
       for (const pop of popups) {
@@ -996,7 +1096,7 @@
         ctx.globalAlpha = 1.0;
       }
 
-      // 10. Rocket Boost Fuel Gauge
+      // 10. Rocket Boost Fuel Gauge with low-fuel landing warning
       if (rocketFuel > 0) {
         const gaugeW = 120;
         const gaugeH = 7;
@@ -1007,13 +1107,19 @@
         ctx.fillRect(gx - 2, gy - 2, gaugeW + 4, gaugeH + 4);
 
         const fuelRatio = rocketFuel / MAX_ROCKET_FUEL;
-        ctx.fillStyle = '#00f0ff';
+        ctx.fillStyle = rocketFuel <= 60 ? (frame % 8 < 4 ? '#ef4444' : '#f59e0b') : '#00f0ff';
         ctx.fillRect(gx, gy, gaugeW * fuelRatio, gaugeH);
 
         ctx.font = 'bold 10px monospace';
-        ctx.fillStyle = isLight ? '#0369a1' : '#00f0ff';
+        ctx.fillStyle = rocketFuel <= 60 ? (isLight ? '#dc2626' : '#f87171') : (isLight ? '#0369a1' : '#00f0ff');
         ctx.textAlign = 'center';
-        ctx.fillText(`🚀 DÜSENANTRIEB: ${Math.ceil((rocketFuel / 60) * 10) / 10}s`, width / 2, gy - 4);
+        ctx.fillText(
+          rocketFuel <= 60
+            ? `⚠️ TOUCHDOWN IN ${Math.ceil((rocketFuel / 60) * 10) / 10}s`
+            : `🚀 DÜSENANTRIEB: ${Math.ceil((rocketFuel / 60) * 10) / 10}s`,
+          width / 2,
+          gy - 4
+        );
       }
 
       // 11. Screen Toast Banner (Gems / Power-up alerts)
@@ -1105,13 +1211,34 @@
     }
 
     // Helper: Draw Rover Player
-    function drawRover(p, isLight, hasRocket) {
+    function drawRover(p, isLight, hasRocket, isLanding, landingShield) {
       ctx.save();
       ctx.translate(p.x, p.y);
 
+      // Invulnerability Energy Shield Bubble during landing grace period
+      if (landingShield > 0) {
+        const shieldAlpha = Math.min(1, landingShield / 20) * (0.35 + Math.sin(frame * 0.3) * 0.15);
+        ctx.save();
+        ctx.strokeStyle = `rgba(0, 240, 255, ${Math.min(1, shieldAlpha + 0.4)})`;
+        ctx.fillStyle = `rgba(0, 240, 255, ${shieldAlpha * 0.22})`;
+        ctx.lineWidth = 2;
+        ctx.shadowColor = '#00f0ff';
+        ctx.shadowBlur = 10;
+        ctx.beginPath();
+        ctx.arc(p.w / 2 - 2, p.h / 2, Math.max(p.w, p.h) * 0.72, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Pulsing shield rings
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.restore();
+      }
+
       ctx.fillStyle = isLight ? '#059669' : '#10b981';
       ctx.shadowColor = isLight ? 'rgba(5, 150, 105, 0.4)' : '#00f0ff';
-      ctx.shadowBlur = hasRocket ? 14 : 8;
+      ctx.shadowBlur = hasRocket || isLanding ? 14 : 8;
       ctx.fillRect(0, 6, p.w - 6, p.h - 14);
 
       ctx.fillStyle = isLight ? '#0284c7' : '#00f0ff';
@@ -1153,6 +1280,37 @@
         ctx.moveTo(-6, 11.5);
         ctx.lineTo(-10 - Math.random() * 4, 13.5);
         ctx.lineTo(-6, 15.5);
+        ctx.closePath();
+        ctx.fill();
+      } else if (isLanding) {
+        // Retro thrusters firing downward for cushioned touchdown
+        ctx.fillStyle = '#f59e0b';
+        ctx.beginPath();
+        ctx.moveTo(4, p.h - 2);
+        ctx.lineTo(8, p.h + 8 + Math.random() * 4);
+        ctx.lineTo(12, p.h - 2);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(p.w - 18, p.h - 2);
+        ctx.lineTo(p.w - 14, p.h + 8 + Math.random() * 4);
+        ctx.lineTo(p.w - 10, p.h - 2);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#00f0ff';
+        ctx.beginPath();
+        ctx.moveTo(6, p.h - 2);
+        ctx.lineTo(8, p.h + 4 + Math.random() * 2);
+        ctx.lineTo(10, p.h - 2);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(p.w - 16, p.h - 2);
+        ctx.lineTo(p.w - 14, p.h + 4 + Math.random() * 2);
+        ctx.lineTo(p.w - 12, p.h - 2);
         ctx.closePath();
         ctx.fill();
       }

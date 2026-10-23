@@ -44,5 +44,5 @@
 </div>
 
 {{ $gameJs := resources.Get "js/game404.js" | resources.Minify | resources.Fingerprint }}
-<script defer src="{{ $gameJs.RelPermalink }}" integrity="{{ $gameJs.Data.Integrity }}"></script>
+<script defer src="{{ $gameJs.RelPermalink }}"></script>
 {{ end }}

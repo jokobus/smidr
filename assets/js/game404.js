@@ -1,18 +1,39 @@
 /**
  * Smidr Hugo Theme - Cyber Rover 404 Jump & Run Game
  * Retro cyberpunk & sci-fi arcade mini-game embedded in the 404 error page.
- * Enhanced with adaptive light/dark mode, collectibles, rocket propulsion,
+ * Enhanced with adaptive light/dark mode, shining sun, collectibles, rocket propulsion,
  * terrain chasms, and rare background easter egg encounters (~every 200 pts).
  */
 
 (function () {
   'use strict';
 
-  document.addEventListener('DOMContentLoaded', () => {
+  function drawRoundRect(c, x, y, w, h, r) {
+    if (typeof c.roundRect === 'function') {
+      c.beginPath();
+      c.roundRect(x, y, w, h, r);
+    } else {
+      c.beginPath();
+      c.moveTo(x + r, y);
+      c.lineTo(x + w - r, y);
+      c.quadraticCurveTo(x + w, y, x + w, y + r);
+      c.lineTo(x + w, y + h - r);
+      c.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      c.lineTo(x + r, y + h);
+      c.quadraticCurveTo(x, y + h, x, y + h - r);
+      c.lineTo(x, y + r);
+      c.quadraticCurveTo(x, y, x + r, y);
+      c.closePath();
+    }
+  }
+
+  function initGame404() {
     const canvas = document.getElementById('game404-canvas');
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
     const scoreVal = document.getElementById('game-score-val');
     const coinsVal = document.getElementById('game-coins-val');
     const highscoreVal = document.getElementById('game-highscore-val');
@@ -123,7 +144,7 @@
         return;
       }
 
-      // If rocket boost is active, jumping gives a gentle upward boost
+      // If rocket boost is active, gentle upward thrust
       if (rocketFuel > 0) {
         player.vy = -3.5;
         return;
@@ -222,7 +243,7 @@
       const startX = width + 20;
 
       if (rocketFuel > 0 || roll < 0.3) {
-        // Sky cluster (perfect for rocket flight!)
+        // Sky cluster (for rocket flight!)
         for (let i = 0; i < 3; i++) {
           coinItems.push({
             x: startX + i * 28,
@@ -257,7 +278,7 @@
 
     // Spawn Rocket Thruster Power-up
     function spawnPowerup() {
-      if (rocketFuel > 0) return; // don't spawn if already blasting
+      if (rocketFuel > 0) return;
       const groundY = height - 25;
       powerups.push({
         x: width + 20,
@@ -289,7 +310,7 @@
           type: 'neil_armstrong',
           x: width + 50,
           y: height - 25 - 34,
-          speed: gameSpeed, // moves with terrain
+          speed: gameSpeed,
           waveHand: 0
         };
         showToast('👨‍🚀 Rare Gem: Apollo 11 & American Flag!');
@@ -349,7 +370,7 @@
       // Rocket flight physics & fuel depletion
       if (rocketFuel > 0) {
         rocketFuel--;
-        // Fly along ceiling
+        // Fly smoothly along ceiling
         const targetCeilingY = 28;
         player.y += (targetCeilingY - player.y) * 0.12;
         player.vy = 0;
@@ -424,7 +445,6 @@
         const pup = powerups[i];
         pup.x -= gameSpeed;
 
-        // Collision with player
         if (
           !pup.collected &&
           player.x < pup.x + pup.w &&
@@ -438,7 +458,6 @@
           if (scoreVal) scoreVal.textContent = score;
           addPopup('🚀 DÜSENANTRIEB!', pup.x, pup.y - 10, '#00f0ff');
           showToast('🚀 DÜSENANTRIEB AKTIV! FLY ALONG THE CEILING!');
-          // Burst sparks
           for (let k = 0; k < 15; k++) {
             particles.push({
               x: pup.x + pup.w / 2,
@@ -464,7 +483,6 @@
         const coin = coinItems[i];
         coin.x -= gameSpeed;
 
-        // Collision check
         if (
           !coin.collected &&
           player.x < coin.x + coin.w &&
@@ -479,7 +497,6 @@
           if (scoreVal) scoreVal.textContent = score;
           addPopup('+25', coin.x, coin.y, '#fcd34d');
 
-          // Coin pickup glitters
           for (let k = 0; k < 6; k++) {
             particles.push({
               x: coin.x + 8,
@@ -505,10 +522,7 @@
         const obs = obstacles[i];
         obs.x -= gameSpeed;
 
-        // Collision checks
         if (obs.type === 'pit') {
-          // Crevasse / Pit hazard
-          // If player's wheels cross the chasm while on or near the ground (not flying high above)
           const roverCenterX = player.x + player.w * 0.5;
           const groundY = height - 25 - player.h;
           if (
@@ -517,12 +531,10 @@
             player.y >= groundY - 2 &&
             rocketFuel <= 0
           ) {
-            // Falls into pit!
             player.y += 12;
             triggerGameOver();
           }
         } else {
-          // Standard bounding box collision
           const pad = 5;
           if (
             player.x + pad < obs.x + obs.w &&
@@ -534,7 +546,6 @@
           }
         }
 
-        // Score increment when safely passed
         if (!obs.passed && obs.x + obs.w < player.x) {
           obs.passed = true;
           score += 10;
@@ -619,7 +630,6 @@
 
       ctx.save();
       if (gem.type === 'alien_ufo') {
-        // Alien UFO with Tractor Beam
         const ufoX = gem.x;
         const ufoY = gem.y + Math.sin(frame * 0.08) * 4;
 
@@ -647,7 +657,6 @@
         ctx.beginPath();
         ctx.arc(ufoX, ufoY - 4, 4, 0, Math.PI * 2);
         ctx.fill();
-        // Alien eye
         ctx.fillStyle = '#052e16';
         ctx.fillRect(ufoX - 2, ufoY - 5, 1.5, 2);
         ctx.fillRect(ufoX + 1, ufoY - 5, 1.5, 2);
@@ -667,7 +676,6 @@
           ctx.fill();
         }
       } else if (gem.type === 'neil_armstrong') {
-        // Neil Armstrong on lunar/martian surface with American Flag
         const ax = gem.x;
         const ay = gem.y;
 
@@ -679,25 +687,19 @@
 
         // Astronaut in White Apollo Suit
         ctx.fillStyle = '#f8fafc';
-        // Torso
         ctx.fillRect(ax - 5, ay + 10, 10, 14);
-        // Legs
         ctx.fillRect(ax - 5, ay + 24, 4, 10);
         ctx.fillRect(ax + 1, ay + 24, 4, 10);
-        // Backpack Life Support (PLSS)
         ctx.fillStyle = '#cbd5e1';
         ctx.fillRect(ax - 8, ay + 11, 3, 11);
-        // Helmet
         ctx.fillStyle = '#f8fafc';
         ctx.beginPath();
         ctx.arc(ax, ay + 6, 6, 0, Math.PI * 2);
         ctx.fill();
-        // Gold reflective visor
         ctx.fillStyle = '#f59e0b';
         ctx.beginPath();
         ctx.arc(ax + 2, ay + 6, 3.5, -Math.PI / 2, Math.PI / 2);
         ctx.fill();
-        // Arm waving/saluting
         ctx.strokeStyle = '#f8fafc';
         ctx.lineWidth = 3;
         ctx.beginPath();
@@ -705,58 +707,49 @@
         ctx.lineTo(ax + 9, ay + 6 + Math.sin(frame * 0.1) * 2);
         ctx.stroke();
 
-        // American Flag (Flagpole + Stars & Stripes)
+        // American Flag
         const fx = ax + 20;
         const fy = ay - 4;
-        // Silver flagpole
         ctx.strokeStyle = '#94a3b8';
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(fx, fy);
         ctx.lineTo(fx, height - 25);
         ctx.stroke();
-        // Gold pole finial
         ctx.fillStyle = '#f59e0b';
         ctx.beginPath();
         ctx.arc(fx, fy - 1, 2, 0, Math.PI * 2);
         ctx.fill();
 
-        // Fluttering flag cloth
         const flagW = 22;
         const flagH = 14;
         const wave = Math.sin(frame * 0.15) * 2;
 
-        // Red and White stripes
         for (let s = 0; s < 5; s++) {
           ctx.fillStyle = s % 2 === 0 ? '#ef4444' : '#ffffff';
           ctx.fillRect(fx + 1, fy + s * (flagH / 5) + (s * wave * 0.2), flagW, flagH / 5);
         }
-        // Blue Canton with stars
         ctx.fillStyle = '#1e3a8a';
         ctx.fillRect(fx + 1, fy, flagW * 0.45, flagH * 0.55);
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(fx + 3, fy + 2, 1.5, 1.5);
         ctx.fillRect(fx + 6, fy + 4, 1.5, 1.5);
       } else if (gem.type === 'death_star') {
-        // The Death Star (Todesstern)
         const dsX = gem.x;
         const dsY = gem.y;
         const r = gem.radius;
 
-        // Sphere body
         ctx.fillStyle = '#475569';
         ctx.beginPath();
         ctx.arc(dsX, dsY, r, 0, Math.PI * 2);
         ctx.fill();
 
-        // Equatorial trench line
         ctx.strokeStyle = '#1e293b';
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.arc(dsX, dsY, r, -0.1, Math.PI + 0.1, true);
         ctx.stroke();
 
-        // Superlaser concave crater dish
         ctx.fillStyle = '#334155';
         ctx.beginPath();
         ctx.arc(dsX - 8, dsY - 9, 8, 0, Math.PI * 2);
@@ -765,23 +758,19 @@
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // Superlaser green focus charge
         ctx.fillStyle = '#22c55e';
         ctx.beginPath();
         ctx.arc(dsX - 8, dsY - 9, 2, 0, Math.PI * 2);
         ctx.fill();
 
-        // Subtle shaded surface panels
         ctx.strokeStyle = 'rgba(15, 23, 42, 0.4)';
         ctx.lineWidth = 1;
         ctx.strokeRect(dsX - 18, dsY + 4, 12, 8);
         ctx.strokeRect(dsX + 2, dsY - 18, 10, 8);
       } else if (gem.type === 'x_fighter') {
-        // Incom T-65 X-Wing Starfighter
         const xx = gem.x;
         const xy = gem.y;
 
-        // Quad red ion engine exhaust trails
         ctx.strokeStyle = '#ff007a';
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -791,16 +780,13 @@
         ctx.lineTo(xx - 12, xy + 6);
         ctx.stroke();
 
-        // S-Foils (attack position wings)
         ctx.fillStyle = '#cbd5e1';
-        // Upper wing
         ctx.beginPath();
         ctx.moveTo(xx - 12, xy - 3);
         ctx.lineTo(xx + 10, xy - 14);
         ctx.lineTo(xx - 2, xy - 14);
         ctx.closePath();
         ctx.fill();
-        // Lower wing
         ctx.beginPath();
         ctx.moveTo(xx - 12, xy + 3);
         ctx.lineTo(xx + 10, xy + 14);
@@ -808,13 +794,11 @@
         ctx.closePath();
         ctx.fill();
 
-        // Wingtip laser cannons
         ctx.strokeStyle = '#ef4444';
         ctx.lineWidth = 1.5;
         ctx.strokeRect(xx + 10, xy - 15, 10, 2);
         ctx.strokeRect(xx + 10, xy + 13, 10, 2);
 
-        // Fuselage & Cockpit
         ctx.fillStyle = '#e2e8f0';
         ctx.beginPath();
         ctx.moveTo(xx + 24, xy);
@@ -823,11 +807,9 @@
         ctx.closePath();
         ctx.fill();
 
-        // Red markings (Red 5)
         ctx.fillStyle = '#ef4444';
         ctx.fillRect(xx + 2, xy - 2, 4, 4);
 
-        // Cockpit canopy
         ctx.fillStyle = '#0284c7';
         ctx.fillRect(xx + 8, xy - 2, 6, 4);
       }
@@ -839,19 +821,18 @@
 
       // 1. Sky & Horizon Gradient
       if (isLight) {
-        // Daytime desert/martian sky
         const skyGrad = ctx.createLinearGradient(0, 0, 0, height);
-        skyGrad.addColorStop(0, '#7dd3fc'); // radiant sky blue
+        skyGrad.addColorStop(0, '#7dd3fc');
         skyGrad.addColorStop(0.45, '#bae6fd');
-        skyGrad.addColorStop(0.85, '#fef08a'); // sunny warm horizon
-        skyGrad.addColorStop(1, '#fde68a'); // golden sand glow
+        skyGrad.addColorStop(0.85, '#fef08a');
+        skyGrad.addColorStop(1, '#fde68a');
         ctx.fillStyle = skyGrad;
         ctx.fillRect(0, 0, width, height);
 
         // Radiant Sun
         drawSun(isLight);
 
-        // Distant warm mountain dunes
+        // Distant dunes
         ctx.fillStyle = 'rgba(251, 146, 60, 0.15)';
         ctx.beginPath();
         ctx.moveTo(0, height - 25);
@@ -859,7 +840,6 @@
         ctx.quadraticCurveTo(width * 0.75, height - 85, width, height - 25);
         ctx.fill();
       } else {
-        // Deep space cyberpunk cosmos
         const skyGrad = ctx.createLinearGradient(0, 0, 0, height);
         skyGrad.addColorStop(0, '#050813');
         skyGrad.addColorStop(0.65, '#0c162d');
@@ -874,7 +854,7 @@
           ctx.fillRect(star.x, star.y, star.size, star.size);
         }
 
-        // Distant cyber mountain silhouettes
+        // Cyber mountains
         ctx.fillStyle = 'rgba(168, 85, 247, 0.12)';
         ctx.beginPath();
         ctx.moveTo(0, height - 25);
@@ -885,19 +865,14 @@
         ctx.fill();
       }
 
-      // 2. Rare Gem Background Encounter
+      // 2. Rare Gem Encounter
       drawRareGem(activeGem, isLight);
 
-      // 3. Ground & Chasms / Crevasses (Gruben)
+      // 3. Ground & Chasms (Gruben)
       const groundY = height - 25;
-
-      // Find all active pits to omit ground line over them
       const pits = obstacles.filter((o) => o.type === 'pit');
-
-      // Sort pits by X
       pits.sort((a, b) => a.x - b.x);
 
-      // Draw ground segments avoiding pits
       let curX = 0;
       for (const pit of pits) {
         const pitLeft = Math.max(0, pit.x);
@@ -907,7 +882,6 @@
           drawGroundSegment(curX, pitLeft, groundY, isLight);
         }
 
-        // Draw the Chasm / Grube itself!
         drawPit(pitLeft, pitRight, groundY, isLight);
         curX = Math.max(curX, pitRight);
       }
@@ -917,10 +891,9 @@
 
       // 4. Draw Obstacles (Spikes, Barriers, Drones)
       for (const obs of obstacles) {
-        if (obs.type === 'pit') continue; // already drawn in ground layer
+        if (obs.type === 'pit') continue;
 
         if (obs.type === 'spike') {
-          // Sharp ground spikes
           ctx.fillStyle = isLight ? '#dc2626' : '#ff007a';
           ctx.shadowColor = ctx.fillStyle;
           ctx.shadowBlur = 8;
@@ -932,24 +905,20 @@
           ctx.fill();
           ctx.shadowBlur = 0;
         } else if (obs.type === 'barrier') {
-          // Cyber Pylon Barrier
           ctx.fillStyle = isLight ? '#d97706' : '#f59e0b';
           ctx.shadowColor = ctx.fillStyle;
           ctx.shadowBlur = 8;
           ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
-          // High-energy laser core
           ctx.fillStyle = '#ffffff';
           ctx.fillRect(obs.x + 4, obs.y + 4, obs.w - 8, obs.h - 8);
           ctx.shadowBlur = 0;
         } else if (obs.type === 'drone') {
-          // Hover Drone / Floating Space Mine
           const droneY = obs.y + Math.sin(frame * 0.1) * 3;
           ctx.fillStyle = isLight ? '#475569' : '#0284c7';
           ctx.beginPath();
           ctx.arc(obs.x + obs.w / 2, droneY + obs.h / 2, obs.w / 2, 0, Math.PI * 2);
           ctx.fill();
 
-          // Blinking sensor eye
           ctx.fillStyle = frame % 16 < 8 ? '#ef4444' : '#ff007a';
           ctx.beginPath();
           ctx.arc(obs.x + obs.w / 2, droneY + obs.h / 2, 4, 0, Math.PI * 2);
@@ -957,14 +926,13 @@
         }
       }
 
-      // 5. Draw Collectibles: Coins (Münzen)
+      // 5. Draw Collectibles: Coins
       for (const coin of coinItems) {
         if (coin.collected) continue;
-        const spinW = Math.max(2, Math.abs(Math.cos(frame * 0.12)) * (coin.w / 2));
+        const spinW = Math.max(3, Math.abs(Math.cos(frame * 0.12)) * (coin.w / 2));
         ctx.save();
         ctx.translate(coin.x + coin.w / 2, coin.y + coin.h / 2);
 
-        // Gold coin outer
         ctx.fillStyle = '#f59e0b';
         ctx.shadowColor = '#fcd34d';
         ctx.shadowBlur = 8;
@@ -972,12 +940,11 @@
         ctx.ellipse(0, 0, spinW, coin.h / 2, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // Inner golden rim
         if (spinW > 3) {
           ctx.strokeStyle = '#fef08a';
           ctx.lineWidth = 1.5;
           ctx.beginPath();
-          ctx.ellipse(0, 0, spinW - 2, coin.h / 2 - 2, 0, 0, Math.PI * 2);
+          ctx.ellipse(0, 0, Math.max(1, spinW - 2), Math.max(1, coin.h / 2 - 2), 0, 0, Math.PI * 2);
           ctx.stroke();
         }
         ctx.restore();
@@ -991,7 +958,6 @@
         ctx.save();
         ctx.translate(pup.x + pup.w / 2, py + pup.h / 2);
 
-        // Glowing powerup capsule
         ctx.fillStyle = 'rgba(0, 240, 255, 0.25)';
         ctx.strokeStyle = '#00f0ff';
         ctx.lineWidth = 2;
@@ -1002,7 +968,6 @@
         ctx.fill();
         ctx.stroke();
 
-        // Rocket Icon
         ctx.font = '14px sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -1020,7 +985,7 @@
       // 8. Draw Player: Cyber Rover
       drawRover(player, isLight, rocketFuel > 0);
 
-      // 9. Floating Text Popups ("+25", "ROCKET!")
+      // 9. Floating Text Popups
       for (const pop of popups) {
         const alpha = pop.life / pop.maxLife;
         ctx.font = 'bold 13px monospace';
@@ -1031,23 +996,20 @@
         ctx.globalAlpha = 1.0;
       }
 
-      // 10. Rocket Boost Fuel Gauge (HUD on canvas when active)
+      // 10. Rocket Boost Fuel Gauge
       if (rocketFuel > 0) {
         const gaugeW = 120;
         const gaugeH = 7;
         const gx = width / 2 - gaugeW / 2;
         const gy = 14;
 
-        // Background
         ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
         ctx.fillRect(gx - 2, gy - 2, gaugeW + 4, gaugeH + 4);
 
-        // Fuel fill
         const fuelRatio = rocketFuel / MAX_ROCKET_FUEL;
         ctx.fillStyle = '#00f0ff';
         ctx.fillRect(gx, gy, gaugeW * fuelRatio, gaugeH);
 
-        // Label
         ctx.font = 'bold 10px monospace';
         ctx.fillStyle = isLight ? '#0369a1' : '#00f0ff';
         ctx.textAlign = 'center';
@@ -1057,15 +1019,14 @@
       // 11. Screen Toast Banner (Gems / Power-up alerts)
       if (toast.life > 0) {
         ctx.save();
-        ctx.fillStyle = isLight ? 'rgba(255, 255, 255, 0.92)' : 'rgba(15, 23, 42, 0.9)';
+        ctx.fillStyle = isLight ? 'rgba(255, 255, 255, 0.94)' : 'rgba(15, 23, 42, 0.92)';
         ctx.strokeStyle = isLight ? '#0284c7' : '#00f0ff';
         ctx.lineWidth = 1.5;
         ctx.shadowColor = ctx.strokeStyle;
         ctx.shadowBlur = 8;
         const toastW = 340;
         const toastH = 26;
-        ctx.beginPath();
-        ctx.roundRect(width / 2 - toastW / 2, height - 58, toastW, toastH, 6);
+        drawRoundRect(ctx, width / 2 - toastW / 2, height - 58, toastW, toastH, 6);
         ctx.fill();
         ctx.stroke();
 
@@ -1101,11 +1062,9 @@
     function drawGroundSegment(startX, endX, groundY, isLight) {
       if (startX >= endX) return;
 
-      // Ground solid fill
       ctx.fillStyle = isLight ? '#fde68a' : '#070c18';
       ctx.fillRect(startX, groundY, endX - startX, height - groundY);
 
-      // Ground top laser line
       ctx.strokeStyle = isLight ? '#d97706' : '#00f0ff';
       ctx.lineWidth = 2.5;
       ctx.shadowColor = ctx.strokeStyle;
@@ -1116,7 +1075,6 @@
       ctx.stroke();
       ctx.shadowBlur = 0;
 
-      // Ground perspective grid pattern
       ctx.strokeStyle = isLight ? 'rgba(180, 83, 9, 0.22)' : 'rgba(0, 240, 255, 0.16)';
       ctx.lineWidth = 1;
       const gridOffset = (frame * gameSpeed) % 24;
@@ -1132,16 +1090,13 @@
 
     // Helper: Draw Chasm / Pit (Grube)
     function drawPit(leftX, rightX, groundY, isLight) {
-      // Bottomless dark abyss
       ctx.fillStyle = isLight ? '#1e293b' : '#020408';
       ctx.fillRect(leftX, groundY, rightX - leftX, height - groundY);
 
-      // Warning hazard stripes on chasm walls
       ctx.fillStyle = isLight ? '#dc2626' : '#ff007a';
       ctx.fillRect(leftX, groundY, 3, height - groundY);
       ctx.fillRect(rightX - 3, groundY, 3, height - groundY);
 
-      // Danger chevron markers
       ctx.fillStyle = isLight ? '#f59e0b' : '#00f0ff';
       const mid = (leftX + rightX) / 2;
       ctx.font = 'bold 9px monospace';
@@ -1154,20 +1109,16 @@
       ctx.save();
       ctx.translate(p.x, p.y);
 
-      // Body (Hexagonal armored pod)
       ctx.fillStyle = isLight ? '#059669' : '#10b981';
       ctx.shadowColor = isLight ? 'rgba(5, 150, 105, 0.4)' : '#00f0ff';
       ctx.shadowBlur = hasRocket ? 14 : 8;
       ctx.fillRect(0, 6, p.w - 6, p.h - 14);
 
-      // Cockpit visor
       ctx.fillStyle = isLight ? '#0284c7' : '#00f0ff';
       ctx.fillRect(p.w - 14, 8, 8, 7);
 
-      // Treads & Wheels
       ctx.fillStyle = isLight ? '#1e293b' : '#334155';
       ctx.fillRect(-2, p.h - 8, p.w - 2, 8);
-      // Wheel hubs (rotating with speed)
       ctx.fillStyle = isLight ? '#94a3b8' : '#cbd5e1';
       const wheelAngle = frame * 0.2;
       const hub1 = 3 + Math.sin(wheelAngle) * 1.5;
@@ -1175,7 +1126,6 @@
       ctx.fillRect(hub1, p.h - 6, 6, 4);
       ctx.fillRect(hub2, p.h - 6, 6, 4);
 
-      // Antenna / Sensor
       ctx.strokeStyle = isLight ? '#7c3aed' : '#a855f7';
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -1187,11 +1137,9 @@
       ctx.arc(4, 0, 2.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // Rocket Booster Nozzle (attached to rear when active)
       if (hasRocket) {
         ctx.fillStyle = '#e2e8f0';
         ctx.fillRect(-6, 9, 6, 9);
-        // Blazing thruster flame cone
         ctx.fillStyle = '#f59e0b';
         ctx.beginPath();
         ctx.moveTo(-6, 10);
@@ -1212,7 +1160,6 @@
       ctx.restore();
     }
 
-    // Helper: Draw Full Screen Overlay (Start / GameOver)
     function drawOverlay(isLight, title, titleColor, subtitle, subColor) {
       ctx.fillStyle = isLight ? 'rgba(255, 255, 255, 0.88)' : 'rgba(6, 9, 17, 0.85)';
       ctx.fillRect(0, 0, width, height);
@@ -1233,5 +1180,12 @@
       requestAnimationFrame(gameLoop);
     }
     requestAnimationFrame(gameLoop);
-  });
+  }
+
+  // Safe DOM lifecycle hook: runs whether document is still loading or already loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGame404);
+  } else {
+    initGame404();
+  }
 })();

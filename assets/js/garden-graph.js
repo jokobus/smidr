@@ -116,6 +116,7 @@
       }
 
       // Center gravity & update position
+      let totalEnergy = 0;
       for (const node of nodes) {
         if (node === draggedNode) continue;
         node.vx += (width / 2 - node.x) * 0.008;
@@ -128,7 +129,9 @@
         // Boundaries
         node.x = Math.max(node.radius + 6, Math.min(width - node.radius - 6, node.x));
         node.y = Math.max(node.radius + 6, Math.min(height - node.radius - 6, node.y));
+        totalEnergy += Math.abs(node.vx) + Math.abs(node.vy);
       }
+      return totalEnergy;
     }
 
     function render() {
@@ -186,12 +189,47 @@
       }
     }
 
-    function loop() {
-      tick();
-      render();
-      requestAnimationFrame(loop);
+    let isVisible = true;
+    let isRunning = false;
+    let animId = null;
+
+    function wakeUp() {
+      if (!isRunning && isVisible) {
+        isRunning = true;
+        loop();
+      }
     }
-    requestAnimationFrame(loop);
+
+    function loop() {
+      if (!isVisible) {
+        isRunning = false;
+        return;
+      }
+      const energy = tick();
+      render();
+      if (draggedNode || energy > 0.05) {
+        animId = requestAnimationFrame(loop);
+      } else {
+        isRunning = false;
+      }
+    }
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          isVisible = entry.isIntersecting;
+          if (isVisible) {
+            wakeUp();
+          } else {
+            isRunning = false;
+            if (animId) cancelAnimationFrame(animId);
+          }
+        });
+      }, { threshold: 0.05 });
+      observer.observe(container);
+    } else {
+      wakeUp();
+    }
 
     // Mouse & Touch interaction
     function getMousePos(e) {
@@ -221,9 +259,14 @@
       if (draggedNode) {
         draggedNode.x = pos.x;
         draggedNode.y = pos.y;
+        wakeUp();
       } else {
+        const prevHovered = hoveredNode;
         hoveredNode = findNodeAt(pos);
         canvas.style.cursor = hoveredNode ? 'pointer' : 'default';
+        if (prevHovered !== hoveredNode) {
+          render();
+        }
       }
     });
 
@@ -232,6 +275,7 @@
       const clicked = findNodeAt(pos);
       if (clicked) {
         draggedNode = clicked;
+        wakeUp();
       }
     });
 
@@ -241,6 +285,7 @@
           window.location.href = hoveredNode.url;
         }
         draggedNode = null;
+        wakeUp();
       }
     });
 
@@ -252,6 +297,7 @@
         e.preventDefault();
         draggedNode = clicked;
         hoveredNode = clicked;
+        wakeUp();
       }
     }, { passive: false });
 
@@ -261,6 +307,7 @@
         const pos = getMousePos(e);
         draggedNode.x = pos.x;
         draggedNode.y = pos.y;
+        wakeUp();
       }
     }, { passive: false });
 
@@ -271,12 +318,18 @@
         }
         draggedNode = null;
         hoveredNode = null;
+        wakeUp();
       }
     });
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  function initAll() {
     document.querySelectorAll('.garden-graph-container').forEach(initGardenGraph);
-  });
+  }
 
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll);
+  } else {
+    initAll();
+  }
 })();

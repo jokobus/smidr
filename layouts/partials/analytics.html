@@ -1,6 +1,16 @@
 {{- with .Site.Params.umami -}}
-  {{- if and .websiteId .hostUrl -}}
+  {{- $enabled := true -}}
+  {{- if isset . "enable" }}{{ $enabled = .enable }}{{ end -}}
+  {{- if and $enabled .websiteId -}}
   <!-- Umami Analytics (Privacy-preserving, No Cookies, No Google Tracking) -->
-  <script defer src="{{ .hostUrl }}/script.js" data-website-id="{{ .websiteId }}"></script>
+  {{- $src := .scriptUrl -}}
+  {{- if not $src -}}
+    {{- if .hostUrl -}}
+      {{- $src = printf "%s/script.js" (strings.TrimSuffix "/" .hostUrl) -}}
+    {{- else -}}
+      {{- $src = "/js/telemetry.js" -}}
+    {{- end -}}
+  {{- end -}}
+  <script defer src="{{ $src }}" data-website-id="{{ .websiteId }}"{{ with .dataHostUrl }} data-host-url="{{ . }}"{{ end }}></script>
   {{- end -}}
 {{- end -}}
